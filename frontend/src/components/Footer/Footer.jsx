@@ -12,7 +12,7 @@ const Footer = () => {
           <h4>{APP_NAME}</h4>
           <p>
             An AI-powered platform for early Alzheimer's detection and daily
-            cognitive assistance, built with deep learning.
+            cognitive assistance.
           </p>
         </div>
 
@@ -42,7 +42,7 @@ const Footer = () => {
 
       <div className="footer__bottom">
         <div className="container">
-          <p>© {currentYear} {APP_NAME}. Final Year Major Project.</p>
+          <p>© {currentYear} {APP_NAME}.</p>
         </div>
       </div>
     </footer>

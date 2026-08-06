@@ -16,8 +16,8 @@ const MODULES = [
     color: "var(--color-patient)",
     points: [
       "Take AI-assisted cognitive tests",
-      "Upload MRI scans for prediction",
       "Medicine and task reminders",
+      "Receive risk alerts instantly",
     ],
   },
   {
@@ -28,8 +28,8 @@ const MODULES = [
     color: "var(--color-caregiver)",
     points: [
       "Track patient activity and progress",
+      "Upload MRI scans for prediction",
       "Manage reminders and routines",
-      "Receive risk alerts instantly",
     ],
   },
   {
@@ -81,7 +81,6 @@ const Home = () => {
 
     fetchHealth();
 
-    // Cleanup prevents "setState on unmounted component" warnings
     return () => {
       isMounted = false;
     };
@@ -125,15 +124,18 @@ const Home = () => {
 
   return (
     <div className="home">
-      {/* ================= HERO ================= */}
       <section className="hero">
         <div className="container hero__inner">
           <div className="hero__content animate-fade-up">
-            <span className="hero__tag">Deep Learning · CNN · Healthcare</span>
+
             <h1 className="hero__title">
-              Detect Alzheimer's Early.<br />
-              <span className="hero__title-accent">Support Memory Daily.</span>
+              Detect Alzheimer's Early.
+              <br />
+              <span className="hero__title-accent">
+                Support Memory Daily.
+              </span>
             </h1>
+
             <p className="hero__subtitle">
               {APP_NAME} combines a convolutional neural network for MRI-based
               risk prediction with cognitive screening tests and everyday
@@ -145,6 +147,7 @@ const Home = () => {
               <Link to={ROUTES.REGISTER}>
                 <Button size="lg">Create Account</Button>
               </Link>
+
               <Link to={ROUTES.LOGIN}>
                 <Button size="lg" variant="outline">
                   Login
@@ -161,26 +164,39 @@ const Home = () => {
                 <span>MRI Analysis</span>
                 <span className="badge badge--info">CNN v1</span>
               </div>
+
               <div className="brain-card__scan">
                 <div className="brain-card__pulse" />
                 <span className="brain-card__emoji">🧠</span>
               </div>
+
               <div className="brain-card__bars">
                 <div className="bar">
                   <span className="bar__label">Non-Demented</span>
-                  <div className="bar__track"><i style={{ width: "82%" }} /></div>
+                  <div className="bar__track">
+                    <i style={{ width: "82%" }} />
+                  </div>
                 </div>
+
                 <div className="bar">
                   <span className="bar__label">Very Mild</span>
-                  <div className="bar__track"><i style={{ width: "46%" }} /></div>
+                  <div className="bar__track">
+                    <i style={{ width: "46%" }} />
+                  </div>
                 </div>
+
                 <div className="bar">
                   <span className="bar__label">Mild</span>
-                  <div className="bar__track"><i style={{ width: "24%" }} /></div>
+                  <div className="bar__track">
+                    <i style={{ width: "24%" }} />
+                  </div>
                 </div>
+
                 <div className="bar">
                   <span className="bar__label">Moderate</span>
-                  <div className="bar__track"><i style={{ width: "11%" }} /></div>
+                  <div className="bar__track">
+                    <i style={{ width: "11%" }} />
+                  </div>
                 </div>
               </div>
             </div>
@@ -188,11 +204,11 @@ const Home = () => {
         </div>
       </section>
 
-      {/* ================= MODULES ================= */}
       <section className="section modules" id="modules">
         <div className="container">
           <div className="section__head text-center">
             <h2>Four Connected Modules</h2>
+
             <p>
               Role-based access ensures every user sees exactly what they need —
               nothing more.
@@ -220,42 +236,53 @@ const Home = () => {
         </div>
       </section>
 
-      {/* ================= ABOUT / HOW IT WORKS ================= */}
       <section className="section about" id="about">
         <div className="container">
           <div className="section__head text-center">
             <h2>How the System Works</h2>
+
             <p>From data capture to clinical validation in four steps.</p>
           </div>
 
           <div className="steps">
             <div className="step">
               <span className="step__num">01</span>
+
               <h4>Capture</h4>
+
               <p>
                 The patient completes cognitive assessments and uploads an MRI
                 scan through a guided, accessible interface.
               </p>
             </div>
+
             <div className="step">
               <span className="step__num">02</span>
+
               <h4>Analyse</h4>
+
               <p>
                 A TensorFlow CNN served over a Flask API classifies the scan and
                 returns a stage prediction with confidence scores.
               </p>
             </div>
+
             <div className="step">
               <span className="step__num">03</span>
+
               <h4>Assist</h4>
+
               <p>
                 Caregivers receive alerts and manage reminders, routines, and
                 memory-support tools for the patient.
               </p>
             </div>
+
             <div className="step">
               <span className="step__num">04</span>
+
               <h4>Validate</h4>
+
               <p>
                 Doctors review the AI output, add clinical remarks, and generate
                 a final downloadable report.

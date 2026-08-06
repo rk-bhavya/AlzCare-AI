@@ -31,7 +31,7 @@ const Navbar = () => {
     <header className="navbar">
       <div className="container navbar__inner">
         <Link to={ROUTES.HOME} className="navbar__brand">
-          <span className="navbar__logo" aria-hidden="true">NC</span>
+          <span className="navbar__logo" aria-hidden="true">AC</span>
           <span className="navbar__brand-text">
             {APP_NAME}
             <small>Early Alzheimer's Detection</small>
