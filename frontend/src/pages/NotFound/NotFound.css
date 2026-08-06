@@ -1,0 +1,37 @@
+.notfound {
+  min-height: calc(100vh - var(--navbar-height));
+  display: grid;
+  place-items: center;
+  padding-block: var(--space-3xl);
+}
+
+.notfound__inner {
+  text-align: center;
+  max-width: 480px;
+}
+
+.notfound__code {
+  font-size: 6rem;
+  font-weight: 800;
+  line-height: 1;
+  background: linear-gradient(120deg, var(--color-primary), var(--color-accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.notfound__inner h1 {
+  font-size: var(--fs-2xl);
+  margin-top: var(--space-md);
+}
+
+.notfound__inner p {
+  color: var(--color-text-muted);
+  margin-block: var(--space-md) var(--space-xl);
+}
+
+@media (max-width: 480px) {
+  .notfound__code {
+    font-size: 4.5rem;
+  }
+}
