@@ -1,0 +1,670 @@
+.patient-register-page {
+  min-height: 100vh;
+  display: flex;
+  background: #f8fbff;
+}
+
+/* ================= LEFT PANEL ================= */
+
+.patient-register-info {
+  width: 42%;
+  min-height: 100vh;
+  padding: 45px 55px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  background:
+    radial-gradient(
+      circle at top left,
+      #eef6ff 0%,
+      #ffffff 65%
+    );
+
+  position: relative;
+}
+
+.back-button {
+  position: absolute;
+  top: 28px;
+  left: 35px;
+
+  border: none;
+  background: transparent;
+
+  color: #64748b;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.25s ease;
+}
+
+.back-button:hover {
+  color: #4f46e5;
+  transform: translateX(-3px);
+}
+
+.patient-register-tag {
+  padding: 7px 16px;
+
+  background: #ffffff;
+
+  border-radius: 30px;
+
+  color: #4f46e5;
+
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.06);
+
+  margin-bottom: 25px;
+}
+
+.patient-register-brain-wrapper {
+  width: 270px;
+  height: 230px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.patient-register-brain {
+  width: 245px;
+  max-width: 100%;
+
+  animation: patientBrainFloat 5s ease-in-out infinite;
+}
+
+@keyframes patientBrainFloat {
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-9px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.patient-register-info h1 {
+  margin: 10px 0 0;
+
+  color: #1e293b;
+
+  font-size: 38px;
+  font-weight: 800;
+}
+
+.patient-register-info h1 span {
+  color: #4f46e5;
+}
+
+.patient-register-info h2 {
+  margin-top: 14px;
+
+  color: #334155;
+
+  font-size: 21px;
+  line-height: 1.45;
+}
+
+.patient-register-info > p {
+  max-width: 500px;
+
+  margin-top: 16px;
+
+  color: #64748b;
+
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.patient-register-points {
+  margin-top: 22px;
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 9px;
+}
+
+.patient-register-points span {
+  padding: 7px 11px;
+
+  background: #ffffff;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 20px;
+
+  color: #475569;
+
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* ================= RIGHT PANEL ================= */
+
+.patient-register-form-section {
+  width: 58%;
+  min-height: 100vh;
+
+  padding: 55px 65px;
+
+  background: linear-gradient(
+    180deg,
+    #f8fbff 0%,
+    #edf5ff 100%
+  );
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  overflow-y: auto;
+}
+
+.patient-register-form-wrapper {
+  width: 100%;
+  max-width: 760px;
+
+  background: #ffffff;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 24px;
+
+  padding: 38px;
+
+  box-shadow:
+    0 20px 50px rgba(15, 23, 42, 0.08);
+}
+
+/* ================= HEADER ================= */
+
+.form-header {
+  margin-bottom: 28px;
+}
+
+.form-step {
+  display: inline-block;
+
+  padding: 6px 13px;
+
+  border-radius: 20px;
+
+  background: #eef2ff;
+
+  color: #4f46e5;
+
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+}
+
+.form-header h2 {
+  margin-top: 13px;
+
+  color: #1e293b;
+
+  font-size: 30px;
+  font-weight: 800;
+}
+
+.form-header p {
+  margin-top: 7px;
+
+  color: #64748b;
+
+  font-size: 14px;
+}
+
+/* ================= ALERTS ================= */
+
+.form-alert {
+  padding: 12px 15px;
+
+  margin-bottom: 20px;
+
+  border-radius: 10px;
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.form-alert-error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+}
+
+.form-alert-success {
+  background: #ecfdf5;
+  border: 1px solid #bbf7d0;
+  color: #16a34a;
+}
+
+/* ================= PROFILE PICTURE ================= */
+
+.profile-picture-section {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+
+  padding: 16px;
+
+  margin-bottom: 28px;
+
+  background: #f8fafc;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 16px;
+}
+
+.profile-picture-wrapper {
+  position: relative;
+
+  width: 78px;
+  height: 78px;
+
+  flex-shrink: 0;
+}
+
+.profile-placeholder,
+.profile-preview {
+  width: 78px;
+  height: 78px;
+
+  border-radius: 50%;
+}
+
+.profile-placeholder {
+  background: #eef2ff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #6366f1;
+
+  font-size: 25px;
+}
+
+.profile-preview {
+  object-fit: cover;
+
+  border: 3px solid #ffffff;
+
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12);
+}
+
+.camera-button {
+  position: absolute;
+
+  right: -3px;
+  bottom: -3px;
+
+  width: 28px;
+  height: 28px;
+
+  border-radius: 50%;
+
+  background: #4f46e5;
+
+  color: #ffffff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 12px;
+
+  cursor: pointer;
+
+  border: 3px solid #ffffff;
+}
+
+.profile-picture-section h4 {
+  color: #1e293b;
+
+  font-size: 14px;
+}
+
+.profile-picture-section p {
+  margin-top: 4px;
+
+  color: #64748b;
+
+  font-size: 12px;
+}
+
+/* ================= FORM ================= */
+
+.form-grid {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 18px;
+}
+
+.form-section-title {
+  grid-column: 1 / -1;
+
+  margin-top: 8px;
+  margin-bottom: -3px;
+
+  padding-bottom: 8px;
+
+  border-bottom: 1px solid #e2e8f0;
+
+  color: #334155;
+
+  font-size: 13px;
+  font-weight: 800;
+
+  letter-spacing: 0.2px;
+}
+
+.form-section-title-grid {
+  margin-top: 10px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.form-group label {
+  margin-bottom: 7px;
+
+  color: #334155;
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.form-group label span {
+  margin-left: 3px;
+
+  color: #ef4444;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+
+  padding: 12px 13px;
+
+  border: 1px solid #dbe3ee;
+
+  border-radius: 10px;
+
+  background: #ffffff;
+
+  color: #1e293b;
+
+  font-family: inherit;
+
+  font-size: 13px;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.form-group input,
+.form-group select {
+  height: 44px;
+}
+
+.form-group textarea {
+  resize: vertical;
+
+  min-height: 82px;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #94a3b8;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: #6366f1;
+
+  box-shadow:
+    0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.field-error {
+  margin-top: 5px;
+
+  color: #dc2626;
+
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* ================= PASSWORD ================= */
+
+.password-input {
+  position: relative;
+}
+
+.password-input input {
+  padding-right: 42px;
+}
+
+.password-input button {
+  position: absolute;
+
+  right: 12px;
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  border: none;
+
+  background: transparent;
+
+  color: #64748b;
+
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.password-input button:hover {
+  color: #4f46e5;
+}
+
+/* ================= SUBMIT ================= */
+
+.create-account-button {
+  width: 100%;
+
+  margin-top: 28px;
+
+  padding: 14px 20px;
+
+  border: none;
+
+  border-radius: 11px;
+
+  background: #4f46e5;
+
+  color: #ffffff;
+
+  font-family: inherit;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.create-account-button:hover:not(:disabled) {
+  background: #4338ca;
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 8px 20px rgba(79, 70, 229, 0.22);
+}
+
+.create-account-button:disabled {
+  opacity: 0.65;
+
+  cursor: not-allowed;
+}
+
+/* ================= LOGIN ================= */
+
+.login-link {
+  margin-top: 18px;
+
+  text-align: center;
+
+  color: #64748b;
+
+  font-size: 13px;
+}
+
+.login-link a {
+  margin-left: 6px;
+
+  color: #4f46e5;
+
+  font-weight: 700;
+
+  text-decoration: none;
+}
+
+.login-link a:hover {
+  text-decoration: underline;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 1100px) {
+  .patient-register-info {
+    width: 40%;
+    padding: 40px 30px;
+  }
+
+  .patient-register-form-section {
+    width: 60%;
+    padding: 40px 30px;
+  }
+
+  .patient-register-info h1 {
+    font-size: 32px;
+  }
+
+  .patient-register-info h2 {
+    font-size: 18px;
+  }
+
+  .patient-register-brain-wrapper {
+    width: 220px;
+    height: 190px;
+  }
+
+  .patient-register-brain {
+    width: 210px;
+  }
+}
+
+@media (max-width: 850px) {
+  .patient-register-page {
+    flex-direction: column;
+  }
+
+  .patient-register-info,
+  .patient-register-form-section {
+    width: 100%;
+  }
+
+  .patient-register-info {
+    min-height: auto;
+
+    padding: 70px 25px 45px;
+  }
+
+  .patient-register-form-section {
+    padding: 30px 20px 50px;
+  }
+
+  .patient-register-brain-wrapper {
+    height: 180px;
+  }
+
+  .patient-register-brain {
+    width: 190px;
+  }
+}
+
+@media (max-width: 600px) {
+  .patient-register-form-wrapper {
+    padding: 25px 20px;
+
+    border-radius: 18px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-section-title,
+  .form-group.full-width {
+    grid-column: 1;
+  }
+
+  .form-header h2 {
+    font-size: 25px;
+  }
+
+  .profile-picture-section {
+    align-items: flex-start;
+  }
+
+  .back-button {
+    left: 20px;
+  }
+}

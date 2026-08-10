@@ -1,14 +1,16 @@
 import { Router } from "express";
 import healthRoutes from "./health.routes.js";
+import authRoutes from "./auth.routes.js";
 
 const router = Router();
 
 /**
  * Central API router.
- * Every new feature adds exactly ONE line here, for example:
- *   router.use("/auth", authRoutes);
- *   router.use("/patients", patientRoutes);
+ *
+ * Every feature registers its routes here.
  */
+
 router.use("/health", healthRoutes);
+router.use("/auth", authRoutes);
 
 export default router;

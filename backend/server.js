@@ -1,4 +1,7 @@
 import http from "http";
+import dotenv from "dotenv";
+dotenv.config();
+
 import mongoose from "mongoose";
 
 import app from "./src/app.js";
@@ -17,15 +20,26 @@ const startServer = async () => {
 
     server.listen(env.PORT, () => {
       console.log("\n=====================================================");
-      console.log("  AI-Based Early Alzheimer's Detection — Backend API");
+      console.log(
+        "  AI-Based Early Alzheimer's Detection — Backend API"
+      );
       console.log("=====================================================");
-      console.log(`  🚀 Server      : http://localhost:${env.PORT}`);
-      console.log(`  🌍 Environment : ${env.NODE_ENV}`);
-      console.log(`  ❤️  Health      : http://localhost:${env.PORT}/api/v1/health`);
+      console.log(
+        `  🚀 Server      : http://localhost:${env.PORT}`
+      );
+      console.log(
+        `  🌍 Environment : ${env.NODE_ENV}`
+      );
+      console.log(
+        `  ❤️  Health      : http://localhost:${env.PORT}/api/v1/health`
+      );
       console.log("=====================================================\n");
     });
   } catch (error) {
-    console.error(`❌ Failed to start server: ${error.message}`);
+    console.error(
+      `❌ Failed to start server: ${error.message}`
+    );
+
     process.exit(1);
   }
 };
@@ -35,11 +49,19 @@ startServer();
 /* ------------------------------------------------------------------
    GRACEFUL SHUTDOWN & CRASH SAFETY
 ------------------------------------------------------------------ */
+
 const shutdown = async (signal) => {
-  console.log(`\n${signal} received. Shutting down gracefully...`);
+  console.log(
+    `\n${signal} received. Shutting down gracefully...`
+  );
+
   server.close(async () => {
     await mongoose.connection.close(false);
-    console.log("✅ HTTP server closed and MongoDB connection ended");
+
+    console.log(
+      "✅ HTTP server closed and MongoDB connection ended"
+    );
+
     process.exit(0);
   });
 };
@@ -48,11 +70,19 @@ process.on("SIGINT", () => shutdown("SIGINT"));
 process.on("SIGTERM", () => shutdown("SIGTERM"));
 
 process.on("unhandledRejection", (reason) => {
-  console.error("🔥 UNHANDLED PROMISE REJECTION:", reason);
+  console.error(
+    "🔥 UNHANDLED PROMISE REJECTION:",
+    reason
+  );
+
   server.close(() => process.exit(1));
 });
 
 process.on("uncaughtException", (error) => {
-  console.error("🔥 UNCAUGHT EXCEPTION:", error);
+  console.error(
+    "🔥 UNCAUGHT EXCEPTION:",
+    error
+  );
+
   process.exit(1);
 });
