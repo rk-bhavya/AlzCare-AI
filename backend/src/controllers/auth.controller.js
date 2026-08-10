@@ -4,15 +4,23 @@ import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 import cloudinary from "../config/cloudinary.js";
 
+/* ============================================================
+   JWT TOKEN
+============================================================ */
+
 const generateToken = (user) => {
   return jwt.sign(
     {
       id: user._id,
       role: user.role,
     },
-    process.env.JWT_SECRET,
+    process.env.JWT_SECRET
   );
 };
+
+/* ============================================================
+   CLOUDINARY PROFILE PICTURE
+============================================================ */
 
 const uploadProfilePicture = async (file) => {
   if (!file) {
@@ -22,25 +30,23 @@ const uploadProfilePicture = async (file) => {
     };
   }
 
-  const uploadResult = await new Promise(
-    (resolve, reject) => {
-      const stream = cloudinary.uploader.upload_stream(
-        {
-          folder: "alzcare/users",
-          resource_type: "image",
-        },
-        (error, result) => {
-          if (error) {
-            reject(error);
-          } else {
-            resolve(result);
-          }
+  const uploadResult = await new Promise((resolve, reject) => {
+    const stream = cloudinary.uploader.upload_stream(
+      {
+        folder: "alzcare/users",
+        resource_type: "image",
+      },
+      (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
         }
-      );
+      }
+    );
 
-      stream.end(file.buffer);
-    }
-  );
+    stream.end(file.buffer);
+  });
 
   return {
     url: uploadResult.secure_url,
@@ -163,10 +169,7 @@ export const registerPatient = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error(
-      "Patient registration error:",
-      error
-    );
+    console.error("Patient registration error:", error);
 
     return res.status(500).json({
       success: false,
@@ -190,8 +193,6 @@ export const registerCaregiver = async (req, res) => {
       relationship,
       address,
     } = req.body;
-
-    /* ---------------- VALIDATION ---------------- */
 
     if (
       !fullName ||
@@ -225,8 +226,6 @@ export const registerCaregiver = async (req, res) => {
 
     const normalizedEmail = email.trim().toLowerCase();
 
-    /* ---------------- CHECK EMAIL ---------------- */
-
     const existingEmail = await User.findOne({
       email: normalizedEmail,
     });
@@ -238,8 +237,6 @@ export const registerCaregiver = async (req, res) => {
           "An account with this email already exists.",
       });
     }
-
-    /* ---------------- CHECK PHONE ---------------- */
 
     const existingPhone = await User.findOne({
       phone: phone.trim(),
@@ -253,8 +250,6 @@ export const registerCaregiver = async (req, res) => {
       });
     }
 
-    /* ---------------- PASSWORD HASHING ---------------- */
-
     const salt = await bcrypt.genSalt(12);
 
     const hashedPassword = await bcrypt.hash(
@@ -262,12 +257,8 @@ export const registerCaregiver = async (req, res) => {
       salt
     );
 
-    /* ---------------- PROFILE PICTURE ---------------- */
-
     const profilePicture =
       await uploadProfilePicture(req.file);
-
-    /* ---------------- CREATE CAREGIVER ---------------- */
 
     const user = await User.create({
       fullName: fullName.trim(),
@@ -280,11 +271,7 @@ export const registerCaregiver = async (req, res) => {
       profilePicture,
     });
 
-    /* ---------------- JWT ---------------- */
-
     const token = generateToken(user);
-
-    /* ---------------- RESPONSE ---------------- */
 
     return res.status(201).json({
       success: true,
@@ -309,6 +296,82 @@ export const registerCaregiver = async (req, res) => {
       success: false,
       message:
         "Unable to create caregiver account.",
+    });
+  }
+};
+
+/* ============================================================
+   LOGIN
+============================================================ */
+
+export const login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    /* ---------------- VALIDATION ---------------- */
+
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "Email and password are required.",
+      });
+    }
+
+    const normalizedEmail =
+      email.trim().toLowerCase();
+
+    /* ---------------- FIND USER ---------------- */
+
+    const user = await User.findOne({
+      email: normalizedEmail,
+    });
+
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid email or password.",
+      });
+    }
+
+    /* ---------------- PASSWORD CHECK ---------------- */
+
+    const isPasswordCorrect =
+      await bcrypt.compare(
+        password,
+        user.password
+      );
+
+    if (!isPasswordCorrect) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid email or password.",
+      });
+    }
+
+    /* ---------------- JWT ---------------- */
+
+    const token = generateToken(user);
+
+    /* ---------------- RESPONSE ---------------- */
+
+    return res.status(200).json({
+      success: true,
+      message: "Login successful.",
+      token,
+      user: {
+        id: user._id,
+        fullName: user.fullName,
+        email: user.email,
+        role: user.role,
+        profilePicture: user.profilePicture,
+      },
+    });
+  } catch (error) {
+    console.error("Login error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Unable to login. Please try again.",
     });
   }
 };

@@ -1,5 +1,9 @@
 import axiosInstance from "./axiosinstance.js";
 
+/* ============================================================
+   PATIENT REGISTRATION
+============================================================ */
+
 export const registerPatient = async (formData) => {
   const response = await axiosInstance.post(
     "/auth/register/patient",
@@ -14,6 +18,10 @@ export const registerPatient = async (formData) => {
   return response.data;
 };
 
+/* ============================================================
+   CAREGIVER REGISTRATION
+============================================================ */
+
 export const registerCaregiver = async (formData) => {
   const response = await axiosInstance.post(
     "/auth/register/caregiver",
@@ -26,4 +34,26 @@ export const registerCaregiver = async (formData) => {
   );
 
   return response.data;
+};
+
+/* ============================================================
+   LOGIN
+============================================================ */
+
+export const loginUser = async (credentials) => {
+  const response = await axiosInstance.post(
+    "/auth/login",
+    credentials
+  );
+
+  return response.data;
+};
+
+/* ============================================================
+   LOGOUT
+============================================================ */
+
+export const logoutUser = () => {
+  localStorage.removeItem("nc_access_token");
+  localStorage.removeItem("nc_user");
 };
