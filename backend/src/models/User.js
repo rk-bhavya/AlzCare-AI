@@ -12,14 +12,18 @@ const userSchema = new mongoose.Schema(
 
     age: {
       type: Number,
-      required: [true, "Age is required"],
+      required: function () {
+        return this.role === "patient";
+      },
       min: [1, "Age must be at least 1"],
       max: [120, "Age cannot exceed 120"],
     },
 
     gender: {
       type: String,
-      required: [true, "Gender is required"],
+      required: function () {
+        return this.role === "patient";
+      },
       enum: {
         values: ["male", "female", "other", "prefer-not-to-say"],
         message: "Please select a valid gender",
@@ -63,7 +67,9 @@ const userSchema = new mongoose.Schema(
 
     emergencyContact: {
       type: String,
-      required: [true, "Emergency contact is required"],
+      required: function () {
+        return this.role === "patient";
+      },
       trim: true,
       match: [
         /^[6-9]\d{9}$/,
@@ -74,15 +80,18 @@ const userSchema = new mongoose.Schema(
     relationship: {
       type: String,
       required: [true, "Relationship is required"],
-      enum: [
-        "parent",
-        "spouse",
-        "child",
-        "sibling",
-        "relative",
-        "friend",
-        "other",
-      ],
+      enum: {
+        values: [
+          "parent",
+          "spouse",
+          "child",
+          "sibling",
+          "relative",
+          "friend",
+          "other",
+        ],
+        message: "Please select a valid relationship",
+      },
     },
 
     address: {
