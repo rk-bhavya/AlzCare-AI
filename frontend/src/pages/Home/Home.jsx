@@ -210,8 +210,7 @@ const Home = () => {
             <h2>Four Connected Modules</h2>
 
             <p>
-              Role-based access ensures every user sees exactly what they need —
-              nothing more.
+              Role-based access ensures every user sees exactly what they need.
             </p>
           </div>
 

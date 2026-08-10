@@ -30,23 +30,26 @@ const uploadProfilePicture = async (file) => {
     };
   }
 
-  const uploadResult = await new Promise((resolve, reject) => {
-    const stream = cloudinary.uploader.upload_stream(
-      {
-        folder: "alzcare/users",
-        resource_type: "image",
-      },
-      (error, result) => {
-        if (error) {
-          reject(error);
-        } else {
-          resolve(result);
-        }
-      }
-    );
+  const uploadResult = await new Promise(
+    (resolve, reject) => {
+      const stream =
+        cloudinary.uploader.upload_stream(
+          {
+            folder: "alzcare/users",
+            resource_type: "image",
+          },
+          (error, result) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(result);
+            }
+          }
+        );
 
-    stream.end(file.buffer);
-  });
+      stream.end(file.buffer);
+    }
+  );
 
   return {
     url: uploadResult.secure_url,
@@ -87,14 +90,16 @@ export const registerPatient = async (req, res) => {
     ) {
       return res.status(400).json({
         success: false,
-        message: "All required fields must be provided.",
+        message:
+          "All required fields must be provided.",
       });
     }
 
     if (password.length < 8) {
       return res.status(400).json({
         success: false,
-        message: "Password must contain at least 8 characters.",
+        message:
+          "Password must contain at least 8 characters.",
       });
     }
 
@@ -105,7 +110,8 @@ export const registerPatient = async (req, res) => {
       });
     }
 
-    const normalizedEmail = email.trim().toLowerCase();
+    const normalizedEmail =
+      email.trim().toLowerCase();
 
     const existingUser = await User.findOne({
       email: normalizedEmail,
@@ -114,7 +120,8 @@ export const registerPatient = async (req, res) => {
     if (existingUser) {
       return res.status(409).json({
         success: false,
-        message: "An account with this email already exists.",
+        message:
+          "An account with this email already exists.",
       });
     }
 
@@ -125,20 +132,18 @@ export const registerPatient = async (req, res) => {
     if (existingPhone) {
       return res.status(409).json({
         success: false,
-        message: "An account with this phone number already exists.",
+        message:
+          "An account with this phone number already exists.",
       });
     }
 
     const salt = await bcrypt.genSalt(12);
 
-    const hashedPassword = await bcrypt.hash(
-      password,
-      salt
-    );
+    const hashedPassword =
+      await bcrypt.hash(password, salt);
 
-    const profilePicture = await uploadProfilePicture(
-      req.file
-    );
+    const profilePicture =
+      await uploadProfilePicture(req.file);
 
     const user = await User.create({
       fullName: fullName.trim(),
@@ -148,7 +153,8 @@ export const registerPatient = async (req, res) => {
       phone: phone.trim(),
       password: hashedPassword,
       role: "patient",
-      emergencyContact: emergencyContact.trim(),
+      emergencyContact:
+        emergencyContact.trim(),
       relationship,
       address: address.trim(),
       profilePicture,
@@ -158,22 +164,28 @@ export const registerPatient = async (req, res) => {
 
     return res.status(201).json({
       success: true,
-      message: "Patient account created successfully.",
+      message:
+        "Patient account created successfully.",
       token,
       user: {
         id: user._id,
         fullName: user.fullName,
         email: user.email,
         role: user.role,
-        profilePicture: user.profilePicture,
+        profilePicture:
+          user.profilePicture,
       },
     });
   } catch (error) {
-    console.error("Patient registration error:", error);
+    console.error(
+      "Patient registration error:",
+      error
+    );
 
     return res.status(500).json({
       success: false,
-      message: "Unable to create patient account.",
+      message:
+        "Unable to create patient account.",
     });
   }
 };
@@ -182,7 +194,10 @@ export const registerPatient = async (req, res) => {
    CAREGIVER REGISTRATION
 ============================================================ */
 
-export const registerCaregiver = async (req, res) => {
+export const registerCaregiver = async (
+  req,
+  res
+) => {
   try {
     const {
       fullName,
@@ -205,7 +220,8 @@ export const registerCaregiver = async (req, res) => {
     ) {
       return res.status(400).json({
         success: false,
-        message: "All required fields must be provided.",
+        message:
+          "All required fields must be provided.",
       });
     }
 
@@ -224,7 +240,8 @@ export const registerCaregiver = async (req, res) => {
       });
     }
 
-    const normalizedEmail = email.trim().toLowerCase();
+    const normalizedEmail =
+      email.trim().toLowerCase();
 
     const existingEmail = await User.findOne({
       email: normalizedEmail,
@@ -252,10 +269,8 @@ export const registerCaregiver = async (req, res) => {
 
     const salt = await bcrypt.genSalt(12);
 
-    const hashedPassword = await bcrypt.hash(
-      password,
-      salt
-    );
+    const hashedPassword =
+      await bcrypt.hash(password, salt);
 
     const profilePicture =
       await uploadProfilePicture(req.file);
@@ -283,7 +298,8 @@ export const registerCaregiver = async (req, res) => {
         fullName: user.fullName,
         email: user.email,
         role: user.role,
-        profilePicture: user.profilePicture,
+        profilePicture:
+          user.profilePicture,
       },
     });
   } catch (error) {
@@ -301,21 +317,205 @@ export const registerCaregiver = async (req, res) => {
 };
 
 /* ============================================================
+   DOCTOR REGISTRATION
+============================================================ */
+
+export const registerDoctor = async (
+  req,
+  res
+) => {
+  try {
+    const {
+      fullName,
+      email,
+      phone,
+      specialization,
+      registrationNumber,
+      hospital,
+      password,
+      confirmPassword,
+      address,
+    } = req.body;
+
+    /* ---------------- VALIDATION ---------------- */
+
+    if (
+      !fullName ||
+      !email ||
+      !phone ||
+      !specialization ||
+      !registrationNumber ||
+      !hospital ||
+      !password ||
+      !confirmPassword ||
+      !address
+    ) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "All required fields must be provided.",
+      });
+    }
+
+    if (password.length < 8) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "Password must contain at least 8 characters.",
+      });
+    }
+
+    if (password !== confirmPassword) {
+      return res.status(400).json({
+        success: false,
+        message: "Passwords do not match.",
+      });
+    }
+
+    /* ---------------- NORMALIZE ---------------- */
+
+    const normalizedEmail =
+      email.trim().toLowerCase();
+
+    const normalizedRegistrationNumber =
+      registrationNumber.trim().toUpperCase();
+
+    /* ---------------- CHECK EMAIL ---------------- */
+
+    const existingEmail = await User.findOne({
+      email: normalizedEmail,
+    });
+
+    if (existingEmail) {
+      return res.status(409).json({
+        success: false,
+        message:
+          "An account with this email already exists.",
+      });
+    }
+
+    /* ---------------- CHECK PHONE ---------------- */
+
+    const existingPhone = await User.findOne({
+      phone: phone.trim(),
+    });
+
+    if (existingPhone) {
+      return res.status(409).json({
+        success: false,
+        message:
+          "An account with this phone number already exists.",
+      });
+    }
+
+    /* ---------------- CHECK REGISTRATION NUMBER ---------------- */
+
+    const existingRegistrationNumber =
+      await User.findOne({
+        "doctorDetails.registrationNumber":
+          normalizedRegistrationNumber,
+      });
+
+    if (existingRegistrationNumber) {
+      return res.status(409).json({
+        success: false,
+        message:
+          "A doctor account with this registration number already exists.",
+      });
+    }
+
+    /* ---------------- PASSWORD HASH ---------------- */
+
+    const salt = await bcrypt.genSalt(12);
+
+    const hashedPassword =
+      await bcrypt.hash(password, salt);
+
+    /* ---------------- PROFILE PICTURE ---------------- */
+
+    const profilePicture =
+      await uploadProfilePicture(req.file);
+
+    /* ---------------- CREATE DOCTOR ---------------- */
+
+    const user = await User.create({
+      fullName: fullName.trim(),
+      email: normalizedEmail,
+      phone: phone.trim(),
+      password: hashedPassword,
+      role: "doctor",
+      address: address.trim(),
+
+      doctorDetails: {
+        specialization:
+          specialization.trim(),
+        registrationNumber:
+          normalizedRegistrationNumber,
+        hospital: hospital.trim(),
+      },
+
+      profilePicture,
+    });
+
+    /* ---------------- JWT ---------------- */
+
+    const token = generateToken(user);
+
+    /* ---------------- RESPONSE ---------------- */
+
+    return res.status(201).json({
+      success: true,
+      message:
+        "Doctor account created successfully.",
+      token,
+      user: {
+        id: user._id,
+        fullName: user.fullName,
+        email: user.email,
+        role: user.role,
+        doctorDetails:
+          user.doctorDetails,
+        profilePicture:
+          user.profilePicture,
+      },
+    });
+  } catch (error) {
+    console.error(
+      "Doctor registration error:",
+      error
+    );
+
+    return res.status(500).json({
+      success: false,
+      message:
+        "Unable to create doctor account.",
+    });
+  }
+};
+
+/* ============================================================
    LOGIN
 ============================================================ */
 
 export const login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const {
+      email,
+      password,
+      role,
+    } = req.body;
 
     /* ---------------- VALIDATION ---------------- */
 
     if (!email || !password) {
       return res.status(400).json({
         success: false,
-        message: "Email and password are required.",
+        message:
+          "Email and password are required.",
       });
     }
+
+    /* ---------------- NORMALIZE EMAIL ---------------- */
 
     const normalizedEmail =
       email.trim().toLowerCase();
@@ -329,7 +529,18 @@ export const login = async (req, res) => {
     if (!user) {
       return res.status(401).json({
         success: false,
-        message: "Invalid email or password.",
+        message:
+          "Invalid email or password.",
+      });
+    }
+
+    /* ---------------- ROLE CHECK ---------------- */
+
+    if (role && user.role !== role) {
+      return res.status(403).json({
+        success: false,
+        message:
+          `This account is not registered as a ${role}.`,
       });
     }
 
@@ -344,7 +555,8 @@ export const login = async (req, res) => {
     if (!isPasswordCorrect) {
       return res.status(401).json({
         success: false,
-        message: "Invalid email or password.",
+        message:
+          "Invalid email or password.",
       });
     }
 
@@ -358,20 +570,28 @@ export const login = async (req, res) => {
       success: true,
       message: "Login successful.",
       token,
+
       user: {
         id: user._id,
         fullName: user.fullName,
         email: user.email,
         role: user.role,
-        profilePicture: user.profilePicture,
+        doctorDetails:
+          user.doctorDetails,
+        profilePicture:
+          user.profilePicture,
       },
     });
   } catch (error) {
-    console.error("Login error:", error);
+    console.error(
+      "Login error:",
+      error
+    );
 
     return res.status(500).json({
       success: false,
-      message: "Unable to login. Please try again.",
+      message:
+        "Unable to login. Please try again.",
     });
   }
 };

@@ -103,10 +103,21 @@
 
 .caregiver-sidebar__nav {
   flex: 1;
+  min-height: 0;
 
   padding: 24px 13px;
 
   overflow-y: auto;
+  overflow-x: hidden;
+
+  /* Hide scrollbar while keeping scrolling enabled */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+/* Chrome, Edge, Safari */
+.caregiver-sidebar__nav::-webkit-scrollbar {
+  display: none;
 }
 
 .caregiver-sidebar__label {
@@ -218,9 +229,13 @@
 ============================================================ */
 
 .caregiver-sidebar__bottom {
+  flex-shrink: 0;
+
   padding: 16px;
 
   border-top: 1px solid rgba(255, 255, 255, 0.08);
+
+  background: #0f1930;
 }
 
 .caregiver-sidebar__support {

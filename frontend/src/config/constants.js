@@ -37,7 +37,8 @@ export const ROUTES = {
 
   PATIENT_REGISTER: "/patient-register",
   CAREGIVER_REGISTER: "/caregiver-register",
-
+  DOCTOR_REGISTER: "/doctor-register",
+  
   // Fallback
   NOT_FOUND: "*",
 };

@@ -3,6 +3,7 @@ import express from "express";
 import {
   registerPatient,
   registerCaregiver,
+  registerDoctor,
   login,
 } from "../controllers/auth.controller.js";
 
@@ -37,6 +38,16 @@ router.post(
   "/register/caregiver",
   upload.single("profilePicture"),
   registerCaregiver
+);
+
+/* ============================================================
+   DOCTOR REGISTRATION
+============================================================ */
+
+router.post(
+  "/register/doctor",
+  upload.single("profilePicture"),
+  registerDoctor
 );
 
 export default router;

@@ -2,12 +2,22 @@ import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
   {
+    /* ============================================================
+       BASIC INFORMATION
+    ============================================================ */
+
     fullName: {
       type: String,
       required: [true, "Full name is required"],
       trim: true,
-      minlength: [2, "Full name must contain at least 2 characters"],
-      maxlength: [100, "Full name cannot exceed 100 characters"],
+      minlength: [
+        2,
+        "Full name must contain at least 2 characters",
+      ],
+      maxlength: [
+        100,
+        "Full name cannot exceed 100 characters",
+      ],
     },
 
     age: {
@@ -25,10 +35,19 @@ const userSchema = new mongoose.Schema(
         return this.role === "patient";
       },
       enum: {
-        values: ["male", "female", "other", "prefer-not-to-say"],
+        values: [
+          "male",
+          "female",
+          "other",
+          "prefer-not-to-say",
+        ],
         message: "Please select a valid gender",
       },
     },
+
+    /* ============================================================
+       CONTACT INFORMATION
+    ============================================================ */
 
     email: {
       type: String,
@@ -52,18 +71,48 @@ const userSchema = new mongoose.Schema(
       ],
     },
 
+    address: {
+      type: String,
+      required: [true, "Address is required"],
+      trim: true,
+      minlength: [
+        5,
+        "Address must contain at least 5 characters",
+      ],
+      maxlength: [
+        500,
+        "Address cannot exceed 500 characters",
+      ],
+    },
+
+    /* ============================================================
+       AUTHENTICATION
+    ============================================================ */
+
     password: {
       type: String,
       required: [true, "Password is required"],
-      minlength: [8, "Password must contain at least 8 characters"],
+      minlength: [
+        8,
+        "Password must contain at least 8 characters",
+      ],
     },
 
     role: {
       type: String,
       required: true,
-      enum: ["patient", "caregiver", "doctor", "admin"],
+      enum: [
+        "patient",
+        "caregiver",
+        "doctor",
+        "admin",
+      ],
       default: "patient",
     },
+
+    /* ============================================================
+       PATIENT / CAREGIVER INFORMATION
+    ============================================================ */
 
     emergencyContact: {
       type: String,
@@ -79,7 +128,12 @@ const userSchema = new mongoose.Schema(
 
     relationship: {
       type: String,
-      required: [true, "Relationship is required"],
+      required: function () {
+        return (
+          this.role === "patient" ||
+          this.role === "caregiver"
+        );
+      },
       enum: {
         values: [
           "parent",
@@ -94,13 +148,64 @@ const userSchema = new mongoose.Schema(
       },
     },
 
-    address: {
-      type: String,
-      required: [true, "Address is required"],
-      trim: true,
-      minlength: [5, "Address must contain at least 5 characters"],
-      maxlength: [500, "Address cannot exceed 500 characters"],
+    /* ============================================================
+       DOCTOR INFORMATION
+    ============================================================ */
+
+    doctorDetails: {
+      specialization: {
+        type: String,
+        required: function () {
+          return this.role === "doctor";
+        },
+        trim: true,
+        minlength: [
+          2,
+          "Specialization must contain at least 2 characters",
+        ],
+        maxlength: [
+          100,
+          "Specialization cannot exceed 100 characters",
+        ],
+      },
+
+      registrationNumber: {
+        type: String,
+        required: function () {
+          return this.role === "doctor";
+        },
+        trim: true,
+        uppercase: true,
+        minlength: [
+          3,
+          "Registration number is required",
+        ],
+        maxlength: [
+          50,
+          "Registration number cannot exceed 50 characters",
+        ],
+      },
+
+      hospital: {
+        type: String,
+        required: function () {
+          return this.role === "doctor";
+        },
+        trim: true,
+        minlength: [
+          2,
+          "Hospital or clinic name is required",
+        ],
+        maxlength: [
+          150,
+          "Hospital or clinic name cannot exceed 150 characters",
+        ],
+      },
     },
+
+    /* ============================================================
+       PROFILE PICTURE
+    ============================================================ */
 
     profilePicture: {
       url: {

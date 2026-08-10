@@ -4,6 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 import {
   FaUser,
   FaHandsHelping,
+  FaUserMd,
   FaArrowRight,
 } from "react-icons/fa";
 
@@ -14,14 +15,16 @@ function Register() {
   const navigate = useNavigate();
 
   return (
-    <div className="register-page">
+    <div className="register">
 
-      {/* LEFT */}
+      {/* =====================================================
+          LEFT
+      ====================================================== */}
 
       <div className="register-left">
 
         <span className="register-tag">
-          AI • HEALTHCARE • REGISTER
+          AI • HEALTHCARE
         </span>
 
         <img
@@ -35,7 +38,7 @@ function Register() {
         </h1>
 
         <h2>
-          Begin your journey toward
+          Begin your journey towards
           <br />
           intelligent Alzheimer's care.
         </h2>
@@ -48,7 +51,9 @@ function Register() {
 
       </div>
 
-      {/* RIGHT */}
+      {/* =====================================================
+          RIGHT
+      ====================================================== */}
 
       <div className="register-right">
 
@@ -68,7 +73,9 @@ function Register() {
 
         <div className="register-cards">
 
-          {/* PATIENT */}
+          {/* =================================================
+              PATIENT
+          ================================================== */}
 
           <div className="register-card">
 
@@ -85,20 +92,17 @@ function Register() {
             </p>
 
             <ul>
-
               <li>✓ AI Cognitive Screening</li>
-
               <li>✓ MRI Upload</li>
-
               <li>✓ Daily Reminders</li>
-
               <li>✓ Progress Tracking</li>
-
             </ul>
 
             <button
               onClick={() =>
-                navigate(ROUTES.PATIENT_REGISTER)
+                navigate(
+                  ROUTES.PATIENT_REGISTER
+                )
               }
             >
               Create Patient Account
@@ -107,7 +111,9 @@ function Register() {
 
           </div>
 
-          {/* CAREGIVER */}
+          {/* =================================================
+              CAREGIVER
+          ================================================== */}
 
           <div className="register-card">
 
@@ -123,20 +129,17 @@ function Register() {
             </p>
 
             <ul>
-
               <li>✓ Medication Management</li>
-
               <li>✓ Patient Monitoring</li>
-
               <li>✓ Cognitive Assistance</li>
-
               <li>✓ Emergency Alerts</li>
-
             </ul>
 
             <button
               onClick={() =>
-                navigate(ROUTES.CAREGIVER_REGISTER)
+                navigate(
+                  ROUTES.CAREGIVER_REGISTER
+                )
               }
             >
               Create Caregiver Account
@@ -145,7 +148,49 @@ function Register() {
 
           </div>
 
+          {/* =================================================
+              DOCTOR
+          ================================================== */}
+
+          <div className="register-card">
+
+            <div className="register-icon doctor">
+              <FaUserMd />
+            </div>
+
+            <h3>Doctor</h3>
+
+            <p>
+              Review AI predictions,
+              monitor patient reports
+              and provide clinical insights.
+            </p>
+
+            <ul>
+              <li>✓ MRI / CT Reports</li>
+              <li>✓ AI Predictions</li>
+              <li>✓ Patient Analytics</li>
+              <li>✓ Clinical Remarks</li>
+            </ul>
+
+            <button
+              onClick={() =>
+                navigate(
+                  ROUTES.DOCTOR_REGISTER
+                )
+              }
+            >
+              Create Doctor Account
+              <FaArrowRight />
+            </button>
+
+          </div>
+
         </div>
+
+        {/* ===================================================
+            FOOTER
+        ==================================================== */}
 
         <div className="register-footer">
 

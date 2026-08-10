@@ -11,8 +11,10 @@ import DoctorLogin from "../pages/DoctorLogin/DoctorLogin.jsx";
 import CaregiverLogin from "../pages/CaregiverLogin/CaregiverLogin.jsx";
 
 import Register from "../pages/Register/Register.jsx";
+
 import PatientRegister from "../pages/PatientRegister/PatientRegister.jsx";
 import CaregiverRegister from "../pages/CaregiverRegister/CaregiverRegister.jsx";
+import DoctorRegister from "../pages/DoctorRegister/DoctorRegister.jsx";
 
 import CaregiverDashboard from "../pages/CaregiverDashboard/CaregiverDashboard.jsx";
 
@@ -68,7 +70,11 @@ const AppRoutes = () => {
           path={ROUTES.CAREGIVER_REGISTER}
           element={<CaregiverRegister />}
         />
-
+        
+        <Route
+  path={ROUTES.DOCTOR_REGISTER}
+  element={<DoctorRegister />}
+/>
         {/* ==================================================
             PROTECTED CAREGIVER ROUTES
         =================================================== */}
