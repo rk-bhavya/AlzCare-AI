@@ -17,6 +17,7 @@ import CaregiverRegister from "../pages/CaregiverRegister/CaregiverRegister.jsx"
 import DoctorRegister from "../pages/DoctorRegister/DoctorRegister.jsx";
 
 import CaregiverDashboard from "../pages/CaregiverDashboard/CaregiverDashboard.jsx";
+import DoctorDashboard from "../pages/DoctorDashboard/DoctorDashboard.jsx";
 
 import ProtectedRoute from "../components/ProtectedRoute/ProtectedRoute.jsx";
 
@@ -87,7 +88,10 @@ const AppRoutes = () => {
           />
 
         </Route>
-
+        <Route
+  path={ROUTES.DOCTOR_DASHBOARD}
+  element={<DoctorDashboard />}
+/>
         {/* ==================================================
             FALLBACK
         =================================================== */}
