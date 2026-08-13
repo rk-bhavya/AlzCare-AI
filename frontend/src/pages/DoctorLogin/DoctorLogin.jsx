@@ -275,17 +275,15 @@ const DoctorLogin = () => {
                 </label>
 
                 <button
-                  type="button"
-                  className="doctor-login__forgot"
-                  onClick={() => {
-                    alert(
-                      "Forgot Password will be implemented in the next authentication feature."
-                    );
-                  }}
-                >
-                  Forgot Password?
-                </button>
-
+  type="button"
+  className="doctor-login__forgot"
+  onClick={() =>
+    navigate("/forgot-password")
+  }
+  disabled={isLoading}
+>
+  Forgot Password?
+</button>
               </div>
 
               <div className="doctor-login__input-wrapper">

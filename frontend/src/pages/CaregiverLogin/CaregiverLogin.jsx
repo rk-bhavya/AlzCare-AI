@@ -169,13 +169,8 @@ const CaregiverLogin = () => {
   ============================================================ */
 
   const handleForgotPassword = () => {
-    /*
-     * OTP-based forgot password will be implemented
-     * as a separate authentication feature.
-     */
-
-    console.log("Forgot password clicked");
-  };
+  navigate("/forgot-password");
+};
 
   return (
     <div className="caregiver-login">

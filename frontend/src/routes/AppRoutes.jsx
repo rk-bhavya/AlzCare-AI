@@ -21,6 +21,7 @@ import DoctorDashboard from "../pages/DoctorDashboard/DoctorDashboard.jsx";
 
 import ProtectedRoute from "../components/ProtectedRoute/ProtectedRoute.jsx";
 
+import ForgotPassword from "../pages/auth/ForgotPassword.jsx";
 import { ROUTES, ROLES } from "../config/constants.js";
 
 /**
@@ -101,6 +102,10 @@ const AppRoutes = () => {
           element={<NotFound />}
         />
 
+        <Route
+  path="/forgot-password"
+  element={<ForgotPassword />}
+/>
       </Route>
 
     </Routes>

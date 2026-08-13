@@ -5,6 +5,9 @@ import {
   registerCaregiver,
   registerDoctor,
   login,
+  forgotPassword,
+  verifyOTP,
+  resetPassword,
 } from "../controllers/auth.controller.js";
 
 import upload from "../middleware/upload.middleware.js";
@@ -48,6 +51,33 @@ router.post(
   "/register/doctor",
   upload.single("profilePicture"),
   registerDoctor
+);
+
+/* ============================================================
+   FORGOT PASSWORD
+============================================================ */
+
+router.post(
+  "/forgot-password",
+  forgotPassword
+);
+
+/* ============================================================
+   VERIFY OTP
+============================================================ */
+
+router.post(
+  "/verify-otp",
+  verifyOTP
+);
+
+/* ============================================================
+   RESET PASSWORD
+============================================================ */
+
+router.post(
+  "/reset-password",
+  resetPassword
 );
 
 export default router;
