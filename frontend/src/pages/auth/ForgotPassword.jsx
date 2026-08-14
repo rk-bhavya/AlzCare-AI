@@ -244,7 +244,7 @@ function ForgotPassword() {
           </h1>
 
           <p>
-            Recover your AlzCare AI account securely
+            Recover your account securely
             using a verification code sent to your
             registered contact.
           </p>
@@ -422,7 +422,7 @@ function ForgotPassword() {
                   <div>
                     <strong>Phone OTP</strong>
                     <span>
-                      Receive code by SMS
+                      Receive code by Call / SMS
                     </span>
                   </div>
                 </button>

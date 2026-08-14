@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
 import {
   FaBell,
   FaCalendarAlt,
@@ -25,146 +26,76 @@ import {
   FaChartLine,
 } from "react-icons/fa";
 
+import { getCaregiverDashboard } from "../../api/caregiver.api.js";
+
 import "./CaregiverDashboard.css";
 
 const CaregiverDashboard = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  /* ============================================================
+     SIDEBAR
+  ============================================================ */
 
-  /*
-   * UI PREVIEW DATA
-   *
-   * These values are only being used to build and test
-   * the dashboard UI.
-   *
-   * They will be replaced with API data later.
-   */
+  const [sidebarOpen, setSidebarOpen] =
+    useState(false);
 
-  const caregiver = {
-    name: "Anita Sharma",
-    initials: "AS",
+  /* ============================================================
+     DYNAMIC DASHBOARD DATA
+  ============================================================ */
+
+  const [dashboardData, setDashboardData] =
+    useState(null);
+
+  const [isLoading, setIsLoading] =
+    useState(true);
+
+  const [error, setError] =
+    useState("");
+
+  /* ============================================================
+     LOAD DASHBOARD DATA
+  ============================================================ */
+
+  useEffect(() => {
+    const loadDashboard = async () => {
+      try {
+        setIsLoading(true);
+        setError("");
+
+        const data =
+          await getCaregiverDashboard();
+
+        setDashboardData(data);
+      } catch (err) {
+        console.error(
+          "Caregiver dashboard error:",
+          err
+        );
+
+        setError(
+          err.response?.data?.message ||
+            "Unable to load your dashboard. Please try again."
+        );
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadDashboard();
+  }, []);
+
+  /* ============================================================
+     HELPERS
+  ============================================================ */
+
+  const getInitials = (name = "") => {
+    return name
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((part) => part[0].toUpperCase())
+      .join("");
   };
-
-  const patient = {
-    name: "Ramesh Kumar",
-    age: 72,
-    gender: "Male",
-    status: "Needs Monitoring",
-    lastAssessment: "10 August 2026",
-    doctor: "Dr. Priya Rao",
-    emergencyContact: "9876501234",
-    image: "",
-  };
-
-  const aiPrediction = {
-    result: "Mild Alzheimer's",
-    confidence: 92,
-    date: "10 August 2026",
-    scanType: "MRI Brain Scan",
-  };
-
-  const medications = [
-    {
-      name: "Donepezil",
-      dosage: "5 mg",
-      time: "08:00 AM",
-      status: "Taken",
-    },
-    {
-      name: "Memantine",
-      dosage: "10 mg",
-      time: "01:00 PM",
-      status: "Pending",
-    },
-    {
-      name: "Vitamin B12",
-      dosage: "500 mcg",
-      time: "08:00 PM",
-      status: "Pending",
-    },
-  ];
-
-  const appointments = [
-    {
-      doctor: "Dr. Priya Rao",
-      type: "Neurology Follow-up",
-      date: "14 Aug 2026",
-      time: "10:30 AM",
-      status: "Confirmed",
-    },
-    {
-      doctor: "Dr. Arjun Mehta",
-      type: "Cognitive Assessment",
-      date: "22 Aug 2026",
-      time: "03:00 PM",
-      status: "Scheduled",
-    },
-  ];
-
-  const alerts = [
-    {
-      type: "Critical",
-      title: "Patient left safe zone",
-      description: "Location alert triggered 12 minutes ago.",
-      time: "12 min ago",
-    },
-    {
-      type: "Warning",
-      title: "Medication pending",
-      description: "Memantine is scheduled for 01:00 PM.",
-      time: "35 min ago",
-    },
-    {
-      type: "Information",
-      title: "Doctor updated patient record",
-      description: "New clinical remarks were added.",
-      time: "2 hrs ago",
-    },
-  ];
-
-  const activities = [
-    {
-      icon: <FaPills />,
-      title: "Medication taken",
-      description: "Donepezil 5 mg was marked as taken.",
-      time: "Today · 08:05 AM",
-    },
-    {
-      icon: <FaFileMedical />,
-      title: "AI assessment completed",
-      description: "Latest MRI prediction was generated.",
-      time: "Today · 09:30 AM",
-    },
-    {
-      icon: <FaGamepad />,
-      title: "Cognitive activity completed",
-      description: "Memory exercise score: 82%.",
-      time: "Yesterday · 06:20 PM",
-    },
-    {
-      icon: <FaUserMd />,
-      title: "Doctor update",
-      description: "Clinical remarks were added to the patient record.",
-      time: "Yesterday · 03:15 PM",
-    },
-  ];
-
-  const cognitiveActivities = [
-    {
-      name: "Memory Games",
-      icon: <FaBrain />,
-      score: 82,
-    },
-    {
-      name: "Attention Games",
-      icon: <FaChartLine />,
-      score: 74,
-    },
-    {
-      name: "Word Games",
-      icon: <FaGamepad />,
-      score: 88,
-    },
-  ];
 
   const closeSidebar = () => {
     setSidebarOpen(false);
@@ -172,14 +103,88 @@ const CaregiverDashboard = () => {
 
   const handleAction = (label) => {
     /*
-     * Navigation/actions will be connected to real routes
-     * in later features.
+     * Navigation/actions will be connected
+     * to their actual features later.
      */
     console.log(`${label} clicked`);
   };
 
+  /* ============================================================
+     DERIVED DATA
+  ============================================================ */
+
+  const caregiver =
+    dashboardData?.caregiver || null;
+
+  const patient =
+    dashboardData?.patient || null;
+
+  const doctor =
+    dashboardData?.doctor || null;
+
+  const caregiverName =
+    caregiver?.fullName || "Caregiver";
+
+  const caregiverInitials =
+    getInitials(caregiverName);
+
+  const patientInitials =
+    patient
+      ? getInitials(patient.fullName)
+      : "—";
+
+  /* ============================================================
+     LOADING STATE
+  ============================================================ */
+
+  if (isLoading) {
+    return (
+      <div className="caregiver-dashboard caregiver-dashboard--loading">
+        <div className="caregiver-dashboard-loader">
+          <div className="caregiver-dashboard-loader__icon">
+            <FaBrain />
+          </div>
+
+          <h2>Loading your dashboard...</h2>
+
+          <p>
+            Preparing your caregiver portal.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  /* ============================================================
+     ERROR STATE
+  ============================================================ */
+
+  if (error) {
+    return (
+      <div className="caregiver-dashboard caregiver-dashboard--loading">
+        <div className="caregiver-dashboard-loader">
+          <div className="caregiver-dashboard-loader__icon caregiver-dashboard-loader__icon--error">
+            <FaExclamationTriangle />
+          </div>
+
+          <h2>Unable to load dashboard</h2>
+
+          <p>{error}</p>
+
+          <button
+            className="caregiver-primary-button"
+            onClick={() => window.location.reload()}
+          >
+            Try Again
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="caregiver-dashboard">
+
       {/* ======================================================
           MOBILE OVERLAY
       ====================================================== */}
@@ -197,7 +202,9 @@ const CaregiverDashboard = () => {
 
       <aside
         className={`caregiver-sidebar ${
-          sidebarOpen ? "caregiver-sidebar--open" : ""
+          sidebarOpen
+            ? "caregiver-sidebar--open"
+            : ""
         }`}
       >
         <div className="caregiver-sidebar__brand">
@@ -232,7 +239,9 @@ const CaregiverDashboard = () => {
 
           <button
             className="caregiver-nav-item"
-            onClick={() => handleAction("Patient")}
+            onClick={() =>
+              handleAction("Patient")
+            }
           >
             <FaUser />
             <span>Patient</span>
@@ -240,7 +249,9 @@ const CaregiverDashboard = () => {
 
           <button
             className="caregiver-nav-item"
-            onClick={() => handleAction("AI Detection")}
+            onClick={() =>
+              handleAction("AI Detection")
+            }
           >
             <FaBrain />
             <span>AI Detection</span>
@@ -248,7 +259,9 @@ const CaregiverDashboard = () => {
 
           <button
             className="caregiver-nav-item"
-            onClick={() => handleAction("Medications")}
+            onClick={() =>
+              handleAction("Medications")
+            }
           >
             <FaPills />
             <span>Medications</span>
@@ -256,7 +269,9 @@ const CaregiverDashboard = () => {
 
           <button
             className="caregiver-nav-item"
-            onClick={() => handleAction("Appointments")}
+            onClick={() =>
+              handleAction("Appointments")
+            }
           >
             <FaCalendarAlt />
             <span>Appointments</span>
@@ -264,15 +279,21 @@ const CaregiverDashboard = () => {
 
           <button
             className="caregiver-nav-item"
-            onClick={() => handleAction("Cognitive Assistance")}
+            onClick={() =>
+              handleAction("Cognitive Assistance")
+            }
           >
             <FaGamepad />
-            <span>Cognitive Assistance</span>
+            <span>
+              Cognitive Assistance
+            </span>
           </button>
 
           <button
             className="caregiver-nav-item"
-            onClick={() => handleAction("Location Tracking")}
+            onClick={() =>
+              handleAction("Location Tracking")
+            }
           >
             <FaMapMarkerAlt />
             <span>Location Tracking</span>
@@ -280,16 +301,24 @@ const CaregiverDashboard = () => {
 
           <button
             className="caregiver-nav-item"
-            onClick={() => handleAction("Emergency Alerts")}
+            onClick={() =>
+              handleAction("Emergency Alerts")
+            }
           >
             <FaExclamationTriangle />
+
             <span>Emergency Alerts</span>
-            <span className="caregiver-nav-badge">2</span>
+
+            <span className="caregiver-nav-badge">
+              2
+            </span>
           </button>
 
           <button
             className="caregiver-nav-item"
-            onClick={() => handleAction("Notifications")}
+            onClick={() =>
+              handleAction("Notifications")
+            }
           >
             <FaBell />
             <span>Notifications</span>
@@ -301,7 +330,9 @@ const CaregiverDashboard = () => {
 
           <button
             className="caregiver-nav-item"
-            onClick={() => handleAction("Profile")}
+            onClick={() =>
+              handleAction("Profile")
+            }
           >
             <FaUser />
             <span>Profile</span>
@@ -309,7 +340,9 @@ const CaregiverDashboard = () => {
 
           <button
             className="caregiver-nav-item"
-            onClick={() => handleAction("Settings")}
+            onClick={() =>
+              handleAction("Settings")
+            }
           >
             <FaCog />
             <span>Settings</span>
@@ -322,13 +355,18 @@ const CaregiverDashboard = () => {
 
             <div>
               <strong>Care & Safety</strong>
-              <span>Patient monitoring active</span>
+
+              <span>
+                Patient monitoring active
+              </span>
             </div>
           </div>
 
           <button
             className="caregiver-logout"
-            onClick={() => handleAction("Logout")}
+            onClick={() =>
+              handleAction("Logout")
+            }
           >
             <FaSignOutAlt />
             <span>Logout</span>
@@ -341,16 +379,21 @@ const CaregiverDashboard = () => {
       ====================================================== */}
 
       <main className="caregiver-main">
+
         {/* ====================================================
             TOP HEADER
         ==================================================== */}
 
         <header className="caregiver-header">
+
           <div className="caregiver-header__left">
+
             <button
               type="button"
               className="caregiver-mobile-menu"
-              onClick={() => setSidebarOpen(true)}
+              onClick={() =>
+                setSidebarOpen(true)
+              }
               aria-label="Open navigation"
             >
               <FaBars />
@@ -362,30 +405,39 @@ const CaregiverDashboard = () => {
               </p>
 
               <h1>
-                Good morning, {caregiver.name.split(" ")[0]}!
+                Good morning,{" "}
+                {caregiverName.split(" ")[0]}!
               </h1>
             </div>
           </div>
 
           <div className="caregiver-header__right">
+
             <button
               className="caregiver-header-icon"
               aria-label="Notifications"
-              onClick={() => handleAction("Notifications")}
+              onClick={() =>
+                handleAction("Notifications")
+              }
             >
               <FaBell />
+
               <span />
             </button>
 
             <div className="caregiver-header__divider" />
 
             <div className="caregiver-header__profile">
+
               <div className="caregiver-avatar">
-                {caregiver.initials}
+                {caregiverInitials}
               </div>
 
               <div className="caregiver-header__profile-text">
-                <strong>{caregiver.name}</strong>
+                <strong>
+                  {caregiverName}
+                </strong>
+
                 <span>Caregiver</span>
               </div>
 
@@ -399,20 +451,28 @@ const CaregiverDashboard = () => {
         ==================================================== */}
 
         <div className="caregiver-content">
+
           {/* ==================================================
               STATUS STRIP
           ================================================== */}
 
           <section className="caregiver-status-strip">
+
             <div className="caregiver-status-strip__icon">
               <FaHeartbeat />
             </div>
 
             <div>
-              <strong>Patient monitoring is active</strong>
+              <strong>
+                {patient
+                  ? "Patient monitoring is active"
+                  : "Caregiver account is active"}
+              </strong>
+
               <p>
-                {patient.name}'s latest information is available
-                for review.
+                {patient
+                  ? `${patient.fullName}'s latest information is available for review.`
+                  : "No patient has been assigned to you yet. Patient information will appear here once a doctor assigns a patient."}
               </p>
             </div>
 
@@ -420,6 +480,7 @@ const CaregiverDashboard = () => {
               <i />
               Live
             </span>
+
           </section>
 
           {/* ==================================================
@@ -427,72 +488,134 @@ const CaregiverDashboard = () => {
           ================================================== */}
 
           <section className="caregiver-section">
+
             <div className="caregiver-section-heading">
+
               <div>
                 <span>PRIMARY PATIENT</span>
                 <h2>Patient Overview</h2>
               </div>
 
-              <button
-                className="caregiver-outline-button"
-                onClick={() => handleAction("View Patient")}
-              >
-                View Patient
-                <FaChevronRight />
-              </button>
+              {patient && (
+                <button
+                  className="caregiver-outline-button"
+                  onClick={() =>
+                    handleAction("View Patient")
+                  }
+                >
+                  View Patient
+                  <FaChevronRight />
+                </button>
+              )}
+
             </div>
 
             <div className="caregiver-patient-overview">
-              <div className="caregiver-patient-main">
-                <div className="caregiver-patient-avatar">
-                  {patient.name
-                    .split(" ")
-                    .map((name) => name[0])
-                    .join("")}
-                </div>
 
-                <div className="caregiver-patient-details">
-                  <h3>{patient.name}</h3>
+              {/* ============================================
+                  PATIENT MAIN INFORMATION
+              ============================================ */}
 
-                  <p>
-                    {patient.age} years
-                    <span>•</span>
-                    {patient.gender}
-                  </p>
+              {patient ? (
+                <>
+                  <div className="caregiver-patient-main">
 
-                  <div className="caregiver-patient-status">
-                    <span className="caregiver-status-dot caregiver-status-dot--warning" />
-                    {patient.status}
+                    <div className="caregiver-patient-avatar">
+                      {patientInitials}
+                    </div>
+
+                    <div className="caregiver-patient-details">
+
+                      <h3>
+                        {patient.fullName}
+                      </h3>
+
+                      <p>
+                        {patient.age} years
+                        <span>•</span>
+                        {patient.gender}
+                      </p>
+
+                      <div className="caregiver-patient-status">
+                        <span className="caregiver-status-dot caregiver-status-dot--warning" />
+
+                        Needs Monitoring
+                      </div>
+
+                    </div>
                   </div>
-                </div>
-              </div>
 
-              <div className="caregiver-patient-info">
-                <div>
-                  <span>LAST ASSESSMENT</span>
-                  <strong>{patient.lastAssessment}</strong>
-                </div>
+                  {/* ==========================================
+                      PATIENT INFORMATION
+                  ========================================== */}
 
-                <div>
-                  <span>ASSIGNED DOCTOR</span>
-                  <strong>{patient.doctor}</strong>
-                </div>
+                  <div className="caregiver-patient-info">
 
-                <div>
-                  <span>EMERGENCY CONTACT</span>
-                  <strong>{patient.emergencyContact}</strong>
+                    <div>
+                      <span>EMAIL</span>
+                      <strong>
+                        {patient.email}
+                      </strong>
+                    </div>
+
+                    <div>
+                      <span>PHONE</span>
+                      <strong>
+                        {patient.phone}
+                      </strong>
+                    </div>
+
+                    <div>
+                      <span>EMERGENCY CONTACT</span>
+                      <strong>
+                        {patient.emergencyContact ||
+                          "Not available"}
+                      </strong>
+                    </div>
+
+                  </div>
+                </>
+              ) : (
+                /* ==========================================
+                   NO PATIENT STATE
+                ========================================== */
+
+                <div className="caregiver-no-patient">
+
+                  <div className="caregiver-no-patient__icon">
+                    <FaUser />
+                  </div>
+
+                  <div>
+                    <h3>
+                      No patient assigned yet
+                    </h3>
+
+                    <p>
+                      Your patient's information
+                      will appear here once a
+                      doctor assigns a patient
+                      to your care.
+                    </p>
+                  </div>
+
                 </div>
-              </div>
+              )}
+
             </div>
           </section>
 
           {/* ==================================================
               SUMMARY CARDS
+              STILL PREVIEW DATA FOR NOW
           ================================================== */}
 
           <section className="caregiver-summary-grid">
+
             <div className="caregiver-summary-card">
+
               <div className="caregiver-summary-card__top">
+
                 <div className="caregiver-summary-icon caregiver-summary-icon--blue">
                   <FaPills />
                 </div>
@@ -501,6 +624,7 @@ const CaregiverDashboard = () => {
                   <FaArrowUp />
                   92%
                 </span>
+
               </div>
 
               <span className="caregiver-summary-label">
@@ -515,11 +639,17 @@ const CaregiverDashboard = () => {
                 <i style={{ width: "92%" }} />
               </div>
 
-              <small>Excellent adherence this week</small>
+              <small>
+                Preview data — will become
+                dynamic with Medication feature
+              </small>
+
             </div>
 
             <div className="caregiver-summary-card">
+
               <div className="caregiver-summary-card__top">
+
                 <div className="caregiver-summary-icon caregiver-summary-icon--purple">
                   <FaBrain />
                 </div>
@@ -528,6 +658,7 @@ const CaregiverDashboard = () => {
                   <FaArrowUp />
                   6%
                 </span>
+
               </div>
 
               <span className="caregiver-summary-label">
@@ -542,11 +673,17 @@ const CaregiverDashboard = () => {
                 <i style={{ width: "81%" }} />
               </div>
 
-              <small>Improved from last week</small>
+              <small>
+                Preview data — will become
+                dynamic with Cognitive feature
+              </small>
+
             </div>
 
             <div className="caregiver-summary-card">
+
               <div className="caregiver-summary-card__top">
+
                 <div className="caregiver-summary-icon caregiver-summary-icon--green">
                   <FaCalendarAlt />
                 </div>
@@ -554,6 +691,7 @@ const CaregiverDashboard = () => {
                 <span className="caregiver-summary-number">
                   2
                 </span>
+
               </div>
 
               <span className="caregiver-summary-label">
@@ -564,11 +702,17 @@ const CaregiverDashboard = () => {
                 2
               </strong>
 
-              <small>Next appointment in 4 days</small>
+              <small>
+                Preview data — will become
+                dynamic with Appointment feature
+              </small>
+
             </div>
 
             <div className="caregiver-summary-card">
+
               <div className="caregiver-summary-card__top">
+
                 <div className="caregiver-summary-icon caregiver-summary-icon--orange">
                   <FaBell />
                 </div>
@@ -576,6 +720,7 @@ const CaregiverDashboard = () => {
                 <span className="caregiver-summary-number caregiver-summary-number--danger">
                   2
                 </span>
+
               </div>
 
               <span className="caregiver-summary-label">
@@ -586,8 +731,13 @@ const CaregiverDashboard = () => {
                 2
               </strong>
 
-              <small>Requires your attention</small>
+              <small>
+                Preview data — will become
+                dynamic with Alert feature
+              </small>
+
             </div>
+
           </section>
 
           {/* ==================================================
@@ -595,74 +745,96 @@ const CaregiverDashboard = () => {
           ================================================== */}
 
           <section className="caregiver-dashboard-grid">
-            {/* ================================================
+
+            {/* ==================================================
                 AI DETECTION
-            ================================================ */}
+            ================================================== */}
 
             <div className="caregiver-panel">
+
               <div className="caregiver-panel-header">
+
                 <div>
-                  <span>DEEP LEARNING ANALYSIS</span>
-                  <h2>AI Detection Summary</h2>
+                  <span>
+                    DEEP LEARNING ANALYSIS
+                  </span>
+
+                  <h2>
+                    AI Detection Summary
+                  </h2>
                 </div>
 
                 <div className="caregiver-ai-badge">
                   <FaBrain />
                   CNN
                 </div>
+
               </div>
 
               <div className="caregiver-ai-result">
+
                 <div className="caregiver-ai-scan">
                   <FaBrain />
                   <span>MRI</span>
                 </div>
 
                 <div className="caregiver-ai-result-info">
-                  <span>Latest Prediction</span>
+                  <span>Preview Prediction</span>
 
-                  <h3>{aiPrediction.result}</h3>
+                  <h3>
+                    Mild Alzheimer's
+                  </h3>
 
                   <p>
-                    {aiPrediction.scanType}
+                    MRI Brain Scan
                     <span>•</span>
-                    {aiPrediction.date}
+                    Preview
                   </p>
                 </div>
 
                 <div className="caregiver-confidence">
+
                   <div
                     className="caregiver-confidence-circle"
                     style={{
-                      "--confidence": `${aiPrediction.confidence * 3.6}deg`,
+                      "--confidence":
+                        "331.2deg",
                     }}
                   >
                     <strong>
-                      {aiPrediction.confidence}%
+                      92%
                     </strong>
 
-                    <span>Confidence</span>
+                    <span>
+                      Confidence
+                    </span>
                   </div>
+
                 </div>
               </div>
 
               <button
                 className="caregiver-primary-button caregiver-primary-button--full"
                 onClick={() =>
-                  handleAction("View Full Report")
+                  handleAction(
+                    "View Full Report"
+                  )
                 }
               >
                 <FaFileMedical />
                 View Full Report
               </button>
+
             </div>
 
-            {/* ================================================
+            {/* ==================================================
                 LOCATION
-            ================================================ */}
+            ================================================== */}
 
             <div className="caregiver-panel">
+
               <div className="caregiver-panel-header">
+
                 <div>
                   <span>PATIENT SAFETY</span>
                   <h2>Location Status</h2>
@@ -672,10 +844,13 @@ const CaregiverDashboard = () => {
                   <i />
                   GPS Active
                 </span>
+
               </div>
 
               <div className="caregiver-location-card">
+
                 <div className="caregiver-location-map">
+
                   <div className="caregiver-map-grid" />
 
                   <div className="caregiver-map-pulse">
@@ -687,33 +862,47 @@ const CaregiverDashboard = () => {
                   <div className="caregiver-safe-zone">
                     Safe Zone
                   </div>
+
                 </div>
 
                 <div className="caregiver-location-info">
+
                   <div>
-                    <span>LAST UPDATED</span>
-                    <strong>2 minutes ago</strong>
+                    <span>
+                      LAST UPDATED
+                    </span>
+
+                    <strong>
+                      Preview
+                    </strong>
                   </div>
 
                   <div>
                     <span>STATUS</span>
+
                     <strong className="caregiver-location-safe">
-                      Within Safe Zone
+                      Preview
                     </strong>
                   </div>
+
                 </div>
+
               </div>
 
               <button
                 className="caregiver-outline-button caregiver-outline-button--full"
                 onClick={() =>
-                  handleAction("View Live Location")
+                  handleAction(
+                    "View Live Location"
+                  )
                 }
               >
                 <FaMapMarkerAlt />
                 View Live Location
               </button>
+
             </div>
+
           </section>
 
           {/* ==================================================
@@ -721,40 +910,73 @@ const CaregiverDashboard = () => {
           ================================================== */}
 
           <section className="caregiver-dashboard-grid">
-            {/* ================================================
-                MEDICATIONS
-            ================================================ */}
+
+            {/* MEDICATIONS */}
 
             <div className="caregiver-panel">
+
               <div className="caregiver-panel-header">
+
                 <div>
-                  <span>TODAY'S SCHEDULE</span>
-                  <h2>Medications</h2>
+                  <span>
+                    TODAY'S SCHEDULE
+                  </span>
+
+                  <h2>
+                    Medications
+                  </h2>
                 </div>
 
                 <button
                   className="caregiver-small-action"
                   onClick={() =>
-                    handleAction("Add Medication")
+                    handleAction(
+                      "Add Medication"
+                    )
                   }
                 >
                   <FaPlus />
                   Add
                 </button>
+
               </div>
 
               <div className="caregiver-medication-list">
-                {medications.map((medicine) => (
+
+                {[
+                  {
+                    name: "Donepezil",
+                    dosage: "5 mg",
+                    time: "08:00 AM",
+                    status: "Taken",
+                  },
+                  {
+                    name: "Memantine",
+                    dosage: "10 mg",
+                    time: "01:00 PM",
+                    status: "Pending",
+                  },
+                  {
+                    name: "Vitamin B12",
+                    dosage: "500 mcg",
+                    time: "08:00 PM",
+                    status: "Pending",
+                  },
+                ].map((medicine) => (
                   <div
                     className="caregiver-medication-item"
                     key={`${medicine.name}-${medicine.time}`}
                   >
+
                     <div className="caregiver-medication-icon">
                       <FaPills />
                     </div>
 
                     <div className="caregiver-medication-info">
-                      <strong>{medicine.name}</strong>
+                      <strong>
+                        {medicine.name}
+                      </strong>
+
                       <span>
                         {medicine.dosage}
                         <i>•</i>
@@ -764,71 +986,121 @@ const CaregiverDashboard = () => {
 
                     <span
                       className={`caregiver-medication-status ${
-                        medicine.status === "Taken"
+                        medicine.status ===
+                        "Taken"
                           ? "caregiver-medication-status--taken"
                           : "caregiver-medication-status--pending"
                       }`}
                     >
-                      {medicine.status === "Taken" && (
+                      {medicine.status ===
+                        "Taken" && (
                         <FaCheckCircle />
                       )}
 
                       {medicine.status}
                     </span>
+
                   </div>
                 ))}
+
               </div>
 
               <button
                 className="caregiver-text-button"
                 onClick={() =>
-                  handleAction("View All Medications")
+                  handleAction(
+                    "View All Medications"
+                  )
                 }
               >
                 View All Medications
                 <FaChevronRight />
               </button>
+
             </div>
 
-            {/* ================================================
-                APPOINTMENTS
-            ================================================ */}
+            {/* APPOINTMENTS */}
 
             <div className="caregiver-panel">
+
               <div className="caregiver-panel-header">
+
                 <div>
                   <span>UPCOMING</span>
-                  <h2>Appointments</h2>
+
+                  <h2>
+                    Appointments
+                  </h2>
                 </div>
 
                 <button
                   className="caregiver-small-action"
                   onClick={() =>
-                    handleAction("Book Appointment")
+                    handleAction(
+                      "Book Appointment"
+                    )
                   }
                 >
                   <FaPlus />
                   Book
                 </button>
+
               </div>
 
               <div className="caregiver-appointment-list">
-                {appointments.map((appointment) => (
+
+                {[
+                  {
+                    doctor:
+                      doctor?.fullName ||
+                      "Dr. Priya Rao",
+                    type:
+                      "Neurology Follow-up",
+                    date:
+                      "14 Aug 2026",
+                    time:
+                      "10:30 AM",
+                    status:
+                      "Preview",
+                  },
+                  {
+                    doctor:
+                      "Dr. Arjun Mehta",
+                    type:
+                      "Cognitive Assessment",
+                    date:
+                      "22 Aug 2026",
+                    time:
+                      "03:00 PM",
+                    status:
+                      "Preview",
+                  },
+                ].map((appointment) => (
                   <div
                     className="caregiver-appointment-item"
                     key={`${appointment.doctor}-${appointment.date}`}
                   >
+
                     <div className="caregiver-appointment-date">
                       <span>
-                        {appointment.date.split(" ")[0]}
+                        {appointment.date.split(
+                          " "
+                        )[0]}
                       </span>
+
                       <strong>
-                        {appointment.date.split(" ")[1]}
+                        {appointment.date.split(
+                          " "
+                        )[1]}
                       </strong>
                     </div>
 
                     <div className="caregiver-appointment-info">
-                      <strong>{appointment.doctor}</strong>
+
+                      <strong>
+                        {appointment.doctor}
+                      </strong>
+
                       <span>
                         {appointment.type}
                       </span>
@@ -837,25 +1109,32 @@ const CaregiverDashboard = () => {
                         <FaClock />
                         {appointment.time}
                       </small>
+
                     </div>
 
                     <span className="caregiver-appointment-status">
                       {appointment.status}
                     </span>
+
                   </div>
                 ))}
+
               </div>
 
               <button
                 className="caregiver-text-button"
                 onClick={() =>
-                  handleAction("View Appointments")
+                  handleAction(
+                    "View Appointments"
+                  )
                 }
               >
                 View Appointments
                 <FaChevronRight />
               </button>
+
             </div>
+
           </section>
 
           {/* ==================================================
@@ -863,44 +1142,87 @@ const CaregiverDashboard = () => {
           ================================================== */}
 
           <section className="caregiver-panel caregiver-cognitive-panel">
+
             <div className="caregiver-panel-header">
+
               <div>
-                <span>MEMORY SUPPORT</span>
-                <h2>Cognitive Assistance</h2>
+                <span>
+                  MEMORY SUPPORT
+                </span>
+
+                <h2>
+                  Cognitive Assistance
+                </h2>
+
                 <p>
-                  Keep the patient's mind active with guided
-                  cognitive activities.
+                  Keep the patient's mind active
+                  with guided cognitive activities.
                 </p>
               </div>
 
               <button
                 className="caregiver-outline-button"
                 onClick={() =>
-                  handleAction("Cognitive Assistance")
+                  handleAction(
+                    "Cognitive Assistance"
+                  )
                 }
               >
                 Open Activities
                 <FaChevronRight />
               </button>
+
             </div>
 
             <div className="caregiver-cognitive-grid">
-              {cognitiveActivities.map((activity) => (
+
+              {[
+                {
+                  name:
+                    "Memory Games",
+                  icon:
+                    <FaBrain />,
+                  score: 82,
+                },
+                {
+                  name:
+                    "Attention Games",
+                  icon:
+                    <FaChartLine />,
+                  score: 74,
+                },
+                {
+                  name:
+                    "Word Games",
+                  icon:
+                    <FaGamepad />,
+                  score: 88,
+                },
+              ].map((activity) => (
                 <div
                   className="caregiver-cognitive-card"
                   key={activity.name}
                 >
+
                   <div className="caregiver-cognitive-icon">
                     {activity.icon}
                   </div>
 
                   <div className="caregiver-cognitive-info">
-                    <strong>{activity.name}</strong>
-                    <span>Recent score</span>
+                    <strong>
+                      {activity.name}
+                    </strong>
+
+                    <span>
+                      Preview score
+                    </span>
                   </div>
 
                   <div className="caregiver-cognitive-score">
-                    <strong>{activity.score}%</strong>
+
+                    <strong>
+                      {activity.score}%
+                    </strong>
 
                     <div>
                       <i
@@ -909,9 +1231,12 @@ const CaregiverDashboard = () => {
                         }}
                       />
                     </div>
+
                   </div>
+
                 </div>
               ))}
+
             </div>
           </section>
 
@@ -920,111 +1245,235 @@ const CaregiverDashboard = () => {
           ================================================== */}
 
           <section className="caregiver-dashboard-grid caregiver-dashboard-grid--alerts">
-            {/* ================================================
-                ALERTS
-            ================================================ */}
+
+            {/* ALERTS */}
 
             <div className="caregiver-panel">
+
               <div className="caregiver-panel-header">
+
                 <div>
-                  <span>ATTENTION REQUIRED</span>
-                  <h2>Emergency & Alerts</h2>
+                  <span>
+                    ATTENTION REQUIRED
+                  </span>
+
+                  <h2>
+                    Emergency & Alerts
+                  </h2>
                 </div>
 
                 <span className="caregiver-alert-count">
-                  2 Active
+                  Preview
                 </span>
+
               </div>
 
               <div className="caregiver-alert-list">
-                {alerts.map((alert) => (
+
+                {[
+                  {
+                    type:
+                      "Critical",
+                    title:
+                      "Patient left safe zone",
+                    description:
+                      "Location alert preview.",
+                    time:
+                      "Preview",
+                  },
+                  {
+                    type:
+                      "Warning",
+                    title:
+                      "Medication pending",
+                    description:
+                      "Medication reminder preview.",
+                    time:
+                      "Preview",
+                  },
+                  {
+                    type:
+                      "Information",
+                    title:
+                      "Doctor updated patient record",
+                    description:
+                      "Doctor update preview.",
+                    time:
+                      "Preview",
+                  },
+                ].map((alert) => (
                   <div
                     className={`caregiver-alert caregiver-alert--${alert.type.toLowerCase()}`}
                     key={alert.title}
                   >
+
                     <div className="caregiver-alert-icon">
-                      {alert.type === "Critical" ? (
+
+                      {alert.type ===
+                      "Critical" ? (
                         <FaExclamationTriangle />
-                      ) : alert.type === "Warning" ? (
+                      ) : alert.type ===
+                        "Warning" ? (
                         <FaClock />
                       ) : (
                         <FaBell />
                       )}
+
                     </div>
 
                     <div className="caregiver-alert-content">
-                      <div>
-                        <strong>{alert.title}</strong>
 
-                        <span>{alert.type}</span>
+                      <div>
+                        <strong>
+                          {alert.title}
+                        </strong>
+
+                        <span>
+                          {alert.type}
+                        </span>
                       </div>
 
-                      <p>{alert.description}</p>
+                      <p>
+                        {alert.description}
+                      </p>
 
-                      <small>{alert.time}</small>
+                      <small>
+                        {alert.time}
+                      </small>
+
                     </div>
+
                   </div>
                 ))}
+
               </div>
 
               <button
                 className="caregiver-text-button"
                 onClick={() =>
-                  handleAction("View All Alerts")
+                  handleAction(
+                    "View All Alerts"
+                  )
                 }
               >
                 View All Alerts
                 <FaChevronRight />
               </button>
+
             </div>
 
-            {/* ================================================
-                RECENT ACTIVITY
-            ================================================ */}
+            {/* RECENT ACTIVITY */}
 
             <div className="caregiver-panel">
+
               <div className="caregiver-panel-header">
+
                 <div>
-                  <span>PATIENT TIMELINE</span>
-                  <h2>Recent Activity</h2>
+                  <span>
+                    PATIENT TIMELINE
+                  </span>
+
+                  <h2>
+                    Recent Activity
+                  </h2>
                 </div>
 
                 <button
                   className="caregiver-text-button caregiver-text-button--compact"
                   onClick={() =>
-                    handleAction("View Activity")
+                    handleAction(
+                      "View Activity"
+                    )
                   }
                 >
                   View All
                   <FaChevronRight />
                 </button>
+
               </div>
 
               <div className="caregiver-timeline">
-                {activities.map((activity, index) => (
-                  <div
-                    className="caregiver-timeline-item"
-                    key={activity.title}
-                  >
-                    <div className="caregiver-timeline-icon">
-                      {activity.icon}
+
+                {[
+                  {
+                    icon:
+                      <FaPills />,
+                    title:
+                      "Medication taken",
+                    description:
+                      "Medication activity preview.",
+                    time:
+                      "Preview",
+                  },
+                  {
+                    icon:
+                      <FaFileMedical />,
+                    title:
+                      "AI assessment completed",
+                    description:
+                      "AI assessment preview.",
+                    time:
+                      "Preview",
+                  },
+                  {
+                    icon:
+                      <FaGamepad />,
+                    title:
+                      "Cognitive activity completed",
+                    description:
+                      "Cognitive activity preview.",
+                    time:
+                      "Preview",
+                  },
+                  {
+                    icon:
+                      <FaUserMd />,
+                    title:
+                      "Doctor update",
+                    description:
+                      "Doctor activity preview.",
+                    time:
+                      "Preview",
+                  },
+                ].map(
+                  (activity, index, array) => (
+                    <div
+                      className="caregiver-timeline-item"
+                      key={activity.title}
+                    >
+
+                      <div className="caregiver-timeline-icon">
+                        {activity.icon}
+                      </div>
+
+                      <div className="caregiver-timeline-content">
+
+                        <strong>
+                          {activity.title}
+                        </strong>
+
+                        <p>
+                          {activity.description}
+                        </p>
+
+                        <span>
+                          {activity.time}
+                        </span>
+
+                      </div>
+
+                      {index !==
+                        array.length - 1 && (
+                        <div className="caregiver-timeline-line" />
+                      )}
+
                     </div>
+                  )
+                )}
 
-                    <div className="caregiver-timeline-content">
-                      <strong>{activity.title}</strong>
-
-                      <p>{activity.description}</p>
-
-                      <span>{activity.time}</span>
-                    </div>
-
-                    {index !== activities.length - 1 && (
-                      <div className="caregiver-timeline-line" />
-                    )}
-                  </div>
-                ))}
               </div>
             </div>
+
           </section>
 
           {/* ==================================================
@@ -1032,45 +1481,90 @@ const CaregiverDashboard = () => {
           ================================================== */}
 
           <section className="caregiver-panel caregiver-doctor-panel">
+
             <div className="caregiver-doctor-profile">
+
               <div className="caregiver-doctor-avatar">
                 <FaUserMd />
               </div>
 
               <div>
-                <span>ASSIGNED DOCTOR</span>
-                <h2>Dr. Priya Rao</h2>
+                <span>
+                  ASSIGNED DOCTOR
+                </span>
+
+                <h2>
+                  {doctor?.fullName ||
+                    "No doctor assigned"}
+                </h2>
+
                 <p>
-                  Neurologist · City Care Hospital
+                  {doctor?.doctorDetails
+                    ?.specialization ||
+                    "Doctor information will appear here once assigned."}
+                  {doctor?.doctorDetails
+                    ?.hospital
+                    ? ` · ${doctor.doctorDetails.hospital}`
+                    : ""}
                 </p>
               </div>
+
             </div>
 
             <div className="caregiver-doctor-meta">
+
               <div>
-                <span>Specialization</span>
-                <strong>Neurology</strong>
+                <span>
+                  Specialization
+                </span>
+
+                <strong>
+                  {doctor
+                    ?.doctorDetails
+                    ?.specialization ||
+                    "Not assigned"}
+                </strong>
               </div>
 
               <div>
-                <span>Hospital / Clinic</span>
-                <strong>City Care Hospital</strong>
+                <span>
+                  Hospital / Clinic
+                </span>
+
+                <strong>
+                  {doctor
+                    ?.doctorDetails
+                    ?.hospital ||
+                    "Not assigned"}
+                </strong>
               </div>
 
               <div>
-                <span>Next Appointment</span>
-                <strong>14 Aug 2026 · 10:30 AM</strong>
+                <span>
+                  Contact
+                </span>
+
+                <strong>
+                  {doctor?.phone ||
+                    "Not available"}
+                </strong>
               </div>
+
             </div>
 
-            <button
-              className="caregiver-primary-button"
-              onClick={() =>
-                handleAction("Contact Doctor")
-              }
-            >
-              Contact Doctor
-            </button>
+            {doctor && (
+              <button
+                className="caregiver-primary-button"
+                onClick={() =>
+                  handleAction(
+                    "Contact Doctor"
+                  )
+                }
+              >
+                Contact Doctor
+              </button>
+            )}
+
           </section>
 
           {/* ==================================================
@@ -1078,70 +1572,117 @@ const CaregiverDashboard = () => {
           ================================================== */}
 
           <section className="caregiver-section caregiver-quick-section">
+
             <div className="caregiver-section-heading">
+
               <div>
-                <span>SHORTCUTS</span>
-                <h2>Quick Actions</h2>
+                <span>
+                  SHORTCUTS
+                </span>
+
+                <h2>
+                  Quick Actions
+                </h2>
               </div>
+
             </div>
 
             <div className="caregiver-quick-grid">
+
               <button
                 className="caregiver-quick-card caregiver-quick-card--blue"
                 onClick={() =>
-                  handleAction("Upload MRI/CT")
+                  handleAction(
+                    "Upload MRI/CT"
+                  )
                 }
               >
                 <FaFileMedical />
+
                 <div>
-                  <strong>Upload MRI/CT</strong>
-                  <span>Start AI analysis</span>
+                  <strong>
+                    Upload MRI/CT
+                  </strong>
+
+                  <span>
+                    Start AI analysis
+                  </span>
                 </div>
+
                 <FaChevronRight />
               </button>
 
               <button
                 className="caregiver-quick-card caregiver-quick-card--purple"
                 onClick={() =>
-                  handleAction("Add Medication")
+                  handleAction(
+                    "Add Medication"
+                  )
                 }
               >
                 <FaPills />
+
                 <div>
-                  <strong>Add Medication</strong>
-                  <span>Manage medicines</span>
+                  <strong>
+                    Add Medication
+                  </strong>
+
+                  <span>
+                    Manage medicines
+                  </span>
                 </div>
+
                 <FaChevronRight />
               </button>
 
               <button
                 className="caregiver-quick-card caregiver-quick-card--green"
                 onClick={() =>
-                  handleAction("Book Appointment")
+                  handleAction(
+                    "Book Appointment"
+                  )
                 }
               >
                 <FaCalendarAlt />
+
                 <div>
-                  <strong>Book Appointment</strong>
-                  <span>Schedule doctor visit</span>
+                  <strong>
+                    Book Appointment
+                  </strong>
+
+                  <span>
+                    Schedule doctor visit
+                  </span>
                 </div>
+
                 <FaChevronRight />
               </button>
 
               <button
                 className="caregiver-quick-card caregiver-quick-card--orange"
                 onClick={() =>
-                  handleAction("Start Cognitive Activity")
+                  handleAction(
+                    "Start Cognitive Activity"
+                  )
                 }
               >
                 <FaGamepad />
+
                 <div>
-                  <strong>Cognitive Activity</strong>
-                  <span>Start an exercise</span>
+                  <strong>
+                    Cognitive Activity
+                  </strong>
+
+                  <span>
+                    Start an exercise
+                  </span>
                 </div>
+
                 <FaChevronRight />
               </button>
+
             </div>
+
           </section>
         </div>
 
@@ -1150,6 +1691,7 @@ const CaregiverDashboard = () => {
         ==================================================== */}
 
         <footer className="caregiver-dashboard-footer">
+
           <span>
             © 2026 AlzCare AI
           </span>
@@ -1161,7 +1703,9 @@ const CaregiverDashboard = () => {
           <span>
             Your patient's privacy and safety matter.
           </span>
+
         </footer>
+
       </main>
     </div>
   );

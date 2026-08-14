@@ -1393,3 +1393,350 @@
     grid-template-columns: 1fr;
   }
 }
+/* ============================================================
+   PATIENT MANAGEMENT
+============================================================ */
+
+.doctor-assign-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  padding: 11px 17px;
+  border-radius: 10px;
+  background: #4f46e5;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.doctor-assign-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(79, 70, 229, 0.2);
+}
+
+.doctor-patient-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.doctor-patient-toolbar > span {
+  color: #64748b;
+  font-size: 13px;
+}
+
+.doctor-patient-search {
+  width: min(340px, 100%);
+  height: 42px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 13px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background: #ffffff;
+}
+
+.doctor-patient-search svg {
+  color: #94a3b8;
+  font-size: 14px;
+}
+
+.doctor-patient-search input {
+  width: 100%;
+  border: none;
+  outline: none;
+  font-size: 13px;
+  color: #1e293b;
+  background: transparent;
+}
+
+.doctor-caregiver-name {
+  color: #64748b;
+  font-size: 13px;
+}
+
+.doctor-patient-loading,
+.doctor-patient-error,
+.doctor-patient-empty {
+  padding: 40px;
+  text-align: center;
+  color: #64748b;
+}
+
+.doctor-patient-error {
+  color: #dc2626;
+  background: #fef2f2;
+  border-radius: 12px;
+}
+
+.doctor-patient-empty svg {
+  display: block;
+  margin: 0 auto 12px;
+  font-size: 28px;
+  color: #94a3b8;
+}
+
+.doctor-patient-empty strong,
+.doctor-patient-empty span {
+  display: block;
+}
+
+.doctor-patient-empty strong {
+  margin-bottom: 5px;
+  color: #334155;
+}
+
+.doctor-patient-empty span {
+  font-size: 13px;
+}
+
+/* ============================================================
+   ASSIGNMENT MODAL
+============================================================ */
+
+.doctor-assignment-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(15, 23, 42, 0.48);
+  backdrop-filter: blur(5px);
+}
+
+.doctor-assignment-modal {
+  width: min(520px, 100%);
+  overflow: hidden;
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: 0 25px 70px rgba(15, 23, 42, 0.2);
+}
+
+.doctor-assignment-modal__header {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 26px 28px 22px;
+  border-bottom: 1px solid #eef2f7;
+}
+
+.doctor-assignment-modal__header span {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: #6366f1;
+}
+
+.doctor-assignment-modal__header h2 {
+  margin: 7px 0 5px;
+  font-size: 23px;
+  color: #172033;
+}
+
+.doctor-assignment-modal__header p {
+  margin: 0;
+  color: #64748b;
+  font-size: 13px;
+}
+
+.doctor-assignment-close {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 9px;
+  background: #f8fafc;
+  color: #64748b;
+  cursor: pointer;
+}
+
+.doctor-assignment-close:hover {
+  background: #f1f5f9;
+  color: #1e293b;
+}
+
+.doctor-assignment-form {
+  padding: 26px 28px 28px;
+}
+
+.doctor-assignment-field {
+  margin-bottom: 20px;
+}
+
+.doctor-assignment-field label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  color: #334155;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.doctor-assignment-field label svg {
+  color: #6366f1;
+}
+
+.doctor-assignment-field select {
+  width: 100%;
+  height: 46px;
+  padding: 0 13px;
+  border: 1px solid #dbe2ea;
+  border-radius: 10px;
+  outline: none;
+  background: #ffffff;
+  color: #334155;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.doctor-assignment-field select:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.doctor-assignment-message {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 12px 14px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  font-size: 13px;
+}
+
+.doctor-assignment-message--error {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.doctor-assignment-message--success {
+  background: #f0fdf4;
+  color: #15803d;
+}
+
+.doctor-assignment-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding-top: 5px;
+}
+
+.doctor-assignment-cancel,
+.doctor-assignment-submit {
+  min-width: 120px;
+  height: 42px;
+  padding: 0 18px;
+  border-radius: 9px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.doctor-assignment-cancel {
+  border: 1px solid #dbe2ea;
+  background: #ffffff;
+  color: #475569;
+}
+
+.doctor-assignment-submit {
+  border: none;
+  background: #4f46e5;
+  color: #ffffff;
+}
+
+.doctor-assignment-submit:hover {
+  background: #4338ca;
+}
+
+.doctor-assignment-cancel:disabled,
+.doctor-assignment-submit:disabled,
+.doctor-assignment-close:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+
+@media (max-width: 700px) {
+  .doctor-patient-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .doctor-patient-search {
+    width: 100%;
+  }
+
+  .doctor-assignment-overlay {
+    padding: 14px;
+  }
+
+  .doctor-assignment-modal__header,
+  .doctor-assignment-form {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .doctor-assignment-actions {
+    flex-direction: column-reverse;
+  }
+
+  .doctor-assignment-cancel,
+  .doctor-assignment-submit {
+    width: 100%;
+  }
+}
+/* ============================================================
+   ASSIGNED CAREGIVER
+============================================================ */
+
+.doctor-assigned-caregiver {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.doctor-assigned-caregiver__avatar {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #eef2ff;
+  color: #4f46e5;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.doctor-assigned-caregiver div:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.doctor-assigned-caregiver strong {
+  color: #334155;
+  font-size: 12px;
+}
+
+.doctor-assigned-caregiver span {
+  color: #16a34a;
+  font-size: 10px;
+  font-weight: 600;
+}

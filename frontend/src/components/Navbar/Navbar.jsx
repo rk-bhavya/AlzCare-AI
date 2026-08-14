@@ -6,8 +6,8 @@ import "./Navbar.css";
 
 const NAV_LINKS = [
   { label: "Home", to: ROUTES.HOME },
-  { label: "Modules", to: "/#modules" },
-  { label: "About", to: "/#about" },
+  { label: "Modules", to: "#modules" },
+  { label: "About", to: "#about" },
 ];
 
 const Navbar = () => {
@@ -53,14 +53,14 @@ const Navbar = () => {
           className={`navbar__menu ${isMenuOpen ? "navbar__menu--open" : ""}`}
         >
           <ul className="navbar__links">
-            {NAV_LINKS.map((link) => (
-              <li key={link.label}>
-                <Link to={link.to} className="navbar__link">
-                  {link.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
+  {NAV_LINKS.map((link) => (
+    <li key={link.label}>
+      <a href={link.to} className="navbar__link">
+        {link.label}
+      </a>
+    </li>
+  ))}
+</ul>
 
           <div className="navbar__actions">
             {/* These become functional in Feature 2 (Authentication) */}
