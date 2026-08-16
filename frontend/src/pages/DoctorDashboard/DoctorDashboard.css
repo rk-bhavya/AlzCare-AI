@@ -1740,3 +1740,308 @@
   font-size: 10px;
   font-weight: 600;
 }
+
+/* ============================================================
+   DASHBOARD TYPOGRAPHY UPGRADE
+   Improved readability without changing the layout
+============================================================ */
+
+/* ============================================================
+   SIDEBAR
+============================================================ */
+
+.doctor-sidebar__brand h2 {
+  font-size: 20px;
+}
+
+.doctor-sidebar__brand span {
+  font-size: 10px;
+}
+
+.doctor-sidebar__section-title {
+  font-size: 10px;
+  letter-spacing: 1.1px;
+}
+
+.doctor-sidebar__item {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.doctor-sidebar__icon {
+  font-size: 12px;
+}
+
+
+/* ============================================================
+   HEADER
+============================================================ */
+
+.doctor-header__welcome p {
+  font-size: 10px;
+}
+
+.doctor-header__welcome h1 {
+  font-size: 21px;
+}
+
+.doctor-header__welcome span {
+  font-size: 10px;
+}
+
+.doctor-header__profile-info strong {
+  font-size: 10px;
+}
+
+.doctor-header__profile-info span {
+  font-size: 10px;
+}
+
+.doctor-header__chevron {
+  font-size: 10px;
+}
+
+
+/* ============================================================
+   SUMMARY CARDS
+============================================================ */
+
+.doctor-summary-card__label {
+  font-size: 14px;
+}
+
+.doctor-summary-card__value {
+  font-size: 28px;
+}
+
+.doctor-summary-card__description {
+  font-size: 12px;
+}
+
+
+/* ============================================================
+   SECTION HEADERS
+============================================================ */
+
+.doctor-section-header span,
+.doctor-card-header span {
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+
+.doctor-section-header h2,
+.doctor-card-header h2 {
+  font-size: 18px;
+}
+
+
+/* ============================================================
+   VIEW ALL BUTTON
+============================================================ */
+
+.doctor-view-all {
+  font-size: 12px;
+}
+
+
+/* ============================================================
+   PATIENT TABLE
+============================================================ */
+
+.doctor-patient-table th {
+  font-size: 12px;
+}
+
+.doctor-patient-table td {
+  font-size: 14px;
+}
+
+.doctor-patient-name strong {
+  font-size: 14px;
+}
+
+.doctor-patient-name span {
+  font-size: 10px;
+}
+
+.doctor-status {
+  font-size: 10px;
+}
+
+.doctor-table-action {
+  font-size: 10px;
+}
+
+
+/* ============================================================
+   PATIENT MANAGEMENT
+============================================================ */
+
+.doctor-patient-toolbar > span {
+  font-size: 14px;
+}
+
+.doctor-patient-search input {
+  font-size: 14px;
+}
+
+.doctor-caregiver-name {
+  font-size: 12px;
+}
+
+
+/* ============================================================
+   ASSIGNED CAREGIVER
+============================================================ */
+
+.doctor-assigned-caregiver strong {
+  font-size: 12px;
+}
+
+.doctor-assigned-caregiver span {
+  font-size: 12px;
+}
+
+
+/* ============================================================
+   AI PREDICTION
+============================================================ */
+
+.doctor-prediction__patient strong {
+  font-size: 12px;
+}
+
+.doctor-prediction__patient span {
+  font-size: 10px;
+}
+
+.doctor-prediction__result > span,
+.doctor-prediction__date span {
+  font-size: 10px;
+}
+
+.doctor-prediction__result > strong {
+  font-size: 14px;
+}
+
+.doctor-prediction__date strong {
+  font-size: 10px;
+}
+
+.doctor-confidence__label {
+  font-size: 10px;
+}
+
+.doctor-report-button {
+  font-size: 10px;
+}
+
+.doctor-ai-disclaimer {
+  font-size: 8px;
+}
+
+
+/* ============================================================
+   APPOINTMENTS
+============================================================ */
+
+.doctor-appointment__date strong {
+  font-size: 12px;
+}
+
+.doctor-appointment__date span {
+  font-size: 8px;
+}
+
+.doctor-appointment__info strong {
+  font-size: 10px;
+}
+
+.doctor-appointment__info span {
+  font-size: 10px;
+}
+
+.doctor-appointment__info small {
+  font-size: 10px;
+}
+
+.doctor-appointment__button {
+  font-size: 10px;
+}
+
+
+/* ============================================================
+   ALERTS
+============================================================ */
+
+.doctor-alert__content strong {
+  font-size: 12px;
+}
+
+.doctor-alert__content span {
+  font-size: 10px;
+}
+
+.doctor-alert__content p {
+  font-size: 10px;
+}
+
+.doctor-alert__content small {
+  font-size: 8px;
+}
+
+
+/* ============================================================
+   QUICK ACTIONS
+============================================================ */
+
+.doctor-quick-action strong {
+  font-size: 14px;
+}
+
+.doctor-quick-action small {
+  font-size: 10px;
+}
+
+
+/* ============================================================
+   ASSIGNMENT BUTTON
+============================================================ */
+
+.doctor-assign-button {
+  font-size: 14px;
+}
+
+
+/* ============================================================
+   MODAL
+============================================================ */
+
+.doctor-assignment-modal__header span {
+  font-size: 10px;
+}
+
+.doctor-assignment-modal__header h2 {
+  font-size: 24px;
+}
+
+.doctor-assignment-modal__header p {
+  font-size: 14px;
+}
+
+.doctor-assignment-field label {
+  font-size: 14px;
+}
+
+.doctor-assignment-field select {
+  font-size: 14px;
+}
+
+.doctor-assignment-message {
+  font-size: 14px;
+}
+
+.doctor-assignment-cancel,
+.doctor-assignment-submit {
+  font-size: 14px;
+}

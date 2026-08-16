@@ -1,12 +1,11 @@
 import express from "express";
 
 import {
-  getDoctorProfile,
-  updateDoctorProfile,
-  getPatientsForAssignment,
-  getCaregiversForAssignment,
-  assignPatientToCaregiver,
-} from "../controllers/doctor.controller.js";
+  createAppointment,
+  getDoctorAppointments,
+  getTodaysAppointments,
+  updateAppointmentStatus,
+} from "../controllers/appointment.controller.js";
 
 import {
   protect,
@@ -18,60 +17,52 @@ const router = express.Router();
 
 
 /* ============================================================
-   ALL DOCTOR ROUTES REQUIRE:
-   - Valid JWT
-   - Doctor role
-============================================================ */
-
-router.use(
-  protect,
-  authorizeRoles("doctor")
-);
-
-
-/* ============================================================
-   DOCTOR PROFILE
-============================================================ */
-
-router.get(
-  "/profile",
-  getDoctorProfile
-);
-
-
-router.put(
-  "/profile",
-  updateDoctorProfile
-);
-
-
-/* ============================================================
-   GET PATIENTS
-============================================================ */
-
-router.get(
-  "/patients",
-  getPatientsForAssignment
-);
-
-
-/* ============================================================
-   GET CAREGIVERS
-============================================================ */
-
-router.get(
-  "/caregivers",
-  getCaregiversForAssignment
-);
-
-
-/* ============================================================
-   ASSIGN PATIENT
+   CREATE APPOINTMENT
+   Doctor creates an appointment for a patient
 ============================================================ */
 
 router.post(
-  "/assign-patient",
-  assignPatientToCaregiver
+  "/",
+  protect,
+  authorizeRoles("doctor"),
+  createAppointment
+);
+
+
+/* ============================================================
+   GET TODAY'S APPOINTMENTS
+   IMPORTANT: Keep this BEFORE /:appointmentId/status
+============================================================ */
+
+router.get(
+  "/today",
+  protect,
+  authorizeRoles("doctor"),
+  getTodaysAppointments
+);
+
+
+/* ============================================================
+   GET UPCOMING APPOINTMENTS
+============================================================ */
+
+router.get(
+  "/",
+  protect,
+  authorizeRoles("doctor"),
+  getDoctorAppointments
+);
+
+
+/* ============================================================
+   UPDATE APPOINTMENT STATUS
+============================================================ */
+
+router.patch(
+  "/:appointmentId/status",
+  protect,
+  authorizeRoles("doctor"),
+  updateAppointmentStatus
 );
 
 

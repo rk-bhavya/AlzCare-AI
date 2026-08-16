@@ -2,45 +2,49 @@ import { useEffect, useMemo, useState } from "react";
 
 import {
   FaArrowRight,
-  FaPlus,
-  FaTimes,
-  FaUserInjured,
-  FaUserNurse,
   FaSearch,
-  FaCheckCircle,
+  FaTimes,
+  FaUserPlus,
 } from "react-icons/fa";
 
 import axiosInstance from "../../api/axiosinstance.js";
-
-const PatientOverview = () => {
-  /* ============================================================
-     DATA
-  ============================================================ */
-
-  const [patients, setPatients] =
-    useState([]);
-
-  const [caregivers, setCaregivers] =
-    useState([]);
+const PatientOverview = ({
+  patients = [],
+  isLoading = false,
+  error = "",
+  onRefresh,
+}) => {
 
   /* ============================================================
-     UI STATE
+     CAREGIVERS
   ============================================================ */
 
-  const [isLoading, setIsLoading] =
-    useState(true);
+  const [caregivers, setCaregivers] = useState([]);
 
-  const [error, setError] =
-    useState("");
+  const [isLoadingCaregivers, setIsLoadingCaregivers] =
+    useState(false);
 
-  const [showAssignment, setShowAssignment] =
+
+  /* ============================================================
+     FILTER
+  ============================================================ */
+
+  const [searchTerm, setSearchTerm] = useState("");
+
+
+  /* ============================================================
+     ASSIGNMENT MODAL
+  ============================================================ */
+
+  const [showAssignmentModal, setShowAssignmentModal] =
     useState(false);
 
   const [selectedPatient, setSelectedPatient] =
-    useState("");
+    useState(null);
 
   const [selectedCaregiver, setSelectedCaregiver] =
     useState("");
+
 
   const [isAssigning, setIsAssigning] =
     useState(false);
@@ -51,62 +55,51 @@ const PatientOverview = () => {
   const [assignmentSuccess, setAssignmentSuccess] =
     useState("");
 
-  const [searchTerm, setSearchTerm] =
-    useState("");
 
   /* ============================================================
-     LOAD PATIENTS + CAREGIVERS
+     LOAD CAREGIVERS
   ============================================================ */
 
-  const loadAssignmentData = async () => {
+  const loadCaregivers = async () => {
     try {
-      setIsLoading(true);
-      setError("");
+      setIsLoadingCaregivers(true);
 
-      const [
-        patientsResponse,
-        caregiversResponse,
-      ] = await Promise.all([
-        axiosInstance.get(
-          "/doctor/patients"
-        ),
-
-        axiosInstance.get(
+      const response =
+        await axiosInstance.get(
           "/doctor/caregivers"
-        ),
-      ]);
-
-      setPatients(
-        patientsResponse.data.patients || []
-      );
+        );
 
       setCaregivers(
-        caregiversResponse.data.caregivers || []
-      );
-    } catch (err) {
-      console.error(
-        "Unable to load doctor assignment data:",
-        err
+        response.data?.caregivers || []
       );
 
-      setError(
-        err.response?.data?.message ||
-          "Unable to load patients and caregivers."
+    } catch (error) {
+      console.error(
+        "Unable to load caregivers:",
+        error
       );
+
     } finally {
-      setIsLoading(false);
+      setIsLoadingCaregivers(false);
     }
   };
 
+
+  /* ============================================================
+     INITIAL CAREGIVER LOAD
+  ============================================================ */
+
   useEffect(() => {
-    loadAssignmentData();
+    loadCaregivers();
   }, []);
+
 
   /* ============================================================
      FILTER PATIENTS
   ============================================================ */
 
   const filteredPatients = useMemo(() => {
+
     const search =
       searchTerm
         .trim()
@@ -117,233 +110,245 @@ const PatientOverview = () => {
     }
 
     return patients.filter(
-      (patient) =>
-        patient.fullName
-          ?.toLowerCase()
-          .includes(search) ||
-        patient.email
-          ?.toLowerCase()
-          .includes(search)
+      (patient) => {
+
+        const name =
+          patient.fullName
+            ?.toLowerCase() || "";
+
+        const email =
+          patient.email
+            ?.toLowerCase() || "";
+
+        const gender =
+          patient.gender
+            ?.toLowerCase() || "";
+
+        const caregiver =
+          patient.caregiver?.fullName
+            ?.toLowerCase() || "";
+
+        return (
+          name.includes(search) ||
+          email.includes(search) ||
+          gender.includes(search) ||
+          caregiver.includes(search)
+        );
+      }
     );
-  }, [patients, searchTerm]);
+
+  }, [
+    patients,
+    searchTerm,
+  ]);
+
 
   /* ============================================================
-     HELPERS
+     OPEN ASSIGNMENT MODAL
   ============================================================ */
 
-  const getInitials = (name = "") => {
-    return name
-      .trim()
-      .split(/\s+/)
-      .filter(Boolean)
-      .slice(0, 2)
-      .map(
-        (part) =>
-          part[0]?.toUpperCase()
-      )
-      .join("");
-  };
+  const openAssignmentModal = (
+    patient
+  ) => {
 
-  const formatGender = (gender) => {
-    if (!gender) {
-      return "Not specified";
-    }
+    setSelectedPatient(patient);
 
-    return gender
-      .replace(
-        "prefer-not-to-say",
-        "Prefer not to say"
-      )
-      .replace(
-        /^./,
-        (letter) =>
-          letter.toUpperCase()
-      );
-  };
+    setSelectedCaregiver(
+      patient.caregiver?._id || ""
+    );
 
-  /* ============================================================
-     OPEN ASSIGNMENT PANEL
-  ============================================================ */
-
-  const openAssignmentPanel = () => {
     setAssignmentError("");
     setAssignmentSuccess("");
-    setSelectedPatient("");
-    setSelectedCaregiver("");
-    setShowAssignment(true);
+
+    setShowAssignmentModal(true);
   };
 
+
   /* ============================================================
-     CLOSE ASSIGNMENT PANEL
+     CLOSE ASSIGNMENT MODAL
   ============================================================ */
 
-  const closeAssignmentPanel = () => {
+  const closeAssignmentModal = () => {
+
     if (isAssigning) {
       return;
     }
 
-    setShowAssignment(false);
-    setAssignmentError("");
-    setAssignmentSuccess("");
-    setSelectedPatient("");
+    setShowAssignmentModal(false);
+
+    setSelectedPatient(null);
+
     setSelectedCaregiver("");
+
+    setAssignmentError("");
+
+    setAssignmentSuccess("");
   };
+
 
   /* ============================================================
      ASSIGN PATIENT
   ============================================================ */
 
-  const handleAssignPatient = async (
-    event
-  ) => {
-    event.preventDefault();
-
-    setAssignmentError("");
-    setAssignmentSuccess("");
+  const handleAssignPatient = async () => {
 
     if (!selectedPatient) {
-      setAssignmentError(
-        "Please select a patient."
-      );
       return;
     }
 
     if (!selectedCaregiver) {
+
       setAssignmentError(
         "Please select a caregiver."
       );
+
       return;
     }
 
+
     try {
+
       setIsAssigning(true);
 
-      const response =
-        await axiosInstance.post(
-          "/doctor/assign-patient",
-          {
-            patientId:
-              selectedPatient,
+      setAssignmentError("");
+      setAssignmentSuccess("");
 
-            caregiverId:
-              selectedCaregiver,
-          }
-        );
 
-      setAssignmentSuccess(
-        response.data?.message ||
-          "Patient assigned successfully."
+      await axiosInstance.post(
+        "/doctor/assign-caregiver",
+        {
+          patientId:
+            selectedPatient._id,
+
+          caregiverId:
+            selectedCaregiver,
+        }
       );
 
-      /*
-       * Refresh the table so the new
-       * caregiver relationship appears.
-       */
-      await loadAssignmentData();
+
+      setAssignmentSuccess(
+        "Patient assigned successfully."
+      );
+
 
       /*
-       * Close the panel after a short
-       * successful state.
+       * Reload patients in the parent dashboard.
+       *
+       * This updates:
+       * - PatientOverview
+       * - AI Assessment
+       * - Summary cards
        */
+
+      if (onRefresh) {
+        await onRefresh();
+      }
+
+
+      /*
+       * Close modal after a successful
+       * refresh.
+       */
+
       setTimeout(() => {
-        setShowAssignment(false);
-        setAssignmentSuccess("");
-        setSelectedPatient("");
+
+        setShowAssignmentModal(false);
+
+        setSelectedPatient(null);
+
         setSelectedCaregiver("");
-      }, 1200);
-    } catch (err) {
+
+        setAssignmentSuccess("");
+
+      }, 700);
+
+
+    } catch (error) {
+
       console.error(
         "Patient assignment error:",
-        err
+        error
       );
 
       setAssignmentError(
-        err.response?.data?.message ||
+        error.response?.data?.message ||
           "Unable to assign patient."
       );
+
     } finally {
+
       setIsAssigning(false);
+
     }
   };
 
-  /* ============================================================
-     LOADING STATE
-  ============================================================ */
-
-  if (isLoading) {
-    return (
-      <section className="doctor-dashboard__section">
-
-        <div className="doctor-section-header">
-
-          <div>
-            <span>
-              PATIENT MANAGEMENT
-            </span>
-
-            <h2>
-              My Patients
-            </h2>
-          </div>
-
-        </div>
-
-        <div className="doctor-patient-loading">
-          Loading patients...
-        </div>
-
-      </section>
-    );
-  }
 
   /* ============================================================
-     ERROR STATE
+     PATIENT STATUS
   ============================================================ */
 
-  if (error) {
-    return (
-      <section className="doctor-dashboard__section">
+  const getPatientStatus = (
+    patient
+  ) => {
 
-        <div className="doctor-section-header">
+    if (
+      patient.assignment?.status ===
+      "active"
+    ) {
+      return "Assigned";
+    }
 
-          <div>
-            <span>
-              PATIENT MANAGEMENT
-            </span>
+    if (
+      patient.assignment?.status ===
+      "pending"
+    ) {
+      return "Pending";
+    }
 
-            <h2>
-              My Patients
-            </h2>
-          </div>
+    return "Unassigned";
+  };
 
-          <button
-            type="button"
-            className="doctor-view-all"
-            onClick={loadAssignmentData}
-          >
-            Retry
-          </button>
 
-        </div>
+  /* ============================================================
+     STATUS CLASS
+  ============================================================ */
 
-        <div className="doctor-patient-error">
-          {error}
-        </div>
+  const getStatusClass = (
+    patient
+  ) => {
 
-      </section>
-    );
-  }
+    const status =
+      getPatientStatus(
+        patient
+      );
+
+    if (status === "Assigned") {
+      return "status-green";
+    }
+
+    if (status === "Pending") {
+      return "status-orange";
+    }
+
+    return "status-gray";
+  };
+
+
+  /* ============================================================
+     RENDER
+  ============================================================ */
 
   return (
     <section className="doctor-dashboard__section">
 
       {/* ======================================================
-          HEADER
+          SECTION HEADER
       ====================================================== */}
 
       <div className="doctor-section-header">
 
         <div>
+
           <span>
             PATIENT MANAGEMENT
           </span>
@@ -351,18 +356,24 @@ const PatientOverview = () => {
           <h2>
             My Patients
           </h2>
+
         </div>
 
-        <button
-          type="button"
-          className="doctor-assign-button"
-          onClick={openAssignmentPanel}
-        >
-          <FaPlus />
-          Assign Patient
-        </button>
+
+        <div className="doctor-patient-header-actions">
+
+          <button
+            type="button"
+            className="doctor-view-all"
+          >
+            View All
+            <FaArrowRight />
+          </button>
+
+        </div>
 
       </div>
+
 
       {/* ======================================================
           SEARCH
@@ -385,281 +396,352 @@ const PatientOverview = () => {
             }
           />
 
+          {searchTerm && (
+            <button
+              type="button"
+              onClick={() =>
+                setSearchTerm("")
+              }
+              aria-label="Clear search"
+            >
+              <FaTimes />
+            </button>
+          )}
+
         </div>
 
-        <span>
-          {patients.length}{" "}
-          {patients.length === 1
-            ? "patient"
-            : "patients"}{" "}
-          registered
-        </span>
-
       </div>
 
+
       {/* ======================================================
-          TABLE
+          ERROR
       ====================================================== */}
 
-      <div className="doctor-patient-table-wrapper">
+      {error && (
+        <div className="doctor-patient-error">
 
-        <table className="doctor-patient-table">
+          <span>
+            {error}
+          </span>
 
-          <thead>
-            <tr>
-              <th>Patient</th>
-              <th>Age</th>
-              <th>Caregiver</th>
-              <th>Status</th>
-              <th>Last Assessment</th>
-              <th>Risk Level</th>
-              <th>Action</th>
-            </tr>
-          </thead>
+          <button
+            type="button"
+            onClick={onRefresh}
+          >
+            Retry
+          </button>
 
-          <tbody>
+        </div>
+      )}
 
-            {filteredPatients.length === 0 ? (
+
+      {/* ======================================================
+          LOADING
+      ====================================================== */}
+
+      {isLoading ? (
+
+        <div className="doctor-patient-loading">
+
+          <div className="doctor-patient-loading-spinner" />
+
+          <span>
+            Loading patients...
+          </span>
+
+        </div>
+
+      ) : (
+
+        <div className="doctor-patient-table-wrapper">
+
+          <table className="doctor-patient-table">
+
+            <thead>
+
               <tr>
-                <td
-                  colSpan="7"
-                  className="doctor-patient-empty"
-                >
-                  <FaUserInjured />
 
-                  <strong>
-                    No patients found
-                  </strong>
+                <th>
+                  Patient
+                </th>
 
-                  <span>
-                    {searchTerm
-                      ? "Try a different search."
-                      : "No patients have registered yet."}
-                  </span>
-                </td>
+                <th>
+                  Age
+                </th>
+
+                <th>
+                  Caregiver
+                </th>
+
+                <th>
+                  Assignment
+                </th>
+
+                <th>
+                  Email
+                </th>
+
+                <th>
+                  Action
+                </th>
+
               </tr>
-            ) : (
-              filteredPatients.map(
-                (patient) => (
-                  <tr
-                    key={patient._id}
+
+            </thead>
+
+
+            <tbody>
+
+              {filteredPatients.length === 0 ? (
+
+                <tr>
+
+                  <td
+                    colSpan="6"
+                    className="doctor-patient-empty"
                   >
+                    {searchTerm
+                      ? "No patients match your search."
+                      : "No patients are currently assigned to you."}
+                  </td>
 
-                    {/* PATIENT */}
+                </tr>
 
-                    <td>
-                      <div className="doctor-patient-name">
+              ) : (
 
-                        <div className="doctor-patient-avatar">
-                          {getInitials(
-                            patient.fullName
-                          )}
+                filteredPatients.map(
+                  (patient) => (
+
+                    <tr
+                      key={patient._id}
+                    >
+
+                      {/* PATIENT */}
+
+                      <td>
+
+                        <div className="doctor-patient-name">
+
+                          <div className="doctor-patient-avatar">
+
+                            {patient.fullName
+                              ?.charAt(0)
+                              ?.toUpperCase() || "P"}
+
+                          </div>
+
+
+                          <div>
+
+                            <strong>
+                              {patient.fullName}
+                            </strong>
+
+                            <span>
+                              {patient.gender ||
+                                "Not specified"}
+                            </span>
+
+                          </div>
+
                         </div>
 
-                        <div>
+                      </td>
 
-                          <strong>
-                            {patient.fullName}
-                          </strong>
 
-                          <span>
-                            {formatGender(
-                              patient.gender
-                            )}
+                      {/* AGE */}
+
+                      <td>
+                        {patient.age ||
+                          "—"}
+                      </td>
+
+
+                      {/* CAREGIVER */}
+
+                      <td>
+
+                        {patient.caregiver ? (
+
+                          <div className="doctor-caregiver-name">
+
+                            <strong>
+                              {
+                                patient
+                                  .caregiver
+                                  .fullName
+                              }
+                            </strong>
+
+                            <span>
+                              {
+                                patient
+                                  .caregiver
+                                  .relationship ||
+                                "Caregiver"
+                              }
+                            </span>
+
+                          </div>
+
+                        ) : (
+
+                          <span className="doctor-no-caregiver">
+                            Not assigned
                           </span>
 
-                        </div>
+                        )}
 
-                      </div>
-                    </td>
+                      </td>
 
-                    {/* AGE */}
 
-                    <td>
-                      {patient.age || "—"}
-                    </td>
+                      {/* ASSIGNMENT */}
 
-                    {/* CAREGIVER */}
+                      <td>
 
-                    <td>
-  {patient.caregiver ? (
-    <div className="doctor-assigned-caregiver">
-      <div className="doctor-assigned-caregiver__avatar">
-        {getInitials(
-          patient.caregiver.fullName
-        )}
-      </div>
+                        <span
+                          className={`doctor-status ${getStatusClass(
+                            patient
+                          )}`}
+                        >
+                          {getPatientStatus(
+                            patient
+                          )}
+                        </span>
 
-      <div>
-        <strong>
-          {patient.caregiver.fullName}
-        </strong>
+                      </td>
 
-        <span>
-          {patient.assignment?.status ===
-          "active"
-            ? "Active assignment"
-            : "Assigned"}
-        </span>
-      </div>
-    </div>
-  ) : (
-    <span className="doctor-caregiver-name">
-      Not assigned
-    </span>
-  )}
-</td>
 
-                    {/* STATUS */}
+                      {/* EMAIL */}
 
-                    <td>
-                      <span className="doctor-status status-blue">
-                        Registered
-                      </span>
-                    </td>
+                      <td>
+                        {patient.email ||
+                          "—"}
+                      </td>
 
-                    {/* ASSESSMENT */}
 
-                    <td>
-                      —
-                    </td>
+                      {/* ACTION */}
 
-                    {/* RISK */}
+                      <td>
 
-                    <td>
-                      <span className="doctor-status status-orange">
-                        Monitoring
-                      </span>
-                    </td>
+                        <button
+                          type="button"
+                          className="doctor-table-action"
+                          onClick={() =>
+                            openAssignmentModal(
+                              patient
+                            )
+                          }
+                        >
 
-                    {/* ACTION */}
+                          <FaUserPlus />
 
-                    <td>
-                      <button
-  type="button"
-  className="doctor-table-action"
-  onClick={() => {
-    setSelectedPatient(
-      patient._id
-    );
+                          {patient.caregiver
+                            ? "Reassign"
+                            : "Assign"}
 
-    openAssignmentPanel();
-  }}
->
-  {patient.caregiver
-    ? "Reassign"
-    : "Assign"}
-</button>
-                    </td>
+                        </button>
 
-                  </tr>
+                      </td>
+
+                    </tr>
+
+                  )
                 )
-              )
-            )}
 
-          </tbody>
+              )}
 
-        </table>
+            </tbody>
 
-      </div>
+          </table>
+
+        </div>
+
+      )}
+
 
       {/* ======================================================
-          ASSIGNMENT PANEL
+          ASSIGNMENT MODAL
       ====================================================== */}
 
-      {showAssignment && (
-        <div className="doctor-assignment-overlay">
+      {showAssignmentModal &&
+        selectedPatient && (
 
-          <div className="doctor-assignment-modal">
+          <div className="doctor-assignment-overlay">
 
-            {/* HEADER */}
+            <div className="doctor-assignment-modal">
 
-            <div className="doctor-assignment-modal__header">
+              {/* HEADER */}
 
-              <div>
-                <span>
-                  PATIENT MANAGEMENT
-                </span>
+              <div className="doctor-assignment-modal-header">
 
-                <h2>
-                  Assign Patient
-                </h2>
+                <div>
 
-                <p>
-                  Connect a patient with
-                  their caregiver.
-                </p>
-              </div>
+                  <span>
+                    CAREGIVER ASSIGNMENT
+                  </span>
 
-              <button
-                type="button"
-                className="doctor-assignment-close"
-                onClick={
-                  closeAssignmentPanel
-                }
-                disabled={isAssigning}
-              >
-                <FaTimes />
-              </button>
+                  <h3>
+                    Assign Caregiver
+                  </h3>
 
-            </div>
+                </div>
 
-            {/* FORM */}
 
-            <form
-              className="doctor-assignment-form"
-              onSubmit={
-                handleAssignPatient
-              }
-            >
-
-              {/* PATIENT */}
-
-              <div className="doctor-assignment-field">
-
-                <label>
-                  <FaUserInjured />
-                  Patient
-                </label>
-
-                <select
-                  value={
-                    selectedPatient
-                  }
-                  onChange={(event) =>
-                    setSelectedPatient(
-                      event.target.value
-                    )
+                <button
+                  type="button"
+                  className="doctor-assignment-close"
+                  onClick={
+                    closeAssignmentModal
                   }
                   disabled={isAssigning}
                 >
-                  <option value="">
-                    Select a patient
-                  </option>
-
-                  {patients.map(
-                    (patient) => (
-                      <option
-                        key={patient._id}
-                        value={patient._id}
-                      >
-                        {patient.fullName} —{" "}
-                        {patient.age} years
-                      </option>
-                    )
-                  )}
-
-                </select>
+                  <FaTimes />
+                </button>
 
               </div>
+
+
+              {/* PATIENT */}
+
+              <div className="doctor-assignment-patient">
+
+                <div className="doctor-patient-avatar">
+
+                  {selectedPatient.fullName
+                    ?.charAt(0)
+                    ?.toUpperCase() || "P"}
+
+                </div>
+
+
+                <div>
+
+                  <strong>
+                    {
+                      selectedPatient.fullName
+                    }
+                  </strong>
+
+                  <span>
+                    Age{" "}
+                    {
+                      selectedPatient.age ||
+                      "—"
+                    }
+                  </span>
+
+                </div>
+
+              </div>
+
 
               {/* CAREGIVER */}
 
               <div className="doctor-assignment-field">
 
                 <label>
-                  <FaUserNurse />
-                  Caregiver
+                  Select Caregiver
                 </label>
 
                 <select
@@ -671,14 +753,21 @@ const PatientOverview = () => {
                       event.target.value
                     )
                   }
-                  disabled={isAssigning}
+                  disabled={
+                    isAssigning ||
+                    isLoadingCaregivers
+                  }
                 >
+
                   <option value="">
-                    Select a caregiver
+                    {isLoadingCaregivers
+                      ? "Loading caregivers..."
+                      : "Select a caregiver"}
                   </option>
 
                   {caregivers.map(
                     (caregiver) => (
+
                       <option
                         key={
                           caregiver._id
@@ -687,8 +776,11 @@ const PatientOverview = () => {
                           caregiver._id
                         }
                       >
-                        {caregiver.fullName}
+                        {
+                          caregiver.fullName
+                        }
                       </option>
+
                     )
                   )}
 
@@ -696,25 +788,32 @@ const PatientOverview = () => {
 
               </div>
 
-              {/* ERROR */}
-
-              {assignmentError && (
-                <div className="doctor-assignment-message doctor-assignment-message--error">
-                  {assignmentError}
-                </div>
-              )}
 
               {/* SUCCESS */}
 
               {assignmentSuccess && (
-                <div className="doctor-assignment-message doctor-assignment-message--success">
 
-                  <FaCheckCircle />
+                <div className="doctor-assignment-success">
 
                   {assignmentSuccess}
 
                 </div>
+
               )}
+
+
+              {/* ERROR */}
+
+              {assignmentError && (
+
+                <div className="doctor-assignment-error">
+
+                  {assignmentError}
+
+                </div>
+
+              )}
+
 
               {/* ACTIONS */}
 
@@ -724,34 +823,43 @@ const PatientOverview = () => {
                   type="button"
                   className="doctor-assignment-cancel"
                   onClick={
-                    closeAssignmentPanel
+                    closeAssignmentModal
                   }
                   disabled={isAssigning}
                 >
                   Cancel
                 </button>
 
+
                 <button
-                  type="submit"
+                  type="button"
                   className="doctor-assignment-submit"
-                  disabled={isAssigning}
+                  onClick={
+                    handleAssignPatient
+                  }
+                  disabled={
+                    isAssigning ||
+                    !selectedCaregiver
+                  }
                 >
+
                   {isAssigning
                     ? "Assigning..."
-                    : "Assign Patient"}
+                    : "Assign Caregiver"}
+
                 </button>
 
               </div>
 
-            </form>
+            </div>
 
           </div>
 
-        </div>
-      )}
+        )}
 
     </section>
   );
 };
+
 
 export default PatientOverview;

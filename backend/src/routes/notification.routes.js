@@ -1,12 +1,11 @@
 import express from "express";
 
 import {
-  getDoctorProfile,
-  updateDoctorProfile,
-  getPatientsForAssignment,
-  getCaregiversForAssignment,
-  assignPatientToCaregiver,
-} from "../controllers/doctor.controller.js";
+  getDoctorNotifications,
+  getDoctorUnreadNotificationCount,
+  markNotificationAsRead,
+  markAllNotificationsAsRead,
+} from "../controllers/notification.controller.js";
 
 import {
   protect,
@@ -18,9 +17,7 @@ const router = express.Router();
 
 
 /* ============================================================
-   ALL DOCTOR ROUTES REQUIRE:
-   - Valid JWT
-   - Doctor role
+   ALL NOTIFICATION ROUTES
 ============================================================ */
 
 router.use(
@@ -30,48 +27,45 @@ router.use(
 
 
 /* ============================================================
-   DOCTOR PROFILE
+   GET ALL NOTIFICATIONS
 ============================================================ */
 
 router.get(
-  "/profile",
-  getDoctorProfile
-);
-
-
-router.put(
-  "/profile",
-  updateDoctorProfile
+  "/",
+  getDoctorNotifications
 );
 
 
 /* ============================================================
-   GET PATIENTS
+   GET UNREAD COUNT
 ============================================================ */
 
 router.get(
-  "/patients",
-  getPatientsForAssignment
+  "/count",
+  getDoctorUnreadNotificationCount
 );
 
 
 /* ============================================================
-   GET CAREGIVERS
+   MARK ALL AS READ
+
+   IMPORTANT:
+   Keep this BEFORE /:notificationId/read
 ============================================================ */
 
-router.get(
-  "/caregivers",
-  getCaregiversForAssignment
+router.patch(
+  "/read-all",
+  markAllNotificationsAsRead
 );
 
 
 /* ============================================================
-   ASSIGN PATIENT
+   MARK ONE AS READ
 ============================================================ */
 
-router.post(
-  "/assign-patient",
-  assignPatientToCaregiver
+router.patch(
+  "/:notificationId/read",
+  markNotificationAsRead
 );
 
 

@@ -1,0 +1,170 @@
+.doctor-clinical-notes {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.doctor-clinical-notes__header h1 {
+  font-size: 28px;
+  margin: 6px 0;
+}
+
+.doctor-clinical-notes__header span {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.doctor-clinical-notes__header p {
+  font-size: 14px;
+  margin: 0;
+}
+
+.doctor-clinical-notes__card {
+  padding: 24px;
+}
+
+.doctor-clinical-notes__card-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 22px;
+}
+
+.doctor-clinical-notes__card-header h2 {
+  font-size: 20px;
+  margin: 0 0 5px;
+}
+
+.doctor-clinical-notes__card-header p {
+  font-size: 14px;
+  margin: 0;
+}
+
+.doctor-clinical-notes__icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.doctor-clinical-notes__select {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.doctor-clinical-notes__select label {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.doctor-clinical-notes__select select {
+  width: 100%;
+  padding: 13px 14px;
+  border-radius: 8px;
+  border: 1px solid #d8e0e8;
+  font-size: 14px;
+  outline: none;
+}
+
+.doctor-clinical-notes__textarea {
+  width: 100%;
+  box-sizing: border-box;
+  resize: vertical;
+  padding: 15px;
+  border-radius: 9px;
+  border: 1px solid #d8e0e8;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.6;
+  outline: none;
+}
+
+.doctor-clinical-notes__actions {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.doctor-clinical-notes__actions span {
+  font-size: 13px;
+}
+
+.doctor-clinical-notes__actions button {
+  border: none;
+  border-radius: 8px;
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.doctor-clinical-notes__actions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.doctor-clinical-notes__error,
+.doctor-clinical-notes__success {
+  padding: 13px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.doctor-clinical-notes__error {
+  background: #fff3f3;
+}
+
+.doctor-clinical-notes__success {
+  background: #f0f9f3;
+}
+
+.doctor-clinical-notes__empty {
+  min-height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.doctor-clinical-notes__history {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.doctor-clinical-note {
+  padding: 16px;
+  border: 1px solid #e1e7ed;
+  border-radius: 9px;
+}
+
+.doctor-clinical-note > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 8px;
+}
+
+.doctor-clinical-note strong {
+  font-size: 14px;
+}
+
+.doctor-clinical-note span {
+  font-size: 12px;
+}
+
+.doctor-clinical-note p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+}

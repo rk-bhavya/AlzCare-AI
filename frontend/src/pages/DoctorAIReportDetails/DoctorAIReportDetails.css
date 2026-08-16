@@ -1,0 +1,615 @@
+/* ============================================================
+   REPORT PAGE
+============================================================ */
+
+.doctor-report-page {
+  font-size: 14px;
+}
+
+
+/* ============================================================
+   BACK BUTTON
+============================================================ */
+
+.doctor-report-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 18px;
+  padding: 9px 14px;
+  border: 1px solid #dce5ec;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #526a82;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.doctor-report-back:hover {
+  background: #f7f9fb;
+}
+
+
+/* ============================================================
+   HEADER
+============================================================ */
+
+.doctor-report-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 25px;
+  margin-bottom: 22px;
+}
+
+.doctor-report-header > div:first-child > span {
+  display: block;
+  margin-bottom: 6px;
+  color: #8493a2;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+}
+
+.doctor-report-header h1 {
+  margin: 0 0 6px;
+  color: #30445b;
+  font-size: 28px;
+}
+
+.doctor-report-header p {
+  margin: 0;
+  color: #7b8b9b;
+  font-size: 14px;
+}
+
+.doctor-report-header__model {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 13px 16px;
+  border: 1px solid #e2e9ef;
+  border-radius: 9px;
+  background: #ffffff;
+}
+
+.doctor-report-header__model > svg {
+  color: #687f95;
+  font-size: 20px;
+}
+
+.doctor-report-header__model div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.doctor-report-header__model span {
+  color: #919eaa;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.doctor-report-header__model strong {
+  color: #53667a;
+  font-size: 14px;
+}
+
+.doctor-report-header__model small {
+  color: #9aa6b1;
+  font-size: 12px;
+}
+
+
+/* ============================================================
+   SECTION TITLE
+============================================================ */
+
+.doctor-report-section-title {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-bottom: 20px;
+}
+
+.doctor-report-section-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 40px;
+  border-radius: 8px;
+  background: #f0f5f9;
+  color: #60788f;
+  font-size: 16px;
+}
+
+.doctor-report-section-title span {
+  display: block;
+  margin-bottom: 3px;
+  color: #8c9aa7;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.doctor-report-section-title h2 {
+  margin: 0;
+  color: #3e5268;
+  font-size: 17px;
+}
+
+
+/* ============================================================
+   PATIENT
+============================================================ */
+
+.doctor-report-patient-card {
+  margin-bottom: 18px;
+}
+
+.doctor-report-patient {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.doctor-report-patient > img,
+.doctor-report-patient__avatar {
+  width: 58px;
+  height: 58px;
+  flex: 0 0 58px;
+  border-radius: 50%;
+}
+
+.doctor-report-patient > img {
+  object-fit: cover;
+}
+
+.doctor-report-patient__avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #edf3f7;
+  color: #5c738b;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.doctor-report-patient > div:nth-child(2) {
+  min-width: 180px;
+}
+
+.doctor-report-patient h3 {
+  margin: 0 0 4px;
+  color: #3e5268;
+  font-size: 18px;
+}
+
+.doctor-report-patient > div:nth-child(2) span {
+  color: #8c9aa7;
+  font-size: 13px;
+}
+
+.doctor-report-patient__details {
+  display: flex;
+  align-items: center;
+  gap: 35px;
+  margin-left: auto;
+}
+
+.doctor-report-patient__details > div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.doctor-report-patient__details span {
+  color: #909eaa;
+  font-size: 12px;
+}
+
+.doctor-report-patient__details strong {
+  color: #596c80;
+  font-size: 14px;
+}
+
+
+/* ============================================================
+   RESULT GRID
+============================================================ */
+
+.doctor-report-result-grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+
+/* ============================================================
+   PREDICTION
+============================================================ */
+
+.report-result {
+  padding: 22px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.report-result strong {
+  display: block;
+  margin-bottom: 7px;
+  font-size: 25px;
+}
+
+.report-result span {
+  font-size: 13px;
+}
+
+.report-result--normal {
+  background: #eef8f2;
+  color: #4e8563;
+}
+
+.report-result--very-mild {
+  background: #f7f5e9;
+  color: #8b8050;
+}
+
+.report-result--mild {
+  background: #fff3e8;
+  color: #a56c36;
+}
+
+.report-result--moderate {
+  background: #fdecee;
+  color: #a6525d;
+}
+
+
+/* ============================================================
+   CONFIDENCE
+============================================================ */
+
+.doctor-report-confidence {
+  margin-top: 20px;
+}
+
+.doctor-report-confidence > div:first-child {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.doctor-report-confidence span {
+  color: #7d8c9b;
+  font-size: 14px;
+}
+
+.doctor-report-confidence strong {
+  color: #4c6075;
+  font-size: 18px;
+}
+
+.doctor-report-confidence__bar {
+  width: 100%;
+  height: 9px;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #e6ecf1;
+}
+
+.doctor-report-confidence__bar > div {
+  height: 100%;
+  border-radius: inherit;
+  background: #718ba2;
+}
+
+
+/* ============================================================
+   DATE
+============================================================ */
+
+.doctor-report-date-large {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px 0;
+}
+
+.doctor-report-date-large strong {
+  color: #43566b;
+  font-size: 20px;
+}
+
+.doctor-report-date-large span {
+  color: #82919f;
+  font-size: 15px;
+}
+
+
+/* ============================================================
+   PROBABILITIES
+============================================================ */
+
+.doctor-report-probabilities {
+  margin-bottom: 18px;
+}
+
+.doctor-report-probability-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px 35px;
+}
+
+.doctor-report-probability__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.doctor-report-probability__header strong {
+  color: #52667b;
+  font-size: 14px;
+}
+
+.doctor-report-probability__header span {
+  color: #53677b;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.doctor-report-probability__bar {
+  height: 9px;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #e9eef2;
+}
+
+.doctor-report-probability__bar > div {
+  height: 100%;
+  border-radius: inherit;
+}
+
+.probability-normal {
+  background: #719b7d;
+}
+
+.probability-very-mild {
+  background: #aaa06b;
+}
+
+.probability-mild {
+  background: #b9824e;
+}
+
+.probability-moderate {
+  background: #ad626c;
+}
+
+
+/* ============================================================
+   PEOPLE
+============================================================ */
+
+.doctor-report-people-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.doctor-report-person {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.doctor-report-person__avatar {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 44px;
+  border-radius: 50%;
+  background: #edf3f7;
+  color: #5c748b;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.doctor-report-person > div:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.doctor-report-person strong {
+  color: #50647a;
+  font-size: 14px;
+}
+
+.doctor-report-person span {
+  overflow: hidden;
+  color: #919eaa;
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+/* ============================================================
+   NOTES
+============================================================ */
+
+.doctor-report-notes {
+  margin-bottom: 18px;
+}
+
+.doctor-report-notes p {
+  margin: 0;
+  padding: 15px;
+  border-radius: 8px;
+  background: #f8fafb;
+  color: #596c80;
+  font-size: 14px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+}
+
+.doctor-report-notes p.doctor-report-notes--empty {
+  color: #98a3ad;
+  font-style: italic;
+}
+
+
+/* ============================================================
+   DISCLAIMER
+============================================================ */
+
+.doctor-report-disclaimer {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  padding: 15px;
+  border: 1px solid #e4e9ee;
+  border-radius: 8px;
+  background: #fafbfd;
+}
+
+.doctor-report-disclaimer > svg {
+  margin-top: 2px;
+  color: #8193a4;
+  font-size: 17px;
+}
+
+.doctor-report-disclaimer strong {
+  display: block;
+  margin-bottom: 4px;
+  color: #5c6f83;
+  font-size: 14px;
+}
+
+.doctor-report-disclaimer p {
+  margin: 0;
+  color: #84919e;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+
+/* ============================================================
+   LOADING
+============================================================ */
+
+.doctor-report-loading {
+  min-height: 350px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: #8292a1;
+}
+
+.doctor-report-loading svg {
+  font-size: 35px;
+}
+
+.doctor-report-loading strong {
+  font-size: 16px;
+}
+
+
+/* ============================================================
+   ERROR
+============================================================ */
+
+.doctor-report-error {
+  min-height: 350px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 13px;
+  color: #a15d65;
+  text-align: center;
+}
+
+.doctor-report-error > svg {
+  font-size: 32px;
+}
+
+.doctor-report-error strong {
+  font-size: 16px;
+}
+
+.doctor-report-error button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 15px;
+  border: 1px solid #dce4eb;
+  border-radius: 7px;
+  background: #ffffff;
+  color: #5c7187;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+
+@media (max-width: 1050px) {
+
+  .doctor-report-patient {
+    flex-wrap: wrap;
+  }
+
+  .doctor-report-patient__details {
+    width: 100%;
+    margin-left: 0;
+    padding-top: 12px;
+  }
+
+  .doctor-report-people-grid {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+@media (max-width: 800px) {
+
+  .doctor-report-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .doctor-report-result-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .doctor-report-probability-list {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+@media (max-width: 600px) {
+
+  .doctor-report-patient__details {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+}

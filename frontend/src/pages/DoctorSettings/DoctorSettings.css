@@ -1,0 +1,323 @@
+/* ============================================================
+   DOCTOR SETTINGS
+============================================================ */
+
+.doctor-settings {
+  font-size: 14px;
+}
+
+
+/* ============================================================
+   HEADER
+============================================================ */
+
+.doctor-settings__header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 22px;
+}
+
+.doctor-settings__header span {
+  display: block;
+  margin-bottom: 6px;
+  color: #8493a2;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.1px;
+}
+
+.doctor-settings__header h1 {
+  margin: 0 0 6px;
+  color: #30445b;
+  font-size: 28px;
+}
+
+.doctor-settings__header p {
+  margin: 0;
+  color: #7d8c9b;
+  font-size: 14px;
+}
+
+
+/* ============================================================
+   SAVED MESSAGE
+============================================================ */
+
+.doctor-settings__saved {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border: 1px solid #dce9e1;
+  border-radius: 7px;
+  background: #f4faf6;
+  color: #63816d;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.doctor-settings__saved svg {
+  font-size: 13px;
+}
+
+
+/* ============================================================
+   SETTINGS CARD
+============================================================ */
+
+.doctor-settings__card {
+  margin-bottom: 18px;
+  padding: 0;
+  overflow: hidden;
+}
+
+
+/* ============================================================
+   CARD HEADER
+============================================================ */
+
+.doctor-settings__card-header {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 20px 22px;
+  border-bottom: 1px solid #e7edf2;
+}
+
+.doctor-settings__card-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 40px;
+  border-radius: 8px;
+  background: #edf3f7;
+  color: #637b91;
+}
+
+.doctor-settings__card-icon svg {
+  font-size: 16px;
+}
+
+.doctor-settings__card-header h2 {
+  margin: 0 0 4px;
+  color: #4b6075;
+  font-size: 17px;
+}
+
+.doctor-settings__card-header p {
+  margin: 0;
+  color: #8b98a4;
+  font-size: 13px;
+}
+
+
+/* ============================================================
+   OPTIONS
+============================================================ */
+
+.doctor-settings__options {
+  padding: 0 22px;
+}
+
+
+/* ============================================================
+   SETTING ROW
+============================================================ */
+
+.doctor-setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 18px 0;
+  border-bottom: 1px solid #edf1f4;
+}
+
+.doctor-setting-row:last-child {
+  border-bottom: none;
+}
+
+.doctor-setting-row__content {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.doctor-setting-row__content strong {
+  color: #52667b;
+  font-size: 14px;
+}
+
+.doctor-setting-row__content span {
+  color: #8996a2;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+
+/* ============================================================
+   TOGGLE
+============================================================ */
+
+.doctor-setting-toggle {
+  position: relative;
+  width: 46px;
+  height: 25px;
+  flex: 0 0 46px;
+  padding: 0;
+  border: none;
+  border-radius: 20px;
+  background: #cbd5dd;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.doctor-setting-toggle span {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease;
+}
+
+.doctor-setting-toggle--active {
+  background: #70869a;
+}
+
+.doctor-setting-toggle--active span {
+  transform: translateX(21px);
+}
+
+
+/* ============================================================
+   SECURITY
+============================================================ */
+
+.doctor-settings__security {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px 22px;
+}
+
+.doctor-settings__security > div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.doctor-settings__security strong {
+  color: #52667b;
+  font-size: 14px;
+}
+
+.doctor-settings__security span {
+  color: #8b98a4;
+  font-size: 13px;
+}
+
+
+/* ============================================================
+   SECONDARY BUTTON
+============================================================ */
+
+.doctor-settings__secondary-button {
+  padding: 9px 14px;
+  border: 1px solid #d9e1e7;
+  border-radius: 7px;
+  background: #ffffff;
+  color: #60758a;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.doctor-settings__secondary-button:hover {
+  background: #f5f8fa;
+}
+
+
+/* ============================================================
+   ACTIONS
+============================================================ */
+
+.doctor-settings__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 4px;
+  margin-bottom: 20px;
+}
+
+.doctor-settings__reset,
+.doctor-settings__save {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 16px;
+  border-radius: 7px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.doctor-settings__reset {
+  border: 1px solid #dce4ea;
+  background: #ffffff;
+  color: #667b8e;
+}
+
+.doctor-settings__reset:hover {
+  background: #f6f8fa;
+}
+
+.doctor-settings__save {
+  border: 1px solid #687f95;
+  background: #687f95;
+  color: #ffffff;
+}
+
+.doctor-settings__save:hover {
+  background: #5d748b;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+
+@media (max-width: 700px) {
+
+  .doctor-settings__header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .doctor-setting-row {
+    align-items: flex-start;
+  }
+
+  .doctor-settings__security {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .doctor-settings__actions {
+    flex-direction: column;
+  }
+
+  .doctor-settings__reset,
+  .doctor-settings__save {
+    justify-content: center;
+  }
+
+}
