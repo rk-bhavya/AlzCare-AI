@@ -34,3 +34,7 @@ patients, caregivers, and doctors on a single role-based platform.
 4. **Admin** — User & role management, model monitoring, analytics
 
 ---
+
+##Status
+
+ONGOING - Under Development!
