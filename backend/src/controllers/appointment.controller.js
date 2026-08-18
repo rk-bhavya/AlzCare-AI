@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import Appointment from "../models/Appointment.js";
 import User from "../models/User.js";
 import Notification from "../models/Notification.js";
+import CareAssignment from "../models/CareAssignment.js";
 
 /* ============================================================
    CREATE APPOINTMENT
@@ -473,3 +474,115 @@ export const updateAppointmentStatus =
       });
     }
   };
+
+/* ============================================================
+   GET CAREGIVER'S APPOINTMENTS
+
+   Returns appointments belonging to every patient currently
+   assigned to the logged-in caregiver (via CareAssignment).
+
+   REUSES the existing Appointment model — no duplicate
+   appointment system is created.
+============================================================ */
+
+export const getCaregiverAppointments = async (req, res) => {
+  try {
+    const assignments = await CareAssignment.find({
+      caregiverId: req.user._id,
+      status: "active",
+    }).lean();
+
+    const patientIds = assignments.map(
+      (assignment) => assignment.patientId
+    );
+
+    if (patientIds.length === 0) {
+      return res.status(200).json({
+        success: true,
+        appointments: [],
+      });
+    }
+
+    const appointments = await Appointment.find({
+      patientId: { $in: patientIds },
+    })
+      .populate({
+        path: "patientId",
+        select: "fullName age gender profilePicture",
+      })
+      .populate({
+        path: "doctorId",
+        select: "fullName doctorDetails profilePicture",
+      })
+      .sort({ appointmentDate: -1 })
+      .lean();
+
+    return res.status(200).json({
+      success: true,
+      appointments,
+    });
+  } catch (error) {
+    console.error("Get caregiver appointments error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Unable to load appointments.",
+    });
+  }
+};
+
+/* ============================================================
+   GET CAREGIVER'S TODAY'S APPOINTMENTS
+
+   Used by the Caregiver Dashboard summary cards.
+============================================================ */
+
+export const getCaregiverTodaysAppointments = async (req, res) => {
+  try {
+    const assignments = await CareAssignment.find({
+      caregiverId: req.user._id,
+      status: "active",
+    }).lean();
+
+    const patientIds = assignments.map(
+      (assignment) => assignment.patientId
+    );
+
+    const now = new Date();
+    const startOfDay = new Date(now);
+    startOfDay.setHours(0, 0, 0, 0);
+    const endOfDay = new Date(now);
+    endOfDay.setHours(23, 59, 59, 999);
+
+    const appointments = patientIds.length
+      ? await Appointment.find({
+          patientId: { $in: patientIds },
+          appointmentDate: { $gte: startOfDay, $lte: endOfDay },
+          status: { $in: ["scheduled", "rescheduled"] },
+        })
+          .populate({
+            path: "patientId",
+            select: "fullName age gender profilePicture",
+          })
+          .populate({
+            path: "doctorId",
+            select: "fullName doctorDetails profilePicture",
+          })
+          .sort({ appointmentDate: 1 })
+          .lean()
+      : [];
+
+    return res.status(200).json({
+      success: true,
+      appointments,
+      count: appointments.length,
+    });
+  } catch (error) {
+    console.error("Get caregiver today's appointments error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Unable to load today's appointments.",
+    });
+  }
+};

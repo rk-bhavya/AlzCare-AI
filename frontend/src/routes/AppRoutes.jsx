@@ -35,6 +35,16 @@ import DoctorClinicalNotes from "../pages/DoctorClinicalNotes/DoctorClinicalNote
 ============================================================ */
 
 import CaregiverDashboard from "../pages/CaregiverDashboard/CaregiverDashboard.jsx";
+import CaregiverPatients from "../pages/CaregiverPatients/CaregiverPatients.jsx";
+import CaregiverPatientDetails from "../pages/CaregiverPatientDetails/CaregiverPatientDetails.jsx";
+import CaregiverMedications from "../pages/CaregiverMedications/CaregiverMedications.jsx";
+import CaregiverAppointments from "../pages/CaregiverAppointments/CaregiverAppointments.jsx";
+import CaregiverMonitoring from "../pages/CaregiverMonitoring/CaregiverMonitoring.jsx";
+import CaregiverNotifications from "../pages/CaregiverNotifications/CaregiverNotifications.jsx";
+import CaregiverMessages from "../pages/CaregiverMessages/CaregiverMessages.jsx";
+import CaregiverCognitive from "../pages/CaregiverCognitive/CaregiverCognitive.jsx";
+import CaregiverProfile from "../pages/CaregiverProfile/CaregiverProfile.jsx";
+import CaregiverSettings from "../pages/CaregiverSettings/CaregiverSettings.jsx";
 import DoctorDashboard from "../pages/DoctorDashboard/DoctorDashboard.jsx";
 
 import DoctorPatients from "../pages/DoctorPatients/DoctorPatients.jsx";
@@ -175,6 +185,56 @@ const AppRoutes = () => {
             element={
               <CaregiverDashboard />
             }
+          />
+
+          <Route
+            path="/caregiver/patients"
+            element={<CaregiverPatients />}
+          />
+
+          <Route
+            path="/caregiver/patients/:patientId"
+            element={<CaregiverPatientDetails />}
+          />
+
+          <Route
+            path="/caregiver/medications"
+            element={<CaregiverMedications />}
+          />
+
+          <Route
+            path="/caregiver/appointments"
+            element={<CaregiverAppointments />}
+          />
+
+          <Route
+            path="/caregiver/monitoring"
+            element={<CaregiverMonitoring />}
+          />
+
+          <Route
+            path="/caregiver/notifications"
+            element={<CaregiverNotifications />}
+          />
+
+          <Route
+            path="/caregiver/messages"
+            element={<CaregiverMessages />}
+          />
+
+          <Route
+            path="/caregiver/cognitive"
+            element={<CaregiverCognitive />}
+          />
+
+          <Route
+            path="/caregiver/profile"
+            element={<CaregiverProfile />}
+          />
+
+          <Route
+            path="/caregiver/settings"
+            element={<CaregiverSettings />}
           />
 
         </Route>

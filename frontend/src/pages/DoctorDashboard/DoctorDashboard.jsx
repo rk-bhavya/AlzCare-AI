@@ -7,7 +7,7 @@ import {
   FaBrain,
 } from "react-icons/fa";
 
-import axiosInstance from "../../api/axiosinstance.js";
+import axiosInstance from "../../api/axiosInstance.js";
 
 import {
   getDoctorAssessmentCount,

@@ -4,6 +4,8 @@ import {
   getDoctorCaregivers,
   getConversation,
   sendMessage,
+  getCaregiverDoctors,
+  getCaregiverConversation,
 } from "../controllers/message.controller.js";
 
 import {
@@ -15,38 +17,61 @@ import {
 const router = express.Router();
 
 
-router.use(
-  protect,
-  authorizeRoles("doctor")
-);
+router.use(protect);
 
 
 /* ============================================================
-   GET CAREGIVERS
+   DOCTOR: GET CAREGIVERS
 ============================================================ */
 
 router.get(
   "/caregivers",
+  authorizeRoles("doctor"),
   getDoctorCaregivers
 );
 
 
 /* ============================================================
-   GET CONVERSATION
+   CAREGIVER: GET ASSIGNED DOCTOR(S)
+============================================================ */
+
+router.get(
+  "/doctors",
+  authorizeRoles("caregiver"),
+  getCaregiverDoctors
+);
+
+
+/* ============================================================
+   DOCTOR: GET CONVERSATION WITH A CAREGIVER
 ============================================================ */
 
 router.get(
   "/conversation/:caregiverId",
+  authorizeRoles("doctor"),
   getConversation
 );
 
 
 /* ============================================================
+   CAREGIVER: GET CONVERSATION WITH A DOCTOR
+============================================================ */
+
+router.get(
+  "/conversation/doctor/:doctorId",
+  authorizeRoles("caregiver"),
+  getCaregiverConversation
+);
+
+
+/* ============================================================
    SEND MESSAGE
+   (Doctor -> Caregiver, or Caregiver -> Doctor)
 ============================================================ */
 
 router.post(
   "/",
+  authorizeRoles("doctor", "caregiver"),
   sendMessage
 );
 

@@ -20,9 +20,17 @@ const router = express.Router();
    ALL NOTIFICATION ROUTES
 ============================================================ */
 
+/* ============================================================
+   NOTE:
+   getDoctorNotifications / markNotificationAsRead / etc. are
+   role-agnostic — they always filter by req.user._id — so the
+   same functions are safely reused for caregivers here instead
+   of duplicating a parallel notification system.
+============================================================ */
+
 router.use(
   protect,
-  authorizeRoles("doctor")
+  authorizeRoles("doctor", "caregiver")
 );
 
 

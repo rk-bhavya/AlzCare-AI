@@ -7,7 +7,7 @@ import {
   FaUserPlus,
 } from "react-icons/fa";
 
-import axiosInstance from "../../api/axiosinstance.js";
+import axiosInstance from "../../api/axiosInstance.js";
 const PatientOverview = ({
   patients = [],
   isLoading = false,

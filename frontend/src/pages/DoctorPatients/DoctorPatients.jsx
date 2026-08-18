@@ -12,7 +12,7 @@ import {
 
 import { useNavigate } from "react-router-dom";
 
-import axiosInstance from "../../api/axiosinstance.js";
+import axiosInstance from "../../api/axiosInstance.js";
 
 import DoctorSidebar from "../../components/DoctorDashboard/DoctorSidebar";
 import DoctorHeader from "../../components/DoctorDashboard/DoctorHeader";

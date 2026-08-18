@@ -14,7 +14,7 @@ import {
 import DoctorSidebar from "../../components/DoctorDashboard/DoctorSidebar";
 import DoctorHeader from "../../components/DoctorDashboard/DoctorHeader";
 
-import axiosInstance from "../../api/axiosinstance.js";
+import axiosInstance from "../../api/axiosInstance.js";
 
 import "./DoctorClinicalNotes.css";
 

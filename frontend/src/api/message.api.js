@@ -1,4 +1,38 @@
-import axiosInstance from "./axiosinstance.js";
+import axiosInstance from "./axiosInstance.js";
+
+
+/* ============================================================
+   CAREGIVER: GET ASSIGNED DOCTOR(S)
+============================================================ */
+
+export const getCaregiverDoctors =
+  async () => {
+
+    const response =
+      await axiosInstance.get(
+        "/messages/doctors"
+      );
+
+    return response.data;
+  };
+
+
+/* ============================================================
+   CAREGIVER: GET CONVERSATION WITH A DOCTOR
+============================================================ */
+
+export const getCaregiverConversation =
+  async (
+    doctorId
+  ) => {
+
+    const response =
+      await axiosInstance.get(
+        `/messages/conversation/doctor/${doctorId}`
+      );
+
+    return response.data;
+  };
 
 
 /* ============================================================

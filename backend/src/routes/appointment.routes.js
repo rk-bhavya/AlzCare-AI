@@ -5,6 +5,8 @@ import {
   getDoctorAppointments,
   getTodaysAppointments,
   updateAppointmentStatus,
+  getCaregiverAppointments,
+  getCaregiverTodaysAppointments,
 } from "../controllers/appointment.controller.js";
 
 import {
@@ -63,6 +65,34 @@ router.patch(
   protect,
   authorizeRoles("doctor"),
   updateAppointmentStatus
+);
+
+
+/* ============================================================
+   CAREGIVER: GET TODAY'S APPOINTMENTS FOR ASSIGNED PATIENTS
+   IMPORTANT: Keep this BEFORE /caregiver/:something-else
+============================================================ */
+
+router.get(
+  "/caregiver/today",
+  protect,
+  authorizeRoles("caregiver"),
+  getCaregiverTodaysAppointments
+);
+
+
+/* ============================================================
+   CAREGIVER: GET ALL APPOINTMENTS FOR ASSIGNED PATIENTS
+
+   REUSES the existing Appointment model/routes file — this is
+   not a duplicate appointment system.
+============================================================ */
+
+router.get(
+  "/caregiver",
+  protect,
+  authorizeRoles("caregiver"),
+  getCaregiverAppointments
 );
 
 

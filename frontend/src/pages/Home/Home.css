@@ -55,8 +55,35 @@
   margin-top: var(--space-xl);
 }
 
-.hero__status {
+.hero__highlights {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-lg);
   margin-top: var(--space-xl);
+}
+
+.hero__highlight {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.hero__highlight-icon {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: var(--radius-full);
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  font-size: 13px;
+}
+
+.hero__status {
+  margin-top: var(--space-lg);
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
@@ -78,82 +105,225 @@
   font-size: var(--fs-xs);
 }
 
-/* ================= HERO VISUAL ================= */
+/* ================= HERO VISUAL — CARE NETWORK ================= */
 .hero__visual {
   display: flex;
   justify-content: center;
 }
 
-.brain-card {
-  width: 100%;
-  max-width: 380px;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-xl);
-  padding: var(--space-lg);
-}
-
-.brain-card__header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: var(--fs-sm);
-  font-weight: 600;
-  margin-bottom: var(--space-md);
-}
-
-.brain-card__scan {
+.care-network {
   position: relative;
-  height: 150px;
-  border-radius: var(--radius-lg);
-  background: linear-gradient(135deg, #1e1b4b, #0f172a);
+  width: 100%;
+  max-width: 400px;
+  aspect-ratio: 1 / 1;
+}
+
+.care-network__lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.care-network__line {
+  stroke-width: 2;
+  fill: none;
+  stroke-dasharray: 6 8;
+  animation: dashFlow 3.5s linear infinite;
+}
+
+.care-network__line--patient {
+  stroke: var(--color-patient);
+}
+
+.care-network__line--caregiver {
+  stroke: var(--color-caregiver);
+}
+
+.care-network__line--doctor {
+  stroke: var(--color-doctor);
+}
+
+@keyframes dashFlow {
+  to {
+    stroke-dashoffset: -140;
+  }
+}
+
+.care-network__core {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  color: #fff;
   display: grid;
   place-items: center;
-  overflow: hidden;
+  font-size: 2.25rem;
+  box-shadow: var(--shadow-xl);
+  z-index: 3;
 }
 
-.brain-card__emoji {
-  font-size: 3.5rem;
-  position: relative;
-  z-index: 2;
-}
-
-.brain-card__pulse {
+.care-network__ring {
   position: absolute;
-  width: 130px;
-  height: 130px;
+  inset: -14px;
   border-radius: 50%;
-  border: 2px solid rgba(99, 102, 241, 0.55);
-  animation: pulse 2.2s ease-in-out infinite;
+  border: 2px solid rgba(79, 70, 229, 0.35);
+  animation: ringPulse 2.6s ease-out infinite;
 }
 
-.brain-card__bars {
-  margin-top: var(--space-lg);
+.care-network__ring--2 {
+  inset: -28px;
+  animation-delay: 0.7s;
+  border-color: rgba(20, 184, 166, 0.3);
+}
+
+@keyframes ringPulse {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1.25);
+    opacity: 0;
+  }
+}
+
+.care-network__node {
+  position: absolute;
   display: flex;
   flex-direction: column;
-  gap: var(--space-sm);
+  align-items: center;
+  gap: 6px;
+  z-index: 2;
+  animation: floatSoft 4.5s ease-in-out infinite;
 }
 
-.bar__label {
+.care-network__node-icon {
+  width: 58px;
+  height: 58px;
+  border-radius: var(--radius-lg);
+  display: grid;
+  place-items: center;
+  font-size: 1.4rem;
+  color: #fff;
+  background: var(--color-primary);
+  box-shadow: var(--shadow-md);
+  border: 3px solid var(--color-surface);
+}
+
+.care-network__node-label {
   font-size: var(--fs-xs);
-  color: var(--color-text-muted);
-  display: block;
-  margin-bottom: 4px;
+  font-weight: 700;
+  color: var(--color-text);
+  background: var(--color-surface);
+  padding: 2px 10px;
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-sm);
 }
 
-.bar__track {
-  height: 7px;
-  background: var(--color-surface-alt);
-  border-radius: var(--radius-full);
-  overflow: hidden;
+.care-network__node--patient {
+  top: 2%;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
-.bar__track i {
-  display: block;
-  height: 100%;
+.care-network__node--patient .care-network__node-icon {
+  background: var(--color-patient);
+}
+
+.care-network__node--caregiver {
+  bottom: 6%;
+  left: 8%;
+  animation-delay: 0.5s;
+}
+
+.care-network__node--caregiver .care-network__node-icon {
+  background: var(--color-caregiver);
+}
+
+.care-network__node--doctor {
+  bottom: 6%;
+  right: 6%;
+  animation-delay: 1s;
+}
+
+.care-network__node--doctor .care-network__node-icon {
+  background: var(--color-doctor);
+}
+
+@keyframes floatSoft {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.care-network__node--patient {
+  animation-name: floatSoftPatient;
+}
+
+@keyframes floatSoftPatient {
+  0%, 100% {
+    transform: translateX(-50%) translateY(0);
+  }
+  50% {
+    transform: translateX(-50%) translateY(-6px);
+  }
+}
+
+.care-network__badge {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-full);
-  background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+  padding: 7px 14px;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--color-text);
+  box-shadow: var(--shadow-md);
+  z-index: 4;
+  animation: badgeFloat 5s ease-in-out infinite;
+}
+
+.care-network__badge svg {
+  color: var(--color-primary);
+  font-size: 13px;
+}
+
+.care-network__badge--1 {
+  top: -10%;
+  right: +33%;
+  animation-delay: 0.2s;
+}
+
+.care-network__badge--2 {
+  top: 44%;
+  left: -8%;
+  animation-delay: 1.1s;
+}
+
+.care-network__badge--3 {
+  bottom: 46%;
+  right: -8%;
+  animation-delay: 1.9s;
+}
+
+@keyframes badgeFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
 }
 
 /* ================= SECTION HEAD ================= */
@@ -216,6 +386,19 @@
   border-radius: var(--radius-lg);
   padding: var(--space-lg);
   box-shadow: var(--shadow-sm);
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.step:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.step__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-md);
 }
 
 .step__num {
@@ -226,7 +409,17 @@
   background: var(--color-primary-light);
   padding: 4px 10px;
   border-radius: var(--radius-sm);
-  margin-bottom: var(--space-md);
+}
+
+.step__icon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  background: var(--color-accent);
+  color: #fff;
+  font-size: 1rem;
 }
 
 .step h4 {
@@ -237,6 +430,41 @@
 .step p {
   font-size: var(--fs-sm);
   color: var(--color-text-muted);
+}
+
+/* ================= CTA ================= */
+.cta {
+  background: linear-gradient(120deg, var(--color-primary), var(--color-accent));
+}
+
+.cta__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-xl);
+  flex-wrap: wrap;
+}
+
+.cta h2 {
+  font-size: var(--fs-2xl);
+  color: #fff;
+}
+
+.cta p {
+  margin-top: var(--space-sm);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: var(--fs-md);
+  max-width: 520px;
+}
+
+.cta .btn {
+  background: #fff;
+  color: var(--color-primary);
+  border-color: #fff;
+}
+
+.cta .btn:hover {
+  background: rgba(255, 255, 255, 0.9);
 }
 
 /* ================= RESPONSIVE ================= */
@@ -259,8 +487,25 @@
   }
 
   .hero__actions,
-  .status__row {
+  .status__row,
+  .hero__highlights {
     justify-content: center;
+  }
+
+  .care-network {
+    max-width: 320px;
+    margin-top: var(--space-xl);
+  }
+
+  .care-network__badge--1,
+  .care-network__badge--2,
+  .care-network__badge--3 {
+    display: none;
+  }
+
+  .cta__inner {
+    flex-direction: column;
+    text-align: center;
   }
 }
 

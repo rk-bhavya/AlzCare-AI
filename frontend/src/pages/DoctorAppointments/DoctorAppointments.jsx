@@ -20,7 +20,7 @@ import {
   updateAppointmentStatus,
 } from "../../api/appointment.api.js";
 
-import axiosInstance from "../../api/axiosinstance.js";
+import axiosInstance from "../../api/axiosInstance.js";
 
 import "./DoctorAppointments.css";
 

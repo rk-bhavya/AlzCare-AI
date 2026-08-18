@@ -1,5 +1,19 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+
+import {
+  FaUserInjured,
+  FaHandsHelping,
+  FaUserMd,
+  FaUserShield,
+  FaBrain,
+  FaLock,
+  FaBolt,
+  FaChartLine,
+  FaFileMedicalAlt,
+  FaClipboardCheck,
+} from "react-icons/fa";
+
 import Button from "../../components/Button/Button.jsx";
 import Card from "../../components/Card/Card.jsx";
 import Loader from "../../components/Loader/Loader.jsx";
@@ -10,7 +24,7 @@ import "./Home.css";
 const MODULES = [
   {
     id: "patient",
-    initials: "P",
+    icon: <FaUserInjured />,
     title: "Patient",
     subtitle: "Screening & daily support",
     color: "var(--color-patient)",
@@ -22,19 +36,19 @@ const MODULES = [
   },
   {
     id: "caregiver",
-    initials: "C",
+    icon: <FaHandsHelping />,
     title: "Caregiver",
     subtitle: "Monitoring & assistance",
     color: "var(--color-caregiver)",
     points: [
       "Track patient activity and progress",
-      "Upload MRI scans for prediction",
-      "Manage reminders and routines",
+      "Manage medications and appointments",
+      "Message the care team directly",
     ],
   },
   {
     id: "doctor",
-    initials: "D",
+    icon: <FaUserMd />,
     title: "Doctor",
     subtitle: "Clinical review & reports",
     color: "var(--color-doctor)",
@@ -46,7 +60,7 @@ const MODULES = [
   },
   {
     id: "admin",
-    initials: "A",
+    icon: <FaUserShield />,
     title: "Admin",
     subtitle: "Control & analytics",
     color: "var(--color-admin)",
@@ -56,6 +70,35 @@ const MODULES = [
       "View system-wide analytics",
     ],
   },
+];
+
+const STEPS = [
+  {
+    icon: <FaFileMedicalAlt />,
+    title: "Capture",
+    text: "The patient completes cognitive assessments and uploads an MRI scan through a guided, accessible interface.",
+  },
+  {
+    icon: <FaBrain />,
+    title: "Analyse",
+    text: "A TensorFlow CNN served over a FastAPI service classifies the scan and returns a stage prediction with confidence scores.",
+  },
+  {
+    icon: <FaHandsHelping />,
+    title: "Assist",
+    text: "Caregivers receive alerts and manage reminders, medications, and memory-support tools for the patient.",
+  },
+  {
+    icon: <FaClipboardCheck />,
+    title: "Validate",
+    text: "Doctors review the AI output, add clinical remarks, and generate a final downloadable report.",
+  },
+];
+
+const HIGHLIGHTS = [
+  { icon: <FaBrain />, label: "AI-Powered Screening" },
+  { icon: <FaBolt />, label: "Real-Time Alerts" },
+  { icon: <FaLock />, label: "Private & Secure" },
 ];
 
 const Home = () => {
@@ -127,6 +170,7 @@ const Home = () => {
       <section className="hero">
         <div className="container hero__inner">
           <div className="hero__content animate-fade-up">
+            <span className="hero__tag">AI-Powered Alzheimer Care Platform</span>
 
             <h1 className="hero__title">
               Detect Alzheimer's Early.
@@ -155,49 +199,64 @@ const Home = () => {
               </Link>
             </div>
 
+            <div className="hero__highlights">
+              {HIGHLIGHTS.map((item) => (
+                <div className="hero__highlight" key={item.label}>
+                  <span className="hero__highlight-icon">{item.icon}</span>
+                  <span>{item.label}</span>
+                </div>
+              ))}
+            </div>
+
             <div className="hero__status">{renderStatus()}</div>
           </div>
 
           <div className="hero__visual animate-fade-up" aria-hidden="true">
-            <div className="brain-card">
-              <div className="brain-card__header">
-                <span>MRI Analysis</span>
-                <span className="badge badge--info">CNN v1</span>
+            <div className="care-network">
+              <svg
+                className="care-network__lines"
+                viewBox="0 0 400 400"
+                preserveAspectRatio="xMidYMid meet"
+              >
+                <line x1="200" y1="200" x2="200" y2="60" className="care-network__line care-network__line--patient" />
+                <line x1="200" y1="200" x2="82" y2="285" className="care-network__line care-network__line--caregiver" />
+                <line x1="200" y1="200" x2="318" y2="285" className="care-network__line care-network__line--doctor" />
+              </svg>
+
+              <div className="care-network__core">
+                <FaBrain />
+                <span className="care-network__ring care-network__ring--1" />
+                <span className="care-network__ring care-network__ring--2" />
               </div>
 
-              <div className="brain-card__scan">
-                <div className="brain-card__pulse" />
-                <span className="brain-card__emoji">🧠</span>
+              <div className="care-network__node care-network__node--patient">
+                <span className="care-network__node-icon"><FaUserInjured /></span>
+                <span className="care-network__node-label">Patient</span>
               </div>
 
-              <div className="brain-card__bars">
-                <div className="bar">
-                  <span className="bar__label">Non-Demented</span>
-                  <div className="bar__track">
-                    <i style={{ width: "82%" }} />
-                  </div>
-                </div>
+              <div className="care-network__node care-network__node--caregiver">
+                <span className="care-network__node-icon"><FaHandsHelping /></span>
+                <span className="care-network__node-label">Caregiver</span>
+              </div>
 
-                <div className="bar">
-                  <span className="bar__label">Very Mild</span>
-                  <div className="bar__track">
-                    <i style={{ width: "46%" }} />
-                  </div>
-                </div>
+              <div className="care-network__node care-network__node--doctor">
+                <span className="care-network__node-icon"><FaUserMd /></span>
+                <span className="care-network__node-label">Doctor</span>
+              </div>
 
-                <div className="bar">
-                  <span className="bar__label">Mild</span>
-                  <div className="bar__track">
-                    <i style={{ width: "24%" }} />
-                  </div>
-                </div>
+              <div className="care-network__badge care-network__badge--1">
+                <FaChartLine />
+                AI Risk Scoring
+              </div>
 
-                <div className="bar">
-                  <span className="bar__label">Moderate</span>
-                  <div className="bar__track">
-                    <i style={{ width: "11%" }} />
-                  </div>
-                </div>
+              <div className="care-network__badge care-network__badge--2">
+                <FaLock />
+                Secure & Private
+              </div>
+
+              <div className="care-network__badge care-network__badge--3">
+                <FaBolt />
+                Real-Time Alerts
               </div>
             </div>
           </div>
@@ -220,7 +279,7 @@ const Home = () => {
                 key={module.id}
                 hoverable
                 accent={module.color}
-                icon={module.initials}
+                icon={module.icon}
                 title={module.title}
                 subtitle={module.subtitle}
               >
@@ -244,50 +303,37 @@ const Home = () => {
           </div>
 
           <div className="steps">
-            <div className="step">
-              <span className="step__num">01</span>
+            {STEPS.map((step, index) => (
+              <div className="step" key={step.title}>
+                <div className="step__top">
+                  <span className="step__num">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <span className="step__icon">{step.icon}</span>
+                </div>
 
-              <h4>Capture</h4>
+                <h4>{step.title}</h4>
 
-              <p>
-                The patient completes cognitive assessments and uploads an MRI
-                scan through a guided, accessible interface.
-              </p>
-            </div>
-
-            <div className="step">
-              <span className="step__num">02</span>
-
-              <h4>Analyse</h4>
-
-              <p>
-                A TensorFlow CNN served over a Flask API classifies the scan and
-                returns a stage prediction with confidence scores.
-              </p>
-            </div>
-
-            <div className="step">
-              <span className="step__num">03</span>
-
-              <h4>Assist</h4>
-
-              <p>
-                Caregivers receive alerts and manage reminders, routines, and
-                memory-support tools for the patient.
-              </p>
-            </div>
-
-            <div className="step">
-              <span className="step__num">04</span>
-
-              <h4>Validate</h4>
-
-              <p>
-                Doctors review the AI output, add clinical remarks, and generate
-                a final downloadable report.
-              </p>
-            </div>
+                <p>{step.text}</p>
+              </div>
+            ))}
           </div>
+        </div>
+      </section>
+
+      <section className="section cta">
+        <div className="container cta__inner">
+          <div>
+            <h2>Ready to start monitoring cognitive health?</h2>
+            <p>
+              Create an account as a patient, caregiver, or doctor and join a
+              connected care experience built around early detection.
+            </p>
+          </div>
+
+          <Link to={ROUTES.REGISTER}>
+            <Button size="lg">Get Started</Button>
+          </Link>
         </div>
       </section>
     </div>

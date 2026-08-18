@@ -1,4 +1,4 @@
-import axiosInstance from "./axiosinstance.js";
+import axiosInstance from "./axiosInstance.js";
 
 
 /* ============================================================
@@ -67,6 +67,38 @@ export const updateAppointmentStatus =
         {
           status,
         }
+      );
+
+    return response.data;
+  };
+
+
+/* ============================================================
+   CAREGIVER: GET ALL APPOINTMENTS FOR ASSIGNED PATIENTS
+============================================================ */
+
+export const getCaregiverAppointments =
+  async () => {
+
+    const response =
+      await axiosInstance.get(
+        "/appointments/caregiver"
+      );
+
+    return response.data;
+  };
+
+
+/* ============================================================
+   CAREGIVER: GET TODAY'S APPOINTMENTS
+============================================================ */
+
+export const getCaregiverTodaysAppointments =
+  async () => {
+
+    const response =
+      await axiosInstance.get(
+        "/appointments/caregiver/today"
       );
 
     return response.data;

@@ -10,7 +10,7 @@ import {
   FaSpinner,
 } from "react-icons/fa";
 
-import axiosInstance from "../../api/axiosinstance.js";
+import axiosInstance from "../../api/axiosInstance.js";
 
 import DoctorSidebar from "../../components/DoctorDashboard/DoctorSidebar";
 import DoctorHeader from "../../components/DoctorDashboard/DoctorHeader";

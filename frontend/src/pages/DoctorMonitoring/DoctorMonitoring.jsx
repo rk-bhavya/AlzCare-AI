@@ -3,7 +3,7 @@ import DoctorHeader from "../../components/DoctorDashboard/DoctorHeader";
 import AIAssessment from "../../components/AIAssessment/AIAssessment";
 
 import { useEffect, useState } from "react";
-import axiosInstance from "../../api/axiosinstance.js";
+import axiosInstance from "../../api/axiosInstance.js";
 
 import "./DoctorMonitoring.css";
 

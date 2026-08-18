@@ -8,6 +8,9 @@ import doctorRoutes from "./doctor.routes.js";
 import notificationRoutes from "./notification.routes.js";
 import messageRoutes from "./message.routes.js";
 import clinicalNoteRoutes from "./clinicalNote.routes.js";
+import caregiverRoutes from "./caregiver.routes.js";
+import medicationRoutes from "./medication.routes.js";
+import cognitiveRoutes from "./cognitive.routes.js";
 
 
 const router =
@@ -91,6 +94,36 @@ router.use(
 router.use(
   "/clinical-notes",
   clinicalNoteRoutes
+);
+
+
+/* ============================================================
+   CAREGIVER
+============================================================ */
+
+router.use(
+  "/caregiver",
+  caregiverRoutes
+);
+
+
+/* ============================================================
+   MEDICATIONS
+============================================================ */
+
+router.use(
+  "/medications",
+  medicationRoutes
+);
+
+
+/* ============================================================
+   COGNITIVE ASSISTANCE
+============================================================ */
+
+router.use(
+  "/cognitive",
+  cognitiveRoutes
 );
 
 
