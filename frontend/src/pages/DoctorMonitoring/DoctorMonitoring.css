@@ -1,0 +1,80 @@
+/* ============================================================
+   PATIENT MONITORING
+============================================================ */
+
+.doctor-monitoring {
+  font-size: 14px;
+}
+
+
+/* ============================================================
+   HEADER
+============================================================ */
+
+.doctor-monitoring__header {
+  margin-bottom: 22px;
+}
+
+.doctor-monitoring__header span {
+  display: block;
+  margin-bottom: 6px;
+  color: #8493a2;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.1px;
+}
+
+.doctor-monitoring__header h1 {
+  margin: 0 0 6px;
+  color: #30445b;
+  font-size: 28px;
+}
+
+.doctor-monitoring__header p {
+  margin: 0;
+  color: #7d8c9b;
+  font-size: 14px;
+}
+
+
+/* ============================================================
+   LOADING
+============================================================ */
+
+.doctor-monitoring__loading {
+  min-height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #718396;
+  font-size: 14px;
+}
+
+
+/* ============================================================
+   AI ASSESSMENT TEXT SIZE
+============================================================ */
+
+.doctor-monitoring
+  input,
+.doctor-monitoring
+  select,
+.doctor-monitoring
+  textarea,
+.doctor-monitoring
+  button {
+  font-size: 14px;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+
+@media (max-width: 700px) {
+
+  .doctor-monitoring__header h1 {
+    font-size: 24px;
+  }
+
+}

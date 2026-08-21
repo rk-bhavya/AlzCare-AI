@@ -1,0 +1,382 @@
+/* ============================================================
+   PATIENT DETAILS
+============================================================ */
+
+.doctor-details-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 18px;
+  padding: 7px 0;
+  border: none;
+  background: transparent;
+  color: #60748b;
+  font-size: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.doctor-details-back:hover {
+  color: #405a73;
+}
+
+
+/* ============================================================
+   PATIENT PROFILE
+============================================================ */
+
+.doctor-patient-profile-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.doctor-patient-profile {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.doctor-patient-profile__image,
+.doctor-patient-profile__avatar {
+  width: 62px;
+  height: 62px;
+  flex: 0 0 62px;
+  border-radius: 50%;
+}
+
+.doctor-patient-profile__image {
+  object-fit: cover;
+}
+
+.doctor-patient-profile__avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #edf3f8;
+  color: #58718d;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.doctor-patient-profile__info span {
+  display: block;
+  margin-bottom: 5px;
+  color: #8997a8;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.doctor-patient-profile__info h1 {
+  margin: 0 0 5px;
+  color: #33445b;
+  font-size: 21px;
+}
+
+.doctor-patient-profile__info p {
+  margin: 0;
+  color: #96a1ae;
+  font-size: 9px;
+}
+
+.doctor-patient-profile__status {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
+}
+
+.doctor-patient-profile__status span {
+  color: #96a1ae;
+  font-size: 8px;
+}
+
+.doctor-patient-profile__status strong {
+  padding: 5px 10px;
+  border-radius: 20px;
+  background: #edf7f1;
+  color: #4f8666;
+  font-size: 9px;
+  text-transform: capitalize;
+}
+
+
+/* ============================================================
+   BASIC INFORMATION
+============================================================ */
+
+.doctor-patient-info-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+}
+
+.doctor-patient-info-grid > div {
+  padding: 14px;
+  border: 1px solid #edf0f4;
+  border-radius: 8px;
+  background: #fafbfd;
+}
+
+.doctor-patient-info-grid span {
+  display: block;
+  margin-bottom: 6px;
+  color: #929eac;
+  font-size: 8px;
+}
+
+.doctor-patient-info-grid strong {
+  display: block;
+  overflow: hidden;
+  color: #4b5d73;
+  font-size: 10px;
+  text-overflow: ellipsis;
+}
+
+
+/* ============================================================
+   CAREGIVER
+============================================================ */
+
+.doctor-details-caregiver {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.doctor-details-caregiver__avatar {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #eef4f8;
+  color: #607991;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.doctor-details-caregiver > div:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.doctor-details-caregiver strong {
+  color: #43546a;
+  font-size: 11px;
+}
+
+.doctor-details-caregiver span {
+  color: #8795a5;
+  font-size: 9px;
+}
+
+.doctor-details-caregiver small {
+  color: #9ba5b1;
+  font-size: 8px;
+}
+
+.doctor-details-no-caregiver {
+  padding: 15px;
+  border-radius: 8px;
+  background: #fafbfd;
+  color: #919eac;
+  font-size: 10px;
+}
+
+
+/* ============================================================
+   LATEST ASSESSMENT
+============================================================ */
+
+.doctor-latest-assessment {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+.doctor-assessment-result {
+  padding: 15px;
+  border-radius: 8px;
+  background: #f8fafc;
+}
+
+.doctor-assessment-result span {
+  display: block;
+  margin-bottom: 7px;
+  color: #8f9bab;
+  font-size: 8px;
+}
+
+.doctor-assessment-result strong {
+  color: #45576d;
+  font-size: 12px;
+}
+
+
+/* ============================================================
+   ASSESSMENT HISTORY
+============================================================ */
+
+.doctor-assessment-history {
+  display: flex;
+  flex-direction: column;
+}
+
+.doctor-assessment-history__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 13px 0;
+  border-bottom: 1px solid #edf0f4;
+}
+
+.doctor-assessment-history__item:last-child {
+  border-bottom: none;
+}
+
+.doctor-assessment-history__item > div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.doctor-assessment-history__item strong {
+  color: #4a5b70;
+  font-size: 10px;
+}
+
+.doctor-assessment-history__item span {
+  color: #8996a6;
+  font-size: 8px;
+}
+
+.doctor-assessment-history__item small {
+  color: #a0a9b4;
+  font-size: 8px;
+}
+
+
+/* ============================================================
+   EMPTY / LOADING / ERROR
+============================================================ */
+
+.doctor-patient-details-loading,
+.doctor-patient-details-error {
+  min-height: 350px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  text-align: center;
+  color: #8c99a8;
+  font-size: 10px;
+}
+
+.doctor-patient-details-loading svg {
+  font-size: 25px;
+}
+
+.doctor-patient-details-error > svg {
+  color: #a9b6c4;
+  font-size: 30px;
+}
+
+.doctor-patient-details-error strong {
+  color: #52637a;
+  font-size: 13px;
+}
+
+.doctor-patient-details-error span {
+  max-width: 400px;
+}
+
+.doctor-patient-details-error button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 8px;
+  padding: 8px 13px;
+  border: 1px solid #dfe5ec;
+  border-radius: 7px;
+  background: #ffffff;
+  color: #5d7188;
+  font-size: 9px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.doctor-no-assessment {
+  min-height: 130px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  color: #929eac;
+  text-align: center;
+}
+
+.doctor-no-assessment svg {
+  color: #a9b8c7;
+  font-size: 25px;
+}
+
+.doctor-no-assessment strong {
+  color: #53647a;
+  font-size: 11px;
+}
+
+.doctor-no-assessment span {
+  max-width: 350px;
+  font-size: 9px;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+
+@media (max-width: 900px) {
+
+  .doctor-patient-profile-card {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .doctor-patient-profile__status {
+    align-items: flex-start;
+  }
+
+  .doctor-patient-info-grid,
+  .doctor-latest-assessment {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+}
+
+@media (max-width: 600px) {
+
+  .doctor-patient-info-grid,
+  .doctor-latest-assessment {
+    grid-template-columns: 1fr;
+  }
+
+  .doctor-patient-profile {
+    align-items: flex-start;
+  }
+
+  .doctor-patient-profile__image,
+  .doctor-patient-profile__avatar {
+    width: 50px;
+    height: 50px;
+    flex-basis: 50px;
+  }
+
+}

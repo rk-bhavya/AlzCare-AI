@@ -1,0 +1,455 @@
+.ai-assessment {
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid #e8edf4;
+  border-radius: 22px;
+  padding: 28px;
+  box-sizing: border-box;
+  box-shadow: 0 8px 30px rgba(30, 60, 90, 0.05);
+}
+
+.ai-assessment__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 26px;
+}
+
+.ai-assessment__heading {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.ai-assessment__icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #edf5ff;
+  color: #2878d8;
+  font-size: 22px;
+}
+
+.ai-assessment__heading span,
+.ai-assessment__result-header span {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.1px;
+  color: #7b8a9d;
+  margin-bottom: 5px;
+}
+
+.ai-assessment__heading h2,
+.ai-assessment__result-header h3 {
+  margin: 0;
+  color: #172b4d;
+  font-size: 23px;
+}
+
+.ai-assessment__heading p {
+  margin: 6px 0 0;
+  color: #7a8797;
+  font-size: 14px;
+}
+
+/* ============================================================
+   FORM
+============================================================ */
+
+.ai-assessment__form {
+  display: grid;
+  gap: 21px;
+}
+
+.ai-assessment__field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ai-assessment__field label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #34445a;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.ai-assessment__field label span {
+  color: #9aa7b7;
+  font-weight: 500;
+  font-size: 11px;
+}
+
+.ai-assessment__field select,
+.ai-assessment__field textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #dfe6ee;
+  border-radius: 12px;
+  background: #fbfcfe;
+  color: #24364d;
+  font-family: inherit;
+  font-size: 14px;
+  outline: none;
+  transition: 0.2s ease;
+}
+
+.ai-assessment__field select {
+  height: 48px;
+  padding: 0 14px;
+}
+
+.ai-assessment__field textarea {
+  padding: 13px 14px;
+  resize: vertical;
+  min-height: 100px;
+}
+
+.ai-assessment__field select:focus,
+.ai-assessment__field textarea:focus {
+  border-color: #6fa8e8;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(72, 137, 214, 0.09);
+}
+
+/* ============================================================
+   UPLOAD
+============================================================ */
+
+.ai-assessment__upload {
+  min-height: 165px;
+  border: 1.5px dashed #b9cbe0;
+  border-radius: 16px;
+  background: #f9fbfe;
+  color: #65758a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.ai-assessment__upload:hover {
+  border-color: #6da2db;
+  background: #f4f9ff;
+}
+
+.ai-assessment__upload svg {
+  color: #4c91d8;
+  font-size: 29px;
+  margin-bottom: 4px;
+}
+
+.ai-assessment__upload strong {
+  color: #344b66;
+  font-size: 14px;
+}
+
+.ai-assessment__upload span {
+  font-size: 11px;
+  color: #8a98a9;
+}
+
+/* ============================================================
+   SELECTED FILE
+============================================================ */
+
+.ai-assessment__file {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px;
+  border: 1px solid #dfe7f0;
+  border-radius: 14px;
+  background: #fafcff;
+}
+
+.ai-assessment__preview {
+  width: 68px;
+  height: 68px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #edf1f5;
+}
+
+.ai-assessment__preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ai-assessment__file-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.ai-assessment__file-info strong {
+  color: #34445a;
+  font-size: 13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ai-assessment__file-info span {
+  color: #8b98a8;
+  font-size: 11px;
+}
+
+.ai-assessment__remove {
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 9px;
+  background: #fff0f0;
+  color: #d95b5b;
+  cursor: pointer;
+}
+
+/* ============================================================
+   SUBMIT
+============================================================ */
+
+.ai-assessment__submit {
+  width: 100%;
+  height: 50px;
+  border: none;
+  border-radius: 12px;
+  background: #2878d8;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  transition: 0.2s ease;
+}
+
+.ai-assessment__submit:hover:not(:disabled) {
+  background: #216abf;
+  transform: translateY(-1px);
+}
+
+.ai-assessment__submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.ai-assessment__spinner {
+  animation: ai-assessment-spin 0.9s linear infinite;
+}
+
+@keyframes ai-assessment-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ============================================================
+   MESSAGES
+============================================================ */
+
+.ai-assessment__message {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: 11px;
+  padding: 12px 14px;
+  margin-bottom: 20px;
+  font-size: 13px;
+}
+
+.ai-assessment__message--error {
+  color: #a43c3c;
+  background: #fff3f3;
+  border: 1px solid #f3d1d1;
+}
+
+/* ============================================================
+   RESULT
+============================================================ */
+
+.ai-assessment__result {
+  border: 1px solid #dfe8f2;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.ai-assessment__result-header {
+  padding: 20px 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f7fbff;
+  border-bottom: 1px solid #e4edf6;
+}
+
+.ai-assessment__result-header > svg {
+  color: #35a56b;
+  font-size: 25px;
+}
+
+.ai-assessment__prediction {
+  padding: 24px 22px;
+}
+
+.ai-assessment__prediction > span {
+  display: block;
+  color: #7c8a9b;
+  font-size: 12px;
+  margin-bottom: 7px;
+}
+
+.ai-assessment__prediction > strong {
+  display: block;
+  color: #1e3553;
+  font-size: 25px;
+  margin-bottom: 20px;
+}
+
+.ai-assessment__confidence {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 15px;
+  border-top: 1px solid #edf1f5;
+}
+
+.ai-assessment__confidence span {
+  color: #738196;
+  font-size: 13px;
+}
+
+.ai-assessment__confidence strong {
+  color: #2878d8;
+  font-size: 18px;
+}
+
+/* ============================================================
+   PROBABILITIES
+============================================================ */
+
+.ai-assessment__probabilities {
+  padding: 20px 22px;
+  border-top: 1px solid #edf1f5;
+}
+
+.ai-assessment__probabilities h4 {
+  margin: 0 0 17px;
+  color: #34445a;
+  font-size: 13px;
+}
+
+.ai-assessment__probability-list {
+  display: grid;
+  gap: 14px;
+}
+
+.ai-assessment__probability-top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.ai-assessment__probability-top span {
+  color: #68778b;
+  font-size: 12px;
+}
+
+.ai-assessment__probability-top strong {
+  color: #34445a;
+  font-size: 12px;
+}
+
+.ai-assessment__progress {
+  height: 6px;
+  border-radius: 999px;
+  background: #edf1f5;
+  overflow: hidden;
+}
+
+.ai-assessment__progress div {
+  height: 100%;
+  border-radius: inherit;
+  background: #5b9ee0;
+  transition: width 0.5s ease;
+}
+
+/* ============================================================
+   DISCLAIMER
+============================================================ */
+
+.ai-assessment__disclaimer {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  margin: 0 22px 20px;
+  padding: 12px;
+  border-radius: 10px;
+  background: #fff9ed;
+  color: #866c38;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.ai-assessment__disclaimer svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.ai-assessment__reset {
+  margin: 0 22px 22px;
+  width: calc(100% - 44px);
+  height: 44px;
+  border: 1px solid #d7e1eb;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #486078;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.ai-assessment__reset:hover {
+  background: #f7faff;
+}
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+
+@media (max-width: 600px) {
+  .ai-assessment {
+    padding: 20px;
+    border-radius: 17px;
+  }
+
+  .ai-assessment__heading h2 {
+    font-size: 20px;
+  }
+
+  .ai-assessment__heading p {
+    font-size: 12px;
+  }
+
+  .ai-assessment__icon {
+    width: 44px;
+    height: 44px;
+  }
+}

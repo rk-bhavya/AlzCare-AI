@@ -1,0 +1,577 @@
+/* ============================================================
+   DOCTOR MESSAGES
+============================================================ */
+
+.doctor-messages {
+  font-size: 14px;
+}
+
+
+/* ============================================================
+   PAGE HEADER
+============================================================ */
+
+.doctor-messages__header {
+  margin-bottom: 22px;
+}
+
+.doctor-messages__header span {
+  display: block;
+  margin-bottom: 6px;
+  color: #8493a2;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.1px;
+}
+
+.doctor-messages__header h1 {
+  margin: 0 0 6px;
+  color: #30445b;
+  font-size: 28px;
+}
+
+.doctor-messages__header p {
+  margin: 0;
+  color: #7d8c9b;
+  font-size: 14px;
+}
+
+
+/* ============================================================
+   MAIN CONTAINER
+============================================================ */
+
+.doctor-messages__container {
+  height: calc(100vh - 220px);
+  min-height: 550px;
+  display: grid;
+  grid-template-columns: 340px minmax(0, 1fr);
+  overflow: hidden;
+  border: 1px solid #e1e8ee;
+  border-radius: 10px;
+  background: #ffffff;
+}
+
+
+/* ============================================================
+   CONTACT SIDEBAR
+============================================================ */
+
+.doctor-messages__contacts {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  border-right: 1px solid #e5ebf0;
+}
+
+.doctor-messages__contacts-header {
+  padding: 18px;
+  border-bottom: 1px solid #edf1f4;
+}
+
+.doctor-messages__contacts-header > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.doctor-messages__contacts-header strong {
+  color: #4c6075;
+  font-size: 16px;
+}
+
+.doctor-messages__contacts-header span {
+  color: #919da8;
+  font-size: 12px;
+}
+
+
+/* ============================================================
+   SEARCH
+============================================================ */
+
+.doctor-messages__search {
+  position: relative;
+  margin: 14px;
+}
+
+.doctor-messages__search svg {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9aa6b0;
+  font-size: 13px;
+}
+
+.doctor-messages__search input {
+  width: 100%;
+  height: 40px;
+  box-sizing: border-box;
+  padding: 0 12px 0 34px;
+  border: 1px solid #dfe6ec;
+  border-radius: 7px;
+  outline: none;
+  color: #53677b;
+  font-family: inherit;
+  font-size: 14px;
+}
+
+.doctor-messages__search input:focus {
+  border-color: #9eafbe;
+}
+
+.doctor-messages__search input::placeholder {
+  color: #a0abb5;
+}
+
+
+/* ============================================================
+   CONTACT LIST
+============================================================ */
+
+.doctor-messages__contact-list {
+  flex: 1;
+  overflow-y: auto;
+}
+
+
+/* ============================================================
+   CONTACT
+============================================================ */
+
+.doctor-message-contact {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  padding: 14px;
+  border: none;
+  border-bottom: 1px solid #edf1f4;
+  background: #ffffff;
+  text-align: left;
+  cursor: pointer;
+}
+
+.doctor-message-contact:hover {
+  background: #fafcfd;
+}
+
+.doctor-message-contact--active {
+  background: #f4f8fa;
+}
+
+.doctor-message-contact--active:hover {
+  background: #f4f8fa;
+}
+
+
+/* ============================================================
+   CONTACT AVATAR
+============================================================ */
+
+.doctor-message-contact__avatar {
+  position: relative;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 42px;
+  border-radius: 50%;
+  background: #e9eff4;
+  color: #5d748a;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.doctor-message-contact__online {
+  position: absolute;
+  right: 0;
+  bottom: 1px;
+  width: 9px;
+  height: 9px;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  background: #6e9a7b;
+}
+
+
+/* ============================================================
+   CONTACT CONTENT
+============================================================ */
+
+.doctor-message-contact__content {
+  min-width: 0;
+  flex: 1;
+}
+
+.doctor-message-contact__content > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.doctor-message-contact__content strong {
+  overflow: hidden;
+  color: #52667b;
+  font-size: 14px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.doctor-message-contact__content > div span {
+  flex-shrink: 0;
+  color: #9aa5af;
+  font-size: 11px;
+}
+
+.doctor-message-contact__content p {
+  margin: 4px 0;
+  overflow: hidden;
+  color: #7d8b98;
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.doctor-message-contact__content small {
+  color: #98a3ad;
+  font-size: 11px;
+}
+
+
+/* ============================================================
+   UNREAD
+============================================================ */
+
+.doctor-message-contact__unread {
+  min-width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2px;
+  border-radius: 50%;
+  background: #71879b;
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+
+/* ============================================================
+   NO CONTACTS
+============================================================ */
+
+.doctor-messages__no-contacts {
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #9aa6b0;
+  font-size: 13px;
+}
+
+.doctor-messages__no-contacts svg {
+  font-size: 25px;
+}
+
+
+/* ============================================================
+   CHAT
+============================================================ */
+
+.doctor-messages__chat {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* ============================================================
+   CHAT HEADER
+============================================================ */
+
+.doctor-messages__chat-header {
+  height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 0 20px;
+  border-bottom: 1px solid #e5ebf0;
+}
+
+.doctor-messages__chat-user {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-width: 0;
+}
+
+.doctor-messages__chat-avatar {
+  position: relative;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 42px;
+  border-radius: 50%;
+  background: #e9eff4;
+  color: #5d748a;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.doctor-messages__chat-avatar span {
+  position: absolute;
+  right: 0;
+  bottom: 1px;
+  width: 9px;
+  height: 9px;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  background: #6e9a7b;
+}
+
+.doctor-messages__chat-user > div:last-child {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.doctor-messages__chat-user strong {
+  color: #4c6075;
+  font-size: 15px;
+}
+
+.doctor-messages__chat-user span {
+  overflow: hidden;
+  color: #909ca7;
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+/* ============================================================
+   CHAT ACTIONS
+============================================================ */
+
+.doctor-messages__chat-actions {
+  display: flex;
+  gap: 5px;
+}
+
+.doctor-messages__chat-actions button {
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: #718496;
+  cursor: pointer;
+}
+
+.doctor-messages__chat-actions button:hover {
+  background: #f2f6f8;
+}
+
+.doctor-messages__chat-actions svg {
+  font-size: 13px;
+}
+
+
+/* ============================================================
+   MESSAGE BODY
+============================================================ */
+
+.doctor-messages__body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 24px;
+  background: #fafcfd;
+}
+
+
+/* ============================================================
+   DATE
+============================================================ */
+
+.doctor-messages__date {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.doctor-messages__date span {
+  padding: 5px 10px;
+  border-radius: 12px;
+  background: #e9eff3;
+  color: #8996a2;
+  font-size: 11px;
+}
+
+
+/* ============================================================
+   MESSAGE
+============================================================ */
+
+.doctor-message {
+  display: flex;
+  margin-bottom: 12px;
+}
+
+.doctor-message--doctor {
+  justify-content: flex-end;
+}
+
+.doctor-message--caregiver {
+  justify-content: flex-start;
+}
+
+.doctor-message__bubble {
+  max-width: 68%;
+  padding: 10px 13px;
+  border-radius: 10px;
+}
+
+.doctor-message--caregiver
+  .doctor-message__bubble {
+  border: 1px solid #e2e8ed;
+  border-top-left-radius: 3px;
+  background: #ffffff;
+}
+
+.doctor-message--doctor
+  .doctor-message__bubble {
+  border-top-right-radius: 3px;
+  background: #e3ebf0;
+}
+
+.doctor-message__bubble p {
+  margin: 0 0 5px;
+  color: #596d80;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.doctor-message__bubble span {
+  display: block;
+  color: #9aa5af;
+  font-size: 10px;
+  text-align: right;
+}
+
+
+/* ============================================================
+   COMPOSER
+============================================================ */
+
+.doctor-messages__composer {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  padding: 13px 16px;
+  border-top: 1px solid #e5ebf0;
+  background: #ffffff;
+}
+
+.doctor-messages__composer textarea {
+  min-height: 42px;
+  max-height: 110px;
+  flex: 1;
+  box-sizing: border-box;
+  padding: 11px 13px;
+  border: 1px solid #dce4ea;
+  border-radius: 8px;
+  outline: none;
+  resize: vertical;
+  color: #52667b;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.doctor-messages__composer textarea:focus {
+  border-color: #9eafbe;
+}
+
+.doctor-messages__composer textarea::placeholder {
+  color: #a0abb5;
+}
+
+.doctor-messages__composer button {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 42px;
+  border: none;
+  border-radius: 8px;
+  background: #6c8195;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.doctor-messages__composer button:hover {
+  background: #5e7489;
+}
+
+.doctor-messages__composer button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+
+@media (max-width: 900px) {
+
+  .doctor-messages__container {
+    grid-template-columns: 280px minmax(0, 1fr);
+  }
+
+}
+
+@media (max-width: 700px) {
+
+  .doctor-messages__container {
+    height: auto;
+    min-height: 650px;
+    grid-template-columns: 1fr;
+  }
+
+  .doctor-messages__contacts {
+    max-height: 280px;
+    border-right: none;
+    border-bottom: 1px solid #e5ebf0;
+  }
+
+  .doctor-messages__chat {
+    min-height: 500px;
+  }
+
+  .doctor-messages__chat-actions {
+    display: none;
+  }
+
+  .doctor-message__bubble {
+    max-width: 85%;
+  }
+
+}

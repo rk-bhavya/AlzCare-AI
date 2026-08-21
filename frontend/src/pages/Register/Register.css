@@ -1,0 +1,232 @@
+.register-page{
+display:flex;
+min-height:100vh;
+background:#f8fbff;
+}
+
+/* LEFT */
+
+.register-left{
+flex:1;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+padding:60px;
+text-align:center;
+background:radial-gradient(circle at top left,#eef6ff 0%,white 65%);
+}
+
+.register-tag{
+padding:8px 18px;
+background:white;
+border-radius:40px;
+color:#2563eb;
+font-weight:600;
+font-size:13px;
+box-shadow:0 6px 20px rgba(0,0,0,.05);
+margin-bottom:35px;
+}
+
+.register-brain{
+width:300px;
+animation:float 5s ease-in-out infinite;
+}
+
+@keyframes float{
+0%{transform:translateY(0);}
+50%{transform:translateY(-10px);}
+100%{transform:translateY(0);}
+}
+
+.register-left h1{
+margin-top:20px;
+font-size:52px;
+color:#1e293b;
+}
+
+.register-left h1 span{
+color:#2563eb;
+}
+
+.register-left h2{
+margin-top:20px;
+font-size:28px;
+line-height:1.5;
+color:#334155;
+}
+
+.register-left p{
+margin-top:20px;
+max-width:540px;
+line-height:30px;
+font-size:17px;
+color:#64748b;
+}
+
+/* RIGHT */
+
+.register-right{
+flex:1;
+display:flex;
+flex-direction:column;
+justify-content:center;
+padding:70px;
+background:linear-gradient(180deg,#f8fbff,#edf5ff);
+}
+
+.step{
+display:inline-block;
+padding:6px 15px;
+border-radius:20px;
+background:#dbeafe;
+color:#2563eb;
+font-size:13px;
+font-weight:700;
+margin-bottom:18px;
+}
+
+.register-header h2{
+font-size:42px;
+color:#1e293b;
+}
+
+.register-header p{
+margin-top:10px;
+color:#64748b;
+}
+
+.register-cards{
+display:flex;
+gap:30px;
+margin-top:40px;
+}
+
+.register-card{
+flex:1;
+background:white;
+border-radius:22px;
+padding:35px;
+box-shadow:0 15px 35px rgba(0,0,0,.08);
+transition:.3s;
+border:2px solid transparent;
+}
+
+.register-card:hover{
+transform:translateY(-8px);
+border-color:#2563eb;
+box-shadow:0 18px 40px rgba(37,99,235,.18);
+}
+
+.register-icon{
+width:68px;
+height:68px;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:28px;
+border-radius:18px;
+margin-bottom:25px;
+color:white;
+}
+
+.patient{
+background:#2563eb;
+}
+
+.caregiver{
+background:#14b8a6;
+}
+
+.register-card h3{
+font-size:28px;
+margin-bottom:10px;
+color:#1e293b;
+}
+
+.register-card p{
+color:#64748b;
+line-height:28px;
+margin-bottom:20px;
+}
+
+.register-card ul{
+list-style:none;
+padding:0;
+margin:0 0 30px;
+}
+
+.register-card li{
+margin:10px 0;
+color:#334155;
+}
+
+.register-card button{
+width:100%;
+padding:15px;
+border:none;
+border-radius:12px;
+background:#2563eb;
+color:white;
+font-size:16px;
+font-weight:600;
+display:flex;
+justify-content:center;
+align-items:center;
+gap:10px;
+cursor:pointer;
+transition:.3s;
+}
+
+.register-card button:hover{
+background:#1d4ed8;
+}
+
+.register-footer{
+margin-top:40px;
+text-align:center;
+color:#64748b;
+}
+
+.register-footer a{
+margin-left:8px;
+text-decoration:none;
+font-weight:600;
+color:#2563eb;
+}
+
+.register-footer a:hover{
+text-decoration:underline;
+}
+
+@media(max-width:992px){
+
+.register-page{
+flex-direction:column;
+}
+
+.register-left{
+padding:40px;
+}
+
+.register-right{
+padding:40px;
+}
+
+.register-cards{
+flex-direction:column;
+}
+
+.register-left h1{
+font-size:42px;
+}
+
+.register-left h2{
+font-size:24px;
+}
+
+.register-brain{
+width:220px;
+}
+
+}

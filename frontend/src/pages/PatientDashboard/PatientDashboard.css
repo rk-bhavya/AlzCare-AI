@@ -1,0 +1,357 @@
+.patient-dash {
+  min-height: 100vh;
+  background: #fdfcf9;
+  padding: 32px 20px 120px;
+  max-width: 640px;
+  margin: 0 auto;
+  font-family: inherit;
+  color: #1a1a1a;
+}
+
+.patient-dash--center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  text-align: center;
+  font-size: 20px;
+}
+
+.patient-dash__spinner {
+  font-size: 40px;
+  color: #4f46e5;
+  animation: patientSpin 1s linear infinite;
+}
+
+@keyframes patientSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.patient-dash__greeting {
+  font-size: 32px;
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 6px;
+}
+
+.patient-dash__greeting span {
+  font-size: 28px;
+}
+
+.patient-dash__subtitle {
+  text-align: center;
+  font-size: 18px;
+  color: #52525b;
+  margin-bottom: 28px;
+}
+
+.patient-dash__title {
+  font-size: 26px;
+  font-weight: 800;
+  text-align: center;
+  margin: 20px 0 24px;
+}
+
+.patient-dash__section-title {
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #8b96ab;
+  margin: 8px 0 14px;
+}
+
+/* ================= BACK BUTTON ================= */
+
+.patient-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  background: transparent;
+  font-size: 17px;
+  font-weight: 700;
+  color: #4f46e5;
+  cursor: pointer;
+  padding: 8px 4px;
+  margin-bottom: 8px;
+}
+
+/* ================= CARDS ================= */
+
+.patient-card {
+  background: #ffffff;
+  border: 2px solid #e5e7eb;
+  border-radius: 24px;
+  padding: 26px 24px;
+  margin-bottom: 20px;
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.06);
+  text-align: center;
+}
+
+.patient-card__icon {
+  font-size: 42px;
+  margin-bottom: 8px;
+}
+
+.patient-card h3 {
+  font-size: 22px;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+.patient-card p {
+  font-size: 17px;
+  color: #52525b;
+  margin-bottom: 18px;
+}
+
+.patient-card--game {
+  text-align: left;
+}
+
+.patient-card--game h2 {
+  font-size: 24px;
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+/* ================= BUTTONS ================= */
+
+.patient-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 19px;
+  font-weight: 800;
+  padding: 16px 28px;
+  border-radius: 16px;
+  border: none;
+  cursor: pointer;
+  min-width: 180px;
+  transition: transform 0.1s ease, opacity 0.2s ease;
+}
+
+.patient-btn:active {
+  transform: scale(0.97);
+}
+
+.patient-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.patient-btn--primary {
+  background: #4f46e5;
+  color: #ffffff;
+}
+
+.patient-btn--secondary {
+  background: #ecfdf5;
+  color: #047857;
+  border: 2px solid #6ee7b7;
+  font-size: 16px;
+  padding: 10px 18px;
+  min-width: 130px;
+}
+
+/* ================= MEDICATION LIST ================= */
+
+.patient-med-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  text-align: left;
+}
+
+.patient-med-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: #f8fafc;
+}
+
+.patient-med-item strong {
+  display: block;
+  font-size: 18px;
+}
+
+.patient-med-item span {
+  font-size: 15px;
+  color: #6b7280;
+}
+
+.patient-med-status--taken {
+  font-size: 16px;
+  font-weight: 800;
+  color: #047857;
+}
+
+/* ================= TASKS ================= */
+
+.patient-task-summary {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 14px;
+}
+
+.patient-task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: left;
+}
+
+.patient-task-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 2px solid #e5e7eb;
+  background: #ffffff;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a1a1a;
+  cursor: pointer;
+  text-align: left;
+}
+
+.patient-task-item--done {
+  background: #f0fdf4;
+  border-color: #86efac;
+  color: #52525b;
+  text-decoration: line-through;
+}
+
+.patient-task-checkbox {
+  font-size: 22px;
+}
+
+/* ================= GAME SELECT ================= */
+
+.patient-game-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.patient-game-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 28px 14px;
+  border-radius: 20px;
+  border: 2px solid #e5e7eb;
+  background: #ffffff;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.patient-game-tile__icon {
+  font-size: 40px;
+}
+
+/* ================= GAME RESULT ================= */
+
+.patient-game-result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 20px 0;
+  text-align: center;
+}
+
+.patient-game-result__icon {
+  font-size: 48px;
+  color: #16a34a;
+}
+
+.patient-game-result p {
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.patient-game-result span {
+  font-size: 18px;
+  color: #52525b;
+  margin-bottom: 14px;
+}
+
+/* ================= HELP ================= */
+
+.patient-help {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 20px calc(18px + env(safe-area-inset-bottom));
+  background: linear-gradient(to top, #fdfcf9 60%, transparent);
+}
+
+.patient-help__message {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a1a1a;
+  background: #fff7ed;
+  border: 1.5px solid #fdba74;
+  border-radius: 12px;
+  padding: 10px 16px;
+  text-align: center;
+}
+
+.patient-help-btn {
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+  border-radius: 20px;
+  border: none;
+  background: #dc2626;
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(220, 38, 38, 0.35);
+}
+
+.patient-help-btn:disabled {
+  opacity: 0.7;
+}
+
+.patient-recognition-message { white-space: pre-line; font-weight: 800; color: #047857; }
+.patient-camera-overlay { position: fixed; inset: 0; z-index: 20; background: rgba(15, 23, 42, .75); display: grid; place-items: center; padding: 20px; }
+.patient-camera-card { width: min(100%, 520px); background: white; padding: 24px; border-radius: 24px; text-align: center; }
+.patient-camera-card h2 { font-size: 26px; margin-bottom: 8px; }
+.patient-camera-card p { font-size: 18px; color: #52525b; margin-bottom: 16px; }
+.patient-camera-preview { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 18px; background: #111827; }
+.patient-camera-actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
+
+@media (max-width: 420px) {
+  .patient-dash__greeting {
+    font-size: 26px;
+  }
+
+  .patient-btn {
+    width: 100%;
+  }
+
+  .patient-game-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}

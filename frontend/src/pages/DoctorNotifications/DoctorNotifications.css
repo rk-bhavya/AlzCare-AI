@@ -1,0 +1,498 @@
+/* ============================================================
+   NOTIFICATIONS
+============================================================ */
+
+.doctor-notifications {
+  font-size: 14px;
+}
+
+
+/* ============================================================
+   HEADER
+============================================================ */
+
+.doctor-notifications__header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 22px;
+}
+
+.doctor-notifications__header > div:first-child span {
+  display: block;
+  margin-bottom: 6px;
+  color: #8493a2;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.1px;
+}
+
+.doctor-notifications__header h1 {
+  margin: 0 0 6px;
+  color: #30445b;
+  font-size: 28px;
+}
+
+.doctor-notifications__header p {
+  margin: 0;
+  color: #7d8c9b;
+  font-size: 14px;
+}
+
+
+/* ============================================================
+   COUNT
+============================================================ */
+
+.doctor-notifications__count {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 18px;
+  border: 1px solid #e1e8ee;
+  border-radius: 9px;
+  background: #ffffff;
+}
+
+.doctor-notifications__count > svg {
+  color: #71879b;
+  font-size: 19px;
+}
+
+.doctor-notifications__count div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.doctor-notifications__count strong {
+  color: #52677c;
+  font-size: 20px;
+}
+
+.doctor-notifications__count span {
+  color: #8997a4;
+  font-size: 12px;
+}
+
+
+/* ============================================================
+   CARD
+============================================================ */
+
+.doctor-notifications__card {
+  padding: 0;
+  overflow: hidden;
+}
+
+
+/* ============================================================
+   TOOLBAR
+============================================================ */
+
+.doctor-notifications__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 17px 20px;
+  border-bottom: 1px solid #e7edf2;
+}
+
+.doctor-notifications__filters {
+  display: flex;
+  gap: 5px;
+}
+
+.doctor-notifications__filters button {
+  padding: 8px 14px;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  background: transparent;
+  color: #718295;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.doctor-notifications__filters button:hover {
+  background: #f5f8fa;
+}
+
+.doctor-notifications__filters button.active {
+  border-color: #dce5eb;
+  background: #f1f5f8;
+  color: #53697e;
+  font-weight: 600;
+}
+
+.doctor-notifications__mark-all {
+  border: none;
+  background: transparent;
+  color: #647b90;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.doctor-notifications__mark-all:disabled {
+  color: #b2bbc3;
+  cursor: default;
+}
+
+
+/* ============================================================
+   LIST
+============================================================ */
+
+.doctor-notifications__list {
+  width: 100%;
+}
+
+
+/* ============================================================
+   NOTIFICATION
+============================================================ */
+
+.doctor-notification {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 18px 20px;
+  border: none;
+  border-bottom: 1px solid #edf1f4;
+  background: #ffffff;
+  text-align: left;
+  cursor: pointer;
+}
+
+.doctor-notification:hover {
+  background: #fafcfd;
+}
+
+.doctor-notification--unread {
+  background: #fafdff;
+}
+
+
+/* ============================================================
+   ICON
+============================================================ */
+
+.doctor-notification__icon {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 42px;
+  border-radius: 50%;
+  font-size: 16px;
+}
+
+.doctor-notification__icon--warning {
+  background: #fff5e8;
+  color: #b27a38;
+}
+
+.doctor-notification__icon--critical {
+  background: #fdecee;
+  color: #a55760;
+}
+
+.doctor-notification__icon--info {
+  background: #edf4f8;
+  color: #617a91;
+}
+
+.doctor-notification__icon--success {
+  background: #edf7f1;
+  color: #5b856a;
+}
+
+
+/* ============================================================
+   CONTENT
+============================================================ */
+
+.doctor-notification__content {
+  min-width: 0;
+  flex: 1;
+}
+
+.doctor-notification__title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 5px;
+}
+
+.doctor-notification__title strong {
+  color: #4c6075;
+  font-size: 15px;
+}
+
+.doctor-notification__title span {
+  padding: 3px 7px;
+  border-radius: 10px;
+  background: #edf3f7;
+  color: #627a8f;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.doctor-notification__content p {
+  margin: 0 0 8px;
+  color: #738291;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.doctor-notification__meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.doctor-notification__meta strong {
+  color: #60758a;
+  font-size: 12px;
+}
+
+.doctor-notification__meta span {
+  color: #9aa5af;
+  font-size: 12px;
+}
+
+
+/* ============================================================
+   UNREAD DOT
+============================================================ */
+
+.doctor-notification__dot {
+  width: 8px;
+  height: 8px;
+  flex: 0 0 8px;
+  margin-top: 7px;
+  border-radius: 50%;
+  background: #72889c;
+}
+
+
+/* ============================================================
+   EMPTY
+============================================================ */
+
+.doctor-notifications__empty {
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  color: #8998a6;
+  text-align: center;
+}
+
+.doctor-notifications__empty svg {
+  margin-bottom: 4px;
+  color: #71889d;
+  font-size: 30px;
+}
+
+.doctor-notifications__empty strong {
+  color: #52667b;
+  font-size: 16px;
+}
+
+.doctor-notifications__empty span {
+  font-size: 13px;
+}
+
+
+/* ============================================================
+   MODAL
+============================================================ */
+
+.doctor-notification-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(35, 49, 63, 0.42);
+}
+
+.doctor-notification-modal {
+  width: 100%;
+  max-width: 500px;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 20px 60px rgba(35, 49, 63, 0.2);
+  overflow: hidden;
+}
+
+
+/* ============================================================
+   MODAL HEADER
+============================================================ */
+
+.doctor-notification-modal__header {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 22px 24px;
+  border-bottom: 1px solid #e7edf2;
+}
+
+.doctor-notification-modal__header span {
+  display: block;
+  margin-bottom: 5px;
+  color: #8998a6;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.doctor-notification-modal__header h2 {
+  margin: 0;
+  color: #43576c;
+  font-size: 20px;
+}
+
+.doctor-notification-modal__close {
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 35px;
+  border: 1px solid #dfe6ec;
+  border-radius: 7px;
+  background: #ffffff;
+  color: #7b8b99;
+  cursor: pointer;
+}
+
+
+/* ============================================================
+   MODAL BODY
+============================================================ */
+
+.doctor-notification-modal__body {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 22px 24px 10px;
+}
+
+.doctor-notification-modal__icon {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 17px;
+}
+
+.doctor-notification-modal__icon--warning {
+  background: #fff5e8;
+  color: #b27a38;
+}
+
+.doctor-notification-modal__icon--critical {
+  background: #fdecee;
+  color: #a55760;
+}
+
+.doctor-notification-modal__icon--info {
+  background: #edf4f8;
+  color: #617a91;
+}
+
+.doctor-notification-modal__icon--success {
+  background: #edf7f1;
+  color: #5b856a;
+}
+
+.doctor-notification-modal__body > div:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.doctor-notification-modal__body strong {
+  color: #52667b;
+  font-size: 15px;
+}
+
+.doctor-notification-modal__body span {
+  color: #929eaa;
+  font-size: 12px;
+}
+
+
+/* ============================================================
+   MESSAGE
+============================================================ */
+
+.doctor-notification-modal__message {
+  margin: 10px 24px 22px;
+  padding: 15px;
+  border-radius: 8px;
+  background: #f7f9fb;
+  color: #687a8c;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+
+/* ============================================================
+   MODAL ACTION
+============================================================ */
+
+.doctor-notification-modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 24px 22px;
+}
+
+.doctor-notification-modal__actions button {
+  padding: 9px 17px;
+  border: 1px solid #dce4eb;
+  border-radius: 7px;
+  background: #ffffff;
+  color: #5d7185;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+
+@media (max-width: 700px) {
+
+  .doctor-notifications__header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .doctor-notifications__toolbar {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .doctor-notifications__mark-all {
+    align-self: flex-start;
+  }
+
+}
