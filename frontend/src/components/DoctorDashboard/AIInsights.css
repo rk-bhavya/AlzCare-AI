@@ -1,0 +1,68 @@
+.ai-insights {
+  background: linear-gradient(135deg, #eef2ff 0%, #f0fdfa 100%);
+  border: 1px solid #e0e7ff;
+  border-radius: 16px;
+  padding: 22px;
+}
+
+.ai-insights__header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.ai-insights__header svg {
+  color: #4f46e5;
+  font-size: 18px;
+}
+
+.ai-insights__header h2 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #14213d;
+}
+
+.ai-insights__list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.ai-insights__list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 14px;
+  color: #334155;
+  line-height: 1.5;
+}
+
+.ai-insights__icon {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  border-radius: 9px;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4f46e5;
+  font-size: 13px;
+  box-shadow: 0 2px 6px rgba(79, 70, 229, 0.15);
+}
+
+.ai-insights__empty {
+  color: #64748b;
+  font-size: 13px;
+}
+
+.ai-insights__disclaimer {
+  margin-top: 16px;
+  font-size: 11px;
+  color: #94a3b8;
+  font-style: italic;
+}

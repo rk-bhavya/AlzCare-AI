@@ -1,17 +1,11 @@
 import { useEffect, useState } from "react";
 
-import {
-  FaUserInjured,
-  FaExclamationTriangle,
-  FaCalendarAlt,
-  FaBrain,
-} from "react-icons/fa";
-
 import axiosInstance from "../../api/axiosInstance.js";
 
 import {
   getDoctorAssessmentCount,
   getDoctorPatientsNeedingAttention,
+  getDoctorAssessments,
 } from "../../api/assessment.api.js";
 
 import {
@@ -20,13 +14,21 @@ import {
 
 import DoctorSidebar from "../../components/DoctorDashboard/DoctorSidebar";
 import DoctorHeader from "../../components/DoctorDashboard/DoctorHeader";
-import SummaryCard from "../../components/DoctorDashboard/SummaryCard";
 import PatientOverview from "../../components/DoctorDashboard/PatientOverview";
 import PredictionCard from "../../components/DoctorDashboard/PredictionCard";
 import AppointmentCard from "../../components/DoctorDashboard/AppointmentCard";
 import AlertCard from "../../components/DoctorDashboard/AlertCard";
 import QuickActions from "../../components/DoctorDashboard/QuickActions";
 import AIAssessment from "../../components/AIAssessment/AIAssessment";
+
+import StatsCards from "../../components/DoctorDashboard/StatsCards.jsx";
+import RiskDistributionChart from "../../components/DoctorDashboard/RiskDistributionChart.jsx";
+import AssessmentTrendChart from "../../components/DoctorDashboard/AssessmentTrendChart.jsx";
+import PatientAgeChart from "../../components/DoctorDashboard/PatientAgeChart.jsx";
+import RecentPatients from "../../components/DoctorDashboard/RecentPatients.jsx";
+import RecentAssessments from "../../components/DoctorDashboard/RecentAssessments.jsx";
+import PatientsRequiringAttention from "../../components/DoctorDashboard/PatientsRequiringAttention.jsx";
+import AIInsights from "../../components/DoctorDashboard/AIInsights.jsx";
 
 import "./DoctorDashboard.css";
 
@@ -77,6 +79,17 @@ const DoctorDashboard = () => {
     useState(0);
 
   const [isLoadingAttention, setIsLoadingAttention] =
+    useState(true);
+
+
+  /* ============================================================
+     ALL ASSESSMENTS (for charts / recent assessments / insights)
+  ============================================================ */
+
+  const [assessments, setAssessments] =
+    useState([]);
+
+  const [isLoadingAssessments, setIsLoadingAssessments] =
     useState(true);
 
 
@@ -226,6 +239,45 @@ const DoctorDashboard = () => {
 
 
   /* ============================================================
+     LOAD ALL ASSESSMENTS
+
+     Reuses the same getDoctorAssessments() endpoint already
+     used by the existing AI Reports page — powers the charts,
+     Recent Assessments, Patients Requiring Attention list, and
+     AI Insights below, all from one real data source.
+  ============================================================ */
+
+  const loadAssessments = async () => {
+
+    try {
+
+      setIsLoadingAssessments(true);
+
+      const response =
+        await getDoctorAssessments();
+
+      setAssessments(
+        response.assessments || []
+      );
+
+    } catch (error) {
+
+      console.error(
+        "Unable to load assessments:",
+        error
+      );
+
+      setAssessments([]);
+
+    } finally {
+
+      setIsLoadingAssessments(false);
+
+    }
+  };
+
+
+  /* ============================================================
      INITIAL LOAD
   ============================================================ */
 
@@ -235,6 +287,7 @@ const DoctorDashboard = () => {
     loadAssessmentCount();
     loadTodaysAppointments();
     loadPatientsNeedingAttention();
+    loadAssessments();
 
   }, []);
 
@@ -245,6 +298,11 @@ const DoctorDashboard = () => {
 
   const totalPatients =
     patients.length;
+
+  const activePatients =
+    patients.filter(
+      (patient) => patient.assignment?.status === "active"
+    ).length;
 
 
   /* ============================================================
@@ -277,62 +335,79 @@ const DoctorDashboard = () => {
 
 
           {/* ==================================================
-              4 SUMMARY CARDS
+              KPI STAT CARDS
           ================================================== */}
 
-          <section className="doctor-summary-grid">
+          <StatsCards
+            totalPatients={totalPatients}
+            isLoadingPatients={isLoadingPatients}
+            activePatients={activePatients}
+            assessmentsCompleted={assessmentCount}
+            isLoadingAssessments={isLoadingAssessmentCount}
+            patientsNeedingAttention={patientsNeedingAttention}
+            isLoadingAttention={isLoadingAttention}
+          />
 
-            <SummaryCard
-              title="Total Patients"
-              value={
-                isLoadingPatients
-                  ? "..."
-                  : totalPatients
-              }
-              description="Patients currently assigned"
-              icon={
-                <FaUserInjured />
-              }
+
+          {/* ==================================================
+              CHARTS — Risk Distribution / Trend / Age
+          ================================================== */}
+
+          <section className="doctor-charts-grid">
+
+            <RiskDistributionChart
+              assessments={assessments}
+              isLoading={isLoadingAssessments}
             />
 
-            <SummaryCard
-              title="Needs Attention"
-              value={
-                isLoadingAttention
-                  ? "..."
-                  : patientsNeedingAttention
-              }
-              description="Patients requiring review"
-              icon={
-                <FaExclamationTriangle />
-              }
-              className="summary-warning"
+            <AssessmentTrendChart
+              assessments={assessments}
+              isLoading={isLoadingAssessments}
             />
 
-            <SummaryCard
-              title="Today's Appointments"
-              value={
-                isLoadingAppointments
-                  ? "..."
-                  : todaysAppointments
-              }
-              description="Scheduled appointments"
-              icon={
-                <FaCalendarAlt />
-              }
+            <PatientAgeChart
+              patients={patients}
+              isLoading={isLoadingPatients}
             />
 
-            <SummaryCard
-              title="Recent Assessments"
-              value={
-                isLoadingAssessmentCount
-                  ? "..."
-                  : assessmentCount
-              }
-              description="AI assessments"
-              icon={
-                <FaBrain />
-              }
+          </section>
+
+
+          {/* ==================================================
+              RECENT PATIENTS + RECENT ASSESSMENTS
+          ================================================== */}
+
+          <section className="doctor-lists-grid">
+
+            <RecentPatients
+              patients={patients}
+              isLoading={isLoadingPatients}
+            />
+
+            <RecentAssessments
+              assessments={assessments}
+              isLoading={isLoadingAssessments}
+            />
+
+          </section>
+
+
+          {/* ==================================================
+              PATIENTS REQUIRING ATTENTION + AI INSIGHTS
+          ================================================== */}
+
+          <section className="doctor-lists-grid">
+
+            <PatientsRequiringAttention
+              patients={patients}
+              assessments={assessments}
+              isLoading={isLoadingPatients || isLoadingAssessments}
+            />
+
+            <AIInsights
+              patients={patients}
+              assessments={assessments}
+              isLoading={isLoadingAssessments}
             />
 
           </section>

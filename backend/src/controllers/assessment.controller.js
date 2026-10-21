@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
-
 import Assessment from "../models/Assessment.js";
 import User from "../models/User.js";
 import CareAssignment from "../models/CareAssignment.js";
 import Notification from "../models/Notification.js";
+
 
 /* ============================================================
    MODEL API
@@ -17,13 +17,7 @@ const MODEL_API_URL =
 /* ============================================================
    CREATE AI ASSESSMENT
 
-   BOTH DOCTOR AND CAREGIVER CAN CREATE ASSESSMENTS.
-
-   Doctor:
-   - Can assess patients assigned to the doctor.
-
-   Caregiver:
-   - Can assess the caregiver's currently assigned patient.
+   Both Doctor and Caregiver can create assessments.
 
    Flow:
 
@@ -35,9 +29,13 @@ const MODEL_API_URL =
       ↓
    EfficientNetB0
       ↓
-   Prediction
+   Prediction + Probabilities
+   + Medical Indicators
+   + Grad-CAM
       ↓
    MongoDB
+      ↓
+   React Dashboard
 ============================================================ */
 
 export const createAssessment = async (
@@ -47,9 +45,9 @@ export const createAssessment = async (
 
   try {
 
-    /* --------------------------------------------------------
+    /* ========================================================
        VERIFY USER ROLE
-    -------------------------------------------------------- */
+    ======================================================== */
 
     if (
       !req.user ||
@@ -67,9 +65,9 @@ export const createAssessment = async (
     }
 
 
-    /* --------------------------------------------------------
+    /* ========================================================
        GET REQUEST DATA
-    -------------------------------------------------------- */
+    ======================================================== */
 
     const {
       patientId,
@@ -77,9 +75,9 @@ export const createAssessment = async (
     } = req.body;
 
 
-    /* --------------------------------------------------------
+    /* ========================================================
        VALIDATE PATIENT ID
-    -------------------------------------------------------- */
+    ======================================================== */
 
     if (!patientId) {
 
@@ -107,9 +105,9 @@ export const createAssessment = async (
     }
 
 
-    /* --------------------------------------------------------
+    /* ========================================================
        VERIFY PATIENT
-    -------------------------------------------------------- */
+    ======================================================== */
 
     const patient =
       await User.findOne({
@@ -129,9 +127,9 @@ export const createAssessment = async (
     }
 
 
-    /* --------------------------------------------------------
+    /* ========================================================
        FIND ACTIVE CARE ASSIGNMENT
-    -------------------------------------------------------- */
+    ======================================================== */
 
     let assignment;
 
@@ -141,8 +139,8 @@ export const createAssessment = async (
     ) {
 
       /*
-       * Doctor can assess a patient assigned
-       * to that doctor.
+       * Doctor can assess a patient
+       * assigned to that doctor.
        */
 
       assignment =
@@ -159,8 +157,8 @@ export const createAssessment = async (
     } else {
 
       /*
-       * Caregiver can assess only their
-       * currently assigned patient.
+       * Caregiver can assess only
+       * their currently assigned patient.
        */
 
       assignment =
@@ -177,9 +175,9 @@ export const createAssessment = async (
     }
 
 
-    /* --------------------------------------------------------
+    /* ========================================================
        VERIFY ASSIGNMENT
-    -------------------------------------------------------- */
+    ======================================================== */
 
     if (!assignment) {
 
@@ -192,9 +190,9 @@ export const createAssessment = async (
     }
 
 
-    /* --------------------------------------------------------
+    /* ========================================================
        IMAGE CHECK
-    -------------------------------------------------------- */
+    ======================================================== */
 
     if (!req.file) {
 
@@ -255,6 +253,7 @@ export const createAssessment = async (
         modelError
       );
 
+
       return res.status(503).json({
         success: false,
         message:
@@ -283,6 +282,7 @@ export const createAssessment = async (
         parseError
       );
 
+
       return res.status(502).json({
         success: false,
         message:
@@ -306,10 +306,12 @@ export const createAssessment = async (
         modelData
       );
 
+
       return res.status(502).json({
         success: false,
         message:
           modelData.detail ||
+          modelData.message ||
           "Please enter a valid MRI image.",
       });
 
@@ -320,9 +322,13 @@ export const createAssessment = async (
        GET AI RESULT
     ======================================================== */
 
-    const prediction =
-      modelData.prediction;
+    const modelPrediction =
+  modelData.prediction;
 
+const prediction =
+  modelPrediction === "Non Demented"
+    ? "Normal"
+    : modelPrediction;
 
     const confidence =
       Number(
@@ -336,9 +342,88 @@ export const createAssessment = async (
 
 
     /* ========================================================
+       GET 2D MRI MEDICAL INDICATORS
+    ======================================================== */
+
+    const modelMedicalIndicators =
+      modelData.medicalIndicators ||
+      {};
+
+
+    const medicalIndicators = {
+
+      hippocampalVolume:
+        modelMedicalIndicators
+          .hippocampalVolume != null
+          ? Number(
+              modelMedicalIndicators
+                .hippocampalVolume
+            )
+          : null,
+
+      corticalThickness:
+        modelMedicalIndicators
+          .corticalThickness != null
+          ? Number(
+              modelMedicalIndicators
+                .corticalThickness
+            )
+          : null,
+
+      ventricularVolume:
+        modelMedicalIndicators
+          .ventricularVolume != null
+          ? Number(
+              modelMedicalIndicators
+                .ventricularVolume
+            )
+          : null,
+
+      hippocampalAsymmetry:
+        modelMedicalIndicators
+          .hippocampalAsymmetry != null
+          ? Number(
+              modelMedicalIndicators
+                .hippocampalAsymmetry
+            )
+          : null,
+
+      brainAtrophy:
+        modelMedicalIndicators
+          .brainAtrophy != null
+          ? Number(
+              modelMedicalIndicators
+                .brainAtrophy
+            )
+          : null,
+    };
+
+
+    /* ========================================================
+       GET GRAD-CAM
+    ======================================================== */
+
+    const gradCAM =
+      modelData.gradCAM ||
+      null;
+
+
+    /* ========================================================
        CONVERT PROBABILITY KEYS
 
-       MODEL API → MONGODB
+       FASTAPI:
+
+       Non Demented
+       Mild Dementia
+       Moderate Dementia
+       Severe Dementia
+
+       MONGODB:
+
+       nonDemented
+       mildDementia
+       moderateDementia
+       severeDementia
     ======================================================== */
 
     const probabilities = {
@@ -347,13 +432,6 @@ export const createAssessment = async (
         Number(
           modelProbabilities[
             "Non Demented"
-          ] || 0
-        ),
-
-      veryMildDementia:
-        Number(
-          modelProbabilities[
-            "Very Mild Dementia"
           ] || 0
         ),
 
@@ -371,7 +449,59 @@ export const createAssessment = async (
           ] || 0
         ),
 
+      severeDementia:
+        Number(
+          modelProbabilities[
+            "Severe Dementia"
+          ] || 0
+        ),
     };
+
+
+    /* ========================================================
+       DEBUG MODEL DATA
+
+       Useful while testing.
+    ======================================================== */
+
+    console.log(
+      "\n===================================="
+    );
+
+    console.log(
+      "AI MODEL RESULT"
+    );
+
+    console.log(
+      "Prediction:",
+      prediction
+    );
+
+    console.log(
+      "Confidence:",
+      confidence
+    );
+
+    console.log(
+      "Probabilities:",
+      probabilities
+    );
+
+    console.log(
+      "Medical Indicators:",
+      medicalIndicators
+    );
+
+    console.log(
+      "Grad-CAM:",
+      gradCAM
+        ? "Received"
+        : "Not received"
+    );
+
+    console.log(
+      "====================================\n"
+    );
 
 
     /* ========================================================
@@ -381,58 +511,118 @@ export const createAssessment = async (
     const assessment =
       await Assessment.create({
 
+        /* ----------------------------------------------------
+           PATIENT
+        ---------------------------------------------------- */
+
         patientId,
 
-        /*
-         * Doctor responsible for the patient.
-         */
+
+        /* ----------------------------------------------------
+           DOCTOR
+
+           Doctor responsible for the patient.
+        ---------------------------------------------------- */
 
         doctorId:
           assignment.doctorId,
 
 
-        /*
-         * Caregiver assigned at the time
-         * of assessment.
-         */
+        /* ----------------------------------------------------
+           CAREGIVER
+
+           Caregiver assigned at the time
+           of assessment.
+        ---------------------------------------------------- */
 
         caregiverId:
-          assignment.caregiverId,
+          assignment.caregiverId || null,
 
 
-        /*
-         * Actual person who performed
-         * the assessment.
-         *
-         * Can be doctor OR caregiver.
-         */
+        /* ----------------------------------------------------
+           PERSON WHO PERFORMED ASSESSMENT
+
+           Can be doctor or caregiver.
+        ---------------------------------------------------- */
 
         createdBy:
           req.user._id,
 
 
-        /*
-         * Image storage can be connected
-         * later.
-         */
+        /* ----------------------------------------------------
+           IMAGE
+
+           Image storage can be connected later.
+        ---------------------------------------------------- */
 
         image: {
-
           url: "",
-
           publicId: "",
-
         },
 
 
+        /* ----------------------------------------------------
+           PREDICTION
+
+           IMPORTANT:
+           This is the demo prediction returned by FastAPI.
+
+           Example:
+
+           Real model:
+           Moderate Dementia
+
+           Demo:
+           Severe Dementia
+
+           The demo value is intentionally stored/displayed.
+        ---------------------------------------------------- */
+
         prediction,
+
+
+        /* ----------------------------------------------------
+           CONFIDENCE
+
+           Comes from the REAL EfficientNet prediction.
+        ---------------------------------------------------- */
 
         confidence,
 
+
+        /* ----------------------------------------------------
+           PROBABILITIES
+
+           These always come from the REAL model.
+        ---------------------------------------------------- */
+
         probabilities,
+
+
+        /* ----------------------------------------------------
+           2D MRI-DERIVED INDICATORS
+        ---------------------------------------------------- */
+
+        medicalIndicators,
+
+
+        /* ----------------------------------------------------
+           GRAD-CAM
+        ---------------------------------------------------- */
+
+        gradCAM,
+
+
+        /* ----------------------------------------------------
+           NOTES
+        ---------------------------------------------------- */
 
         notes,
 
+
+        /* ----------------------------------------------------
+           MODEL INFORMATION
+        ---------------------------------------------------- */
 
         model: {
 
@@ -441,61 +631,88 @@ export const createAssessment = async (
             "EfficientNetB0",
 
           version:
+            modelData.model?.version ||
             "1.0",
 
         },
 
       });
 
-      /* ============================================================
-   CREATE DOCTOR NOTIFICATION
-============================================================ */
 
-try {
+    /* ========================================================
+       CREATE DOCTOR NOTIFICATION
+    ======================================================== */
 
-  await Notification.create({
-    recipientId:
-      assignment.doctorId,
+    try {
 
-    patientId:
-      patientId,
+      let notificationType =
+        "info";
 
-    title:
-      "New AI Assessment Available",
 
-    message:
-      `A new AI assessment has been completed for ${patient.fullName}. Prediction: ${prediction}.`,
+      if (
+        prediction ===
+          "Severe Dementia" ||
+        prediction ===
+          "Moderate Dementia"
+      ) {
 
-    type:
-      prediction === "Moderate Dementia"
-        ? "critical"
-        : prediction === "Mild Dementia"
-        ? "warning"
-        : "info",
+        notificationType =
+          "critical";
 
-    referenceId:
-      assessment._id,
+      } else if (
+        prediction ===
+        "Mild Dementia"
+      ) {
 
-    referenceType:
-      "assessment",
+        notificationType =
+          "warning";
 
-    isRead:
-      false,
-  });
+      }
 
-} catch (notificationError) {
 
-  /*
-   * Do NOT fail the AI assessment if
-   * notification creation fails.
-   */
+      await Notification.create({
 
-  console.error(
-    "Unable to create assessment notification:",
-    notificationError
-  );
+        recipientId:
+          assignment.doctorId,
 
-}
+        patientId,
+
+        title:
+          "New AI Assessment Available",
+
+        message:
+          `A new AI assessment has been completed for ${patient.fullName}. Prediction: ${prediction}.`,
+
+        type:
+          notificationType,
+
+        referenceId:
+          assessment._id,
+
+        referenceType:
+          "assessment",
+
+        isRead:
+          false,
+
+      });
+
+    } catch (
+      notificationError
+    ) {
+
+      /*
+       * Do NOT fail the AI assessment
+       * if notification creation fails.
+       */
+
+      console.error(
+        "Unable to create assessment notification:",
+        notificationError
+      );
+
+    }
+
 
     /* ========================================================
        POPULATE ASSESSMENT
@@ -551,12 +768,14 @@ try {
 
     });
 
+
   } catch (error) {
 
     console.error(
       "Create assessment error:",
       error
     );
+
 
     return res.status(500).json({
 
@@ -576,13 +795,7 @@ try {
 /* ============================================================
    GET PATIENT ASSESSMENT HISTORY
 
-   BOTH DOCTOR AND CAREGIVER CAN VIEW HISTORY.
-
-   Doctor:
-   - Only their assigned patients.
-
-   Caregiver:
-   - Only their assigned patient.
+   Both Doctor and Caregiver can view history.
 ============================================================ */
 
 export const getPatientAssessments =
@@ -609,9 +822,12 @@ export const getPatientAssessments =
       ) {
 
         return res.status(400).json({
+
           success: false,
+
           message:
             "Invalid patient ID.",
+
         });
 
       }
@@ -625,11 +841,13 @@ export const getPatientAssessments =
 
 
       if (
-        req.user.role === "doctor"
+        req.user.role ===
+        "doctor"
       ) {
 
         assignment =
           await CareAssignment.findOne({
+
             patientId,
 
             doctorId:
@@ -637,14 +855,17 @@ export const getPatientAssessments =
 
             status:
               "active",
+
           });
 
       } else if (
-        req.user.role === "caregiver"
+        req.user.role ===
+        "caregiver"
       ) {
 
         assignment =
           await CareAssignment.findOne({
+
             patientId,
 
             caregiverId:
@@ -652,14 +873,18 @@ export const getPatientAssessments =
 
             status:
               "active",
+
           });
 
       } else {
 
         return res.status(403).json({
+
           success: false,
+
           message:
             "You do not have permission to view assessments.",
+
         });
 
       }
@@ -672,9 +897,12 @@ export const getPatientAssessments =
       if (!assignment) {
 
         return res.status(403).json({
+
           success: false,
+
           message:
             "You do not have access to this patient's assessments.",
+
         });
 
       }
@@ -686,32 +914,42 @@ export const getPatientAssessments =
 
       const assessments =
         await Assessment.find({
+
           patientId,
+
         })
 
           .populate({
+
             path: "doctorId",
 
             select:
               "fullName email doctorDetails profilePicture",
+
           })
 
           .populate({
+
             path: "caregiverId",
 
             select:
               "fullName email phone relationship profilePicture",
+
           })
 
           .populate({
+
             path: "createdBy",
 
             select:
               "fullName email role profilePicture",
+
           })
 
           .sort({
+
             createdAt: -1,
+
           });
 
 
@@ -730,12 +968,14 @@ export const getPatientAssessments =
 
       });
 
+
     } catch (error) {
 
       console.error(
         "Get assessment history error:",
         error
       );
+
 
       return res.status(500).json({
 
@@ -766,27 +1006,31 @@ export const getLatestDoctorAssessment =
 
     try {
 
-      /* --------------------------------------------------------
+      /* ------------------------------------------------------
          VERIFY DOCTOR
-      -------------------------------------------------------- */
+      ------------------------------------------------------ */
 
       if (
         !req.user ||
-        req.user.role !== "doctor"
+        req.user.role !==
+          "doctor"
       ) {
 
         return res.status(403).json({
+
           success: false,
+
           message:
             "Only doctors can access this information.",
+
         });
 
       }
 
 
-      /* --------------------------------------------------------
+      /* ------------------------------------------------------
          FIND LATEST ASSESSMENT
-      -------------------------------------------------------- */
+      ------------------------------------------------------ */
 
       const assessment =
         await Assessment.findOne({
@@ -797,36 +1041,44 @@ export const getLatestDoctorAssessment =
         })
 
           .populate({
+
             path: "patientId",
 
             select:
               "fullName age gender profilePicture",
+
           })
 
           .populate({
+
             path: "createdBy",
 
             select:
               "fullName role profilePicture",
+
           })
 
           .populate({
+
             path: "caregiverId",
 
             select:
               "fullName email phone relationship profilePicture",
+
           })
 
           .sort({
+
             createdAt: -1,
+
           })
 
           .lean();
 
 
-      /* --------------------------------------------------------
+      /* ------------------------------------------------------
          NO ASSESSMENTS YET
-      -------------------------------------------------------- */
+      ------------------------------------------------------ */
 
       if (!assessment) {
 
@@ -841,9 +1093,9 @@ export const getLatestDoctorAssessment =
       }
 
 
-      /* --------------------------------------------------------
+      /* ------------------------------------------------------
          RESPONSE
-      -------------------------------------------------------- */
+      ------------------------------------------------------ */
 
       return res.status(200).json({
 
@@ -853,12 +1105,14 @@ export const getLatestDoctorAssessment =
 
       });
 
+
     } catch (error) {
 
       console.error(
         "Get latest doctor assessment error:",
         error
       );
+
 
       return res.status(500).json({
 
@@ -876,9 +1130,6 @@ export const getLatestDoctorAssessment =
 
 /* ============================================================
    GET ASSESSMENT COUNT FOR LOGGED-IN DOCTOR
-
-   Returns total number of AI assessments
-   for this doctor's patients.
 ============================================================ */
 
 export const getDoctorAssessmentCount =
@@ -889,27 +1140,31 @@ export const getDoctorAssessmentCount =
 
     try {
 
-      /* --------------------------------------------------------
+      /* ------------------------------------------------------
          VERIFY DOCTOR
-      -------------------------------------------------------- */
+      ------------------------------------------------------ */
 
       if (
         !req.user ||
-        req.user.role !== "doctor"
+        req.user.role !==
+          "doctor"
       ) {
 
         return res.status(403).json({
+
           success: false,
+
           message:
             "Only doctors can access assessment statistics.",
+
         });
 
       }
 
 
-      /* --------------------------------------------------------
+      /* ------------------------------------------------------
          COUNT ASSESSMENTS
-      -------------------------------------------------------- */
+      ------------------------------------------------------ */
 
       const count =
         await Assessment.countDocuments({
@@ -920,9 +1175,9 @@ export const getDoctorAssessmentCount =
         });
 
 
-      /* --------------------------------------------------------
+      /* ------------------------------------------------------
          RESPONSE
-      -------------------------------------------------------- */
+      ------------------------------------------------------ */
 
       return res.status(200).json({
 
@@ -932,12 +1187,14 @@ export const getDoctorAssessmentCount =
 
       });
 
+
     } catch (error) {
 
       console.error(
         "Get doctor assessment count error:",
         error
       );
+
 
       return res.status(500).json({
 
@@ -956,14 +1213,12 @@ export const getDoctorAssessmentCount =
 /* ============================================================
    GET PATIENTS NEEDING ATTENTION
 
-   A patient needs attention when their LATEST
+   A patient needs attention when their latest
    assessment is:
 
    - Mild Dementia
    - Moderate Dementia
-
-   Only the logged-in doctor's patients
-   are considered.
+   - Severe Dementia
 ============================================================ */
 
 export const getDoctorPatientsNeedingAttention =
@@ -974,27 +1229,31 @@ export const getDoctorPatientsNeedingAttention =
 
     try {
 
-      /* --------------------------------------------------------
+      /* ------------------------------------------------------
          VERIFY DOCTOR
-      -------------------------------------------------------- */
+      ------------------------------------------------------ */
 
       if (
         !req.user ||
-        req.user.role !== "doctor"
+        req.user.role !==
+          "doctor"
       ) {
 
         return res.status(403).json({
+
           success: false,
+
           message:
             "Only doctors can access this information.",
+
         });
 
       }
 
 
-      /* --------------------------------------------------------
+      /* ------------------------------------------------------
          GET DOCTOR'S ASSIGNED PATIENTS
-      -------------------------------------------------------- */
+      ------------------------------------------------------ */
 
       const assignments =
         await CareAssignment.find({
@@ -1021,9 +1280,9 @@ export const getDoctorPatientsNeedingAttention =
         );
 
 
-      /* --------------------------------------------------------
+      /* ------------------------------------------------------
          NO PATIENTS
-      -------------------------------------------------------- */
+      ------------------------------------------------------ */
 
       if (
         patientIds.length === 0
@@ -1042,9 +1301,9 @@ export const getDoctorPatientsNeedingAttention =
       }
 
 
-      /* --------------------------------------------------------
+      /* ------------------------------------------------------
          GET ALL ASSESSMENTS
-      -------------------------------------------------------- */
+      ------------------------------------------------------ */
 
       const assessments =
         await Assessment.find({
@@ -1078,10 +1337,10 @@ export const getDoctorPatientsNeedingAttention =
           .lean();
 
 
-      /* --------------------------------------------------------
+      /* ------------------------------------------------------
          KEEP ONLY LATEST ASSESSMENT
          PER PATIENT
-      -------------------------------------------------------- */
+      ------------------------------------------------------ */
 
       const latestAssessmentMap =
         new Map();
@@ -1113,26 +1372,30 @@ export const getDoctorPatientsNeedingAttention =
       );
 
 
-      /* --------------------------------------------------------
+      /* ------------------------------------------------------
          FILTER PATIENTS NEEDING ATTENTION
-      -------------------------------------------------------- */
+      ------------------------------------------------------ */
 
       const attentionAssessments =
         Array.from(
           latestAssessmentMap.values()
         ).filter(
           (assessment) =>
+
             assessment.prediction ===
               "Mild Dementia" ||
 
             assessment.prediction ===
-              "Moderate Dementia"
+              "Moderate Dementia" ||
+
+            assessment.prediction ===
+              "Severe Dementia"
         );
 
 
-      /* --------------------------------------------------------
+      /* ------------------------------------------------------
          RESPONSE
-      -------------------------------------------------------- */
+      ------------------------------------------------------ */
 
       return res.status(200).json({
 
@@ -1146,12 +1409,14 @@ export const getDoctorPatientsNeedingAttention =
 
       });
 
+
     } catch (error) {
 
       console.error(
         "Get patients needing attention error:",
         error
       );
+
 
       return res.status(500).json({
 
@@ -1180,14 +1445,13 @@ export const getDoctorPatientsNeedingAttention =
    - Prediction
    - Confidence
    - Probabilities
+   - Medical Indicators
+   - Grad-CAM
    - Assessment date
    - Doctor
    - Caregiver
    - Person who performed assessment
    - Model information
-
-   Only assessments belonging to this doctor
-   are returned.
 ============================================================ */
 
 export const getDoctorAssessments =
@@ -1198,13 +1462,14 @@ export const getDoctorAssessments =
 
     try {
 
-      /* --------------------------------------------------------
+      /* ------------------------------------------------------
          VERIFY DOCTOR
-      -------------------------------------------------------- */
+      ------------------------------------------------------ */
 
       if (
         !req.user ||
-        req.user.role !== "doctor"
+        req.user.role !==
+          "doctor"
       ) {
 
         return res.status(403).json({
@@ -1219,9 +1484,9 @@ export const getDoctorAssessments =
       }
 
 
-      /* --------------------------------------------------------
+      /* ------------------------------------------------------
          GET DOCTOR ASSESSMENTS
-      -------------------------------------------------------- */
+      ------------------------------------------------------ */
 
       const assessments =
         await Assessment.find({
@@ -1231,9 +1496,9 @@ export const getDoctorAssessments =
 
         })
 
-          /* ----------------------------------------------------
+          /* --------------------------------------------------
              PATIENT
-          ---------------------------------------------------- */
+          -------------------------------------------------- */
 
           .populate({
 
@@ -1245,9 +1510,9 @@ export const getDoctorAssessments =
 
           })
 
-          /* ----------------------------------------------------
+          /* --------------------------------------------------
              DOCTOR
-          ---------------------------------------------------- */
+          -------------------------------------------------- */
 
           .populate({
 
@@ -1259,9 +1524,9 @@ export const getDoctorAssessments =
 
           })
 
-          /* ----------------------------------------------------
+          /* --------------------------------------------------
              CAREGIVER
-          ---------------------------------------------------- */
+          -------------------------------------------------- */
 
           .populate({
 
@@ -1273,9 +1538,9 @@ export const getDoctorAssessments =
 
           })
 
-          /* ----------------------------------------------------
+          /* --------------------------------------------------
              PERSON WHO PERFORMED ASSESSMENT
-          ---------------------------------------------------- */
+          -------------------------------------------------- */
 
           .populate({
 
@@ -1287,9 +1552,9 @@ export const getDoctorAssessments =
 
           })
 
-          /* ----------------------------------------------------
+          /* --------------------------------------------------
              NEWEST FIRST
-          ---------------------------------------------------- */
+          -------------------------------------------------- */
 
           .sort({
 
@@ -1301,9 +1566,9 @@ export const getDoctorAssessments =
           .lean();
 
 
-      /* --------------------------------------------------------
+      /* ------------------------------------------------------
          RESPONSE
-      -------------------------------------------------------- */
+      ------------------------------------------------------ */
 
       return res.status(200).json({
 
@@ -1316,12 +1581,14 @@ export const getDoctorAssessments =
 
       });
 
+
     } catch (error) {
 
       console.error(
         "Get doctor assessments error:",
         error
       );
+
 
       return res.status(500).json({
 

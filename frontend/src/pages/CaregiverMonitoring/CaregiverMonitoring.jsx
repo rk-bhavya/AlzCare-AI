@@ -268,19 +268,6 @@ const CaregiverMonitoring = () => {
                       ))}
                     </div>
                   )}
-
-                  <div style={{ marginTop: 12, paddingTop: 12, borderTop: "1px solid #eef1f6" }}>
-                    <strong style={{ fontSize: 13 }}>Family Recognition</strong>
-                    {!entry.faceRecognitionEvents?.length ? (
-                      <p style={{ fontSize: 12, color: "#8b96ab", margin: "6px 0 0" }}>No recognition events yet.</p>
-                    ) : entry.faceRecognitionEvents.map((event) => (
-                      <div key={event._id} style={{ marginTop: 8, fontSize: 12, color: event.recognized ? "#166534" : "#b45309" }}>
-                        <strong>{event.recognized ? `✓ ${event.familyMemberId?.name || "Family member"}` : "⚠ Unknown Person"}</strong>
-                        {event.recognized && <span> · {event.familyMemberId?.relationship}</span>}
-                        <span style={{ color: "#8b96ab" }}> · {new Date(event.createdAt).toLocaleString("en-IN", { hour: "2-digit", minute: "2-digit" })}</span>
-                      </div>
-                    ))}
-                  </div>
                 </div>
 
                 {/* COGNITIVE PROGRESS */}

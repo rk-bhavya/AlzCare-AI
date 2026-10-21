@@ -947,7 +947,7 @@ const CaregiverPatientDetails = () => {
                         {member.relationship}
                       </span>
 
-                      {member.faceProfileRegistered ? (
+                      {member.photo?.url ? (
                         <div
                           style={{
                             display: "flex",
@@ -1204,9 +1204,9 @@ const CaregiverPatientDetails = () => {
                 />
 
                 <div>
-                  <strong style={{ fontSize: 13 }}>Face photo (optional)</strong>
+                  <strong style={{ fontSize: 13 }}>Photo (optional)</strong>
                   <p style={{ fontSize: 12, color: "#8b96ab", marginTop: 2 }}>
-                    One clear, front-facing face only · JPG, PNG or WEBP · Max 5 MB
+                    JPG, PNG or WEBP · Max 5 MB
                   </p>
                 </div>
               </div>

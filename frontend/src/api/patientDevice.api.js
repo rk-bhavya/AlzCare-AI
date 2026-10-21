@@ -114,12 +114,3 @@ export const updateMyLocation = async (latitude, longitude) => {
   );
   return response.data;
 };
-
-export const recognizeFamilyMember = async (image) => {
-  const formData = new FormData();
-  formData.append("image", image, "face-capture.jpg");
-  const response = await patientDeviceAxios.post("/patient-devices/face-recognition", formData, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
-  return response.data;
-};

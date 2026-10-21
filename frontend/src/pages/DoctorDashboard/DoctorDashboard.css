@@ -2045,3 +2045,34 @@
 .doctor-assignment-submit {
   font-size: 14px;
 }
+/* ============================================================
+   NEW DASHBOARD SECTIONS — layout wrappers only
+   (component-level styling lives in each component's own CSS)
+============================================================ */
+
+.doctor-charts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+.doctor-lists-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 1200px) {
+  .doctor-charts-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 850px) {
+  .doctor-charts-grid,
+  .doctor-lists-grid {
+    grid-template-columns: 1fr;
+  }
+}

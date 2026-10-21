@@ -1,0 +1,110 @@
+.stats-cards {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stats-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 20px;
+  border-radius: 16px;
+  background: #ffffff;
+  border: 1px solid #e8ecf3;
+  box-shadow: 0 3px 14px rgba(30, 41, 59, 0.04);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stats-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+}
+
+.stats-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 26px rgba(30, 41, 59, 0.09);
+}
+
+.stats-card__icon {
+  width: 46px;
+  height: 46px;
+  flex-shrink: 0;
+  border-radius: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 19px;
+  color: #ffffff;
+}
+
+.stats-card--indigo::before { background: #4f46e5; }
+.stats-card--indigo .stats-card__icon {
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+}
+
+.stats-card--teal::before { background: #14b8a6; }
+.stats-card--teal .stats-card__icon {
+  background: linear-gradient(135deg, #2dd4bf, #0d9488);
+}
+
+.stats-card--blue::before { background: #0ea5e9; }
+.stats-card--blue .stats-card__icon {
+  background: linear-gradient(135deg, #38bdf8, #0284c7);
+}
+
+.stats-card--amber::before { background: #f59e0b; }
+.stats-card--amber .stats-card__icon {
+  background: linear-gradient(135deg, #fbbf24, #d97706);
+}
+
+.stats-card__body {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.stats-card__label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #8b96ab;
+}
+
+.stats-card__value {
+  font-size: 28px;
+  font-weight: 800;
+  color: #14213d;
+  line-height: 1.2;
+  margin-top: 4px;
+}
+
+.stats-card__meta {
+  font-size: 12px;
+  color: #94a3b8;
+  margin-top: 4px;
+}
+
+@media (max-width: 1200px) {
+  .stats-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .stats-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .stats-card__value {
+    font-size: 24px;
+  }
+}

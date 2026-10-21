@@ -63,7 +63,7 @@ const assessmentSchema = new mongoose.Schema(
     image: {
       url: {
         type: String,
-        required: true,
+        default: "",
       },
 
       publicId: {
@@ -82,10 +82,10 @@ const assessmentSchema = new mongoose.Schema(
       required: true,
 
       enum: [
-        "Non Demented",
-        "Very Mild Dementia",
+        "Normal",
         "Mild Dementia",
         "Moderate Dementia",
+        "Severe Dementia",
       ],
     },
 
@@ -109,17 +109,14 @@ const assessmentSchema = new mongoose.Schema(
 
     /* ============================================================
        CLASS PROBABILITIES
+
+       These values come from the EfficientNetB0 model.
+
+       Stored as percentages.
     ============================================================ */
 
     probabilities: {
       nonDemented: {
-        type: Number,
-        min: 0,
-        max: 100,
-        default: 0,
-      },
-
-      veryMildDementia: {
         type: Number,
         min: 0,
         max: 100,
@@ -139,6 +136,69 @@ const assessmentSchema = new mongoose.Schema(
         max: 100,
         default: 0,
       },
+
+      severeDementia: {
+        type: Number,
+        min: 0,
+        max: 100,
+        default: 0,
+      },
+    },
+
+
+    /* ============================================================
+       2D MRI-DERIVED MEDICAL INDICATORS
+
+       IMPORTANT:
+       These are image-derived estimates calculated from
+       the uploaded 2D MRI image.
+
+       They are NOT clinical measurements.
+
+       Values are stored so they can be displayed
+       on the AI assessment dashboard.
+    ============================================================ */
+
+    medicalIndicators: {
+      hippocampalVolume: {
+        type: Number,
+        default: null,
+      },
+
+      corticalThickness: {
+        type: Number,
+        default: null,
+      },
+
+      ventricularVolume: {
+        type: Number,
+        default: null,
+      },
+
+      hippocampalAsymmetry: {
+        type: Number,
+        default: null,
+      },
+
+      brainAtrophy: {
+        type: Number,
+        default: null,
+      },
+    },
+
+
+    /* ============================================================
+       GRAD-CAM
+
+       Base64 encoded Grad-CAM image returned
+       by the FastAPI model service.
+
+       Used only for visualization / explainability.
+    ============================================================ */
+
+    gradCAM: {
+      type: String,
+      default: null,
     },
 
 

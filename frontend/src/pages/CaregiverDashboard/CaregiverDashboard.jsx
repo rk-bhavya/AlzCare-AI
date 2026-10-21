@@ -24,11 +24,14 @@ import { useNavigate } from "react-router-dom";
 import {
   getCaregiverDashboard,
   getCaregiverDashboardSummary,
+  getCaregiverPatients,
 } from "../../api/caregiver.api.js";
 
 import { markMedicationTaken } from "../../api/medication.api.js";
 
 import CaregiverPageLayout from "../../components/CaregiverDashboard/CaregiverPageLayout.jsx";
+import AIAssessment from "../../components/CaregiverDashboard/AIAssessment.jsx";
+import AssessmentHistory from "../../components/CaregiverDashboard/AssessmentHistory.jsx";
 
 import "./CaregiverDashboard.css";
 
@@ -76,6 +79,10 @@ const CaregiverDashboard = () => {
 
   const [markingKey, setMarkingKey] = useState("");
 
+  const [assignedPatients, setAssignedPatients] = useState([]);
+  const [isLoadingAssignedPatients, setIsLoadingAssignedPatients] =
+    useState(true);
+
   const loadDashboard = async () => {
     try {
       setIsLoading(true);
@@ -100,8 +107,28 @@ const CaregiverDashboard = () => {
     }
   };
 
+  /*
+   * Loads each assigned patient's latest AI assessment, reusing
+   * the existing getCaregiverPatients() endpoint (already used
+   * by the Caregiver "My Patients" page) — no new endpoint.
+   */
+  const loadAssignedPatients = async () => {
+    try {
+      setIsLoadingAssignedPatients(true);
+
+      const response = await getCaregiverPatients();
+      setAssignedPatients(response.patients || []);
+    } catch (err) {
+      console.error("Unable to load assigned patients:", err);
+      setAssignedPatients([]);
+    } finally {
+      setIsLoadingAssignedPatients(false);
+    }
+  };
+
   useEffect(() => {
     loadDashboard();
+    loadAssignedPatients();
   }, []);
 
   const handleMarkTaken = async (medicationId, time) => {
@@ -528,6 +555,15 @@ const CaregiverDashboard = () => {
           <FaChevronRight />
         </button>
       </section>
+
+      {/* AI ASSESSMENT */}
+      <AIAssessment
+        patients={assignedPatients}
+        isLoading={isLoadingAssignedPatients}
+      />
+
+      {/* ASSESSMENT HISTORY */}
+      <AssessmentHistory patients={assignedPatients} />
 
       {/* DOCTOR INFORMATION */}
       <section className="caregiver-panel caregiver-doctor-panel">

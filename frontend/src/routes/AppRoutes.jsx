@@ -19,7 +19,10 @@ import Landing from "../pages/Landing/Landing.jsx";
 import DoctorLogin from "../pages/DoctorLogin/DoctorLogin.jsx";
 import CaregiverLogin from "../pages/CaregiverLogin/CaregiverLogin.jsx";
 
-import Register from "../pages/Register/Register.jsx";
+import StaticLogin from "../pages/StaticLogin/StaticLogin.jsx";
+import StaticRegister from "../pages/StaticRegister/StaticRegister.jsx";
+import CaregiverDashboardDemo from "../pages/CaregiverDashboardDemo/CaregiverDashboardDemo.jsx";
+import DoctorDashboardDemo from "../pages/DoctorDashboardDemo/DoctorDashboardDemo.jsx";
 
 import PatientRegister from "../pages/PatientRegister/PatientRegister.jsx";
 import CaregiverRegister from "../pages/CaregiverRegister/CaregiverRegister.jsx";
@@ -137,7 +140,34 @@ const AppRoutes = () => {
         <Route
           path={ROUTES.REGISTER}
           element={
-            <Register />
+            <StaticRegister />
+          }
+        />
+
+        {/* ==================================================
+            STATIC DEMO ROUTES (project-guide demo)
+            UI-only — no backend dependency. Added alongside
+            the existing real routes without removing them.
+        =================================================== */}
+
+        <Route
+          path="/login"
+          element={
+            <StaticLogin />
+          }
+        />
+
+        <Route
+          path="/caregiver-dashboard"
+          element={
+            <CaregiverDashboardDemo />
+          }
+        />
+
+        <Route
+          path="/doctor-dashboard"
+          element={
+            <DoctorDashboardDemo />
           }
         />
 
