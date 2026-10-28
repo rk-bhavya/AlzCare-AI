@@ -72,7 +72,7 @@ import PatientDashboard from "../pages/PatientDashboard/PatientDashboard.jsx";
 ============================================================ */
 
 import ProtectedRoute from "../components/ProtectedRoute/ProtectedRoute.jsx";
-
+import ModelMetrics from "../pages/ModelMetrics/ModelMetrics.jsx";
 
 /* ============================================================
    CONSTANTS
@@ -111,6 +111,11 @@ const AppRoutes = () => {
             <Home />
           }
         />
+
+        <Route
+  path="/model-metrics"
+  element={<ModelMetrics />}
+/>
 
 
         <Route
