@@ -70,7 +70,7 @@ router.get(
 ============================================================ */
 
 router.post(
-  "/assign-patient",
+  "/assign-caregiver",
   assignPatientToCaregiver
 );
 

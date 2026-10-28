@@ -1,4 +1,6 @@
 import User from "../models/User.js";
+import mongoose from "mongoose";
+import PatientCaregiverAssignment from "../models/PatientCaregiverAssignment.js";
 
 /* ============================================================
    GET DOCTOR PROFILE
@@ -220,43 +222,52 @@ export const updateDoctorProfile = async (
    section if this file already contains it.
 ============================================================ */
 
-export const getPatientsForAssignment =
-  async (req, res) => {
+export const getPatientsForAssignment = async (req, res) => {
+  try {
+    const patients = await User.find({
+      role: "patient",
+    })
+      .select("fullName age gender email phone profilePicture")
+      .sort({ fullName: 1 })
+      .lean();
 
-    try {
+    const assignments = await PatientCaregiverAssignment.find({
+      status: "active",
+    })
+      .populate("caregiverId", "fullName email")
+      .lean();
 
-      const patients =
-        await User.find({
-          role: "patient",
-        })
-          .select(
-            "fullName age gender email phone profilePicture"
-          )
-          .sort({
-            fullName: 1,
-          })
-          .lean();
+    const assignmentMap = new Map(
+      assignments.map((assignment) => [
+        String(assignment.patientId),
+        assignment,
+      ])
+    );
 
+    const patientsWithCaregivers = patients.map((patient) => {
+      const assignment = assignmentMap.get(String(patient._id));
 
-      return res.status(200).json({
-        success: true,
-        patients,
-      });
+      return {
+        ...patient,
+        caregiver: assignment?.caregiverId || null,
+        assignmentStatus: assignment ? "Assigned" : "Unassigned",
+      };
+    });
 
-    } catch (error) {
+    return res.status(200).json({
+      success: true,
+      patients: patientsWithCaregivers,
+    });
+  } catch (error) {
+    console.error("Get patients error:", error);
 
-      console.error(
-        "Get patients error:",
-        error
-      );
+    return res.status(500).json({
+      success: false,
+      message: "Unable to load patients.",
+    });
+  }
+};
 
-      return res.status(500).json({
-        success: false,
-        message:
-          "Unable to load patients.",
-      });
-    }
-  };
 
 
 /* ============================================================
@@ -313,13 +324,77 @@ export const getCaregiversForAssignment =
    if you already have one.
 ============================================================ */
 
-export const assignPatientToCaregiver =
-  async (req, res) => {
+export const assignPatientToCaregiver = async (req, res) => {
+  try {
+    const { patientId, caregiverId } = req.body;
 
-    return res.status(501).json({
-      success: false,
-      message:
-        "Patient-caregiver assignment is not configured yet.",
+    if (!patientId || !caregiverId) {
+      return res.status(400).json({
+        success: false,
+        message: "Patient ID and caregiver ID are required.",
+      });
+    }
+
+    if (
+      !mongoose.isValidObjectId(patientId) ||
+      !mongoose.isValidObjectId(caregiverId)
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid patient ID or caregiver ID.",
+      });
+    }
+
+    const [patient, caregiver] = await Promise.all([
+      User.findOne({ _id: patientId, role: "patient" }),
+      User.findOne({ _id: caregiverId, role: "caregiver" }),
+    ]);
+
+    if (!patient) {
+      return res.status(404).json({
+        success: false,
+        message: "Patient not found.",
+      });
+    }
+
+    if (!caregiver) {
+      return res.status(404).json({
+        success: false,
+        message: "Caregiver not found.",
+      });
+    }
+
+    const doctorId = req.user._id;
+
+    const assignment =
+      await PatientCaregiverAssignment.findOneAndUpdate(
+        { patientId },
+        {
+          $set: {
+            caregiverId,
+            doctorId,
+            status: "active",
+          },
+        },
+        {
+          new: true,
+          upsert: true,
+          runValidators: true,
+          setDefaultsOnInsert: true,
+        }
+      );
+
+    return res.status(200).json({
+      success: true,
+      message: "Caregiver assigned successfully.",
+      assignment,
     });
+  } catch (error) {
+    console.error("Assign caregiver error:", error);
 
-  };
+    return res.status(500).json({
+      success: false,
+      message: "Unable to assign caregiver.",
+    });
+  }
+};

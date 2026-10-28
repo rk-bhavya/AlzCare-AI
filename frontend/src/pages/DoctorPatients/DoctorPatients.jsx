@@ -226,17 +226,13 @@ const DoctorPatients = () => {
       setIsAssigning(true);
       setAssignmentMessage("");
 
-      const response =
-        await axiosInstance.post(
-          "/doctor/assign-patient",
-          {
-            patientId:
-              selectedPatient._id,
-
-            caregiverId:
-              selectedCaregiver,
-          }
-        );
+      const response = await axiosInstance.post(
+  "/doctor/assign-caregiver",
+  {
+    patientId: selectedPatient._id,
+    caregiverId: selectedCaregiver,
+  }
+);
 
       setAssignmentMessage(
         response.data?.message ||
@@ -616,29 +612,20 @@ const DoctorPatients = () => {
                             </td>
 
 
-                            {/* STATUS */}
+                           
+{/* STATUS */}
+<td>
+  <span
+    className={`doctor-page-status ${
+      patient.assignmentStatus === "Assigned"
+        ? "doctor-page-status--active"
+        : "doctor-page-status--pending"
+    }`}
+  >
+    {patient.assignmentStatus || "Unassigned"}
+  </span>
+</td>
 
-                            <td>
-
-                              <span
-                                className={`doctor-page-status ${
-                                  patient.assignment
-                                    ?.status ===
-                                  "active"
-                                    ? "doctor-page-status--active"
-                                    : "doctor-page-status--pending"
-                                }`}
-                              >
-
-                                {
-                                  patient.assignment
-                                    ?.status ||
-                                  "Unassigned"
-                                }
-
-                              </span>
-
-                            </td>
 
 
                             {/* ACTIONS */}

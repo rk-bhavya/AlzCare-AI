@@ -364,18 +364,13 @@ const DoctorPatientDetails = () => {
             </div>
 
 
-            <div className="doctor-patient-profile__status">
-
-              <span>
-                Assignment
-              </span>
-
-              <strong>
-                {patient.assignment?.status ||
-                  "Unassigned"}
-              </strong>
-
-            </div>
+           
+<div className="doctor-patient-profile__status">
+  <span>Assignment</span>
+  <strong>
+    {patient.assignmentStatus || "Unassigned"}
+  </strong>
+</div>
 
           </section>
 
