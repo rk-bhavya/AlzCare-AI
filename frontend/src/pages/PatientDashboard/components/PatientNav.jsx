@@ -1,17 +1,15 @@
+
 /* ============================================================
    PATIENT NAV
 
-   Deliberately only 5 items, large tap targets, simple icons
-   and words. No nested menus, no admin-style sidebar. Hidden
-   during active gameplay so the game gets full screen focus
-   (a visible Back button inside the game returns here).
+   Four simple navigation items with large tap targets.
+   Hidden during active gameplay.
 ============================================================ */
 
 const NAV_ITEMS = [
   { key: "home", label: "Home", icon: "🏠" },
   { key: "medicines", label: "Medicines", icon: "💊" },
   { key: "brain", label: "Brain Exercise", icon: "🧠" },
-  { key: "family", label: "Family", icon: "👪" },
   { key: "help", label: "Help", icon: "🆘" },
 ];
 

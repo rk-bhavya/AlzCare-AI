@@ -20,7 +20,7 @@ const POSITIVE_MESSAGES = [
   "You're doing great today!",
   "One step at a time — you've got this!",
   "Today is a good day to feel proud of yourself.",
-  "Take it easy and enjoy your day.",
+  "Take it easy, enjoy your day.",
 ];
 
 const PatientHome = ({

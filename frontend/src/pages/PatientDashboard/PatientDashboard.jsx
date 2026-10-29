@@ -22,7 +22,6 @@ import PatientNav from "./components/PatientNav.jsx";
 import PatientHome from "./components/PatientHome.jsx";
 import PatientMedicines from "./components/PatientMedicines.jsx";
 import PatientBrainExercise from "./components/PatientBrainExercise.jsx";
-import PatientFamily from "./components/PatientFamily.jsx";
 import PatientHelp from "./components/PatientHelp.jsx";
 
 import "./PatientDashboard.css";
@@ -257,8 +256,6 @@ const PatientDashboard = () => {
           onPlayingChange={setIsPlaying}
         />
       )}
-
-      {view === "family" && <PatientFamily />}
 
       {view === "help" && (
         <PatientHelp
